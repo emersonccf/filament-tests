@@ -19,6 +19,10 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    protected static ?string $navigationLabel = 'Usuário';
+
+    protected static ?string $modelLabel = 'Usuários';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -47,17 +51,23 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name') ->label('Nome'),
-                Tables\Columns\TextColumn::make('email')->label('E-mail'),
-                Tables\Columns\TextColumn::make('updated_at')->label('Atualizado em')->dateTime('d-M-Y H:i:s'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nome'),
+                Tables\Columns\TextColumn::make('email')
+                    ->label('E-mail'),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Atualizado em')
+                    ->dateTime('d-M-Y H:i:s'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+//                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
+            ->paginated([25, 50, 75, 100, 'all'])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
