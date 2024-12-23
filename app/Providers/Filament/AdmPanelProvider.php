@@ -38,8 +38,11 @@ class AdmPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                //Widgets\FilamentInfoWidget::class,
             ])
+            ->sidebarCollapsibleOnDesktop(true)
+//            ->favicon('https://icons.iconarchive.com/icons/aha-soft/free-large-boss/512/Admin-icon.png')
+            ->favicon('https://icon-library.com/images/admin-user-icon/admin-user-icon-5.jpg')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
