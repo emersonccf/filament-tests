@@ -16,6 +16,17 @@ class UserFactory extends Factory
      */
     protected static ?string $password;
 
+    // TODO: Remover essa função daqui para Helpers
+//    protected function generateRandomNumber()
+//    {
+//        // Gera um número aleatório de 11 dígitos
+//        $min = 10000000000; // Mínimo valor de 11 dígitos
+//        $max = 99999999999; // Máximo valor de 11 dígitos
+//        $randomNumber = random_int($min, $max);
+//
+//        return $randomNumber;
+//    }
+
     /**
      * Define the model's default state.
      *
@@ -25,6 +36,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'cpf' => random_int(10000000000, 99999999999),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),

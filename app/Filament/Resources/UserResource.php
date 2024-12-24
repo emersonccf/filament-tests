@@ -32,6 +32,12 @@ class UserResource extends Resource
                     ->placeholder('informe o nome completo')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('cpf')
+                    ->label('CPF')
+                    ->placeholder('informe o CPF')
+                    ->mask('999.999.999-99')
+                    ->required()
+                    ->maxLength(14),
                 Forms\Components\TextInput::make('email')
                     ->label('E-mail')
                     ->placeholder('informe o e-mail')
@@ -53,6 +59,8 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nome'),
+                Tables\Columns\TextColumn::make('cpf')
+                    ->label('CPF'),
                 Tables\Columns\TextColumn::make('email')
                     ->label('E-mail'),
                 Tables\Columns\TextColumn::make('updated_at')
