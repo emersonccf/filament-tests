@@ -5,12 +5,17 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use App\Rules\ContemCaracteresEspeciais;
+use App\Rules\ContemLetrasMaiusculas;
+use App\Rules\ContemLetrasMinusculas;
+use App\Rules\ContemNumeros;
 use App\Rules\CpfValido;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rules\Unique;
 use Illuminate\Validation\ValidationException;
 
 class UserResource extends Resource
@@ -37,20 +42,42 @@ class UserResource extends Resource
                     ->placeholder('informe o CPF')
                     ->mask('999.999.999-99')
                     ->required()
+//                    ->unique(ignoreRecord: true, modifyRuleUsing : function (Unique $rule) { #TODO: não é possível acessar o valor do campo dentro da closure, que pena...
+//                        return $rule->where('cpf', preg_replace('/[^0-9]/', '', $value));
+//                    })
+//                    ->validationMessages([
+//                        'unique' => "Este :attribute já está cadastrado para um usuário do sistema.",
+//                    ])
                     ->rule([new CpfValido]) // Aplicação da regra personalizada para o CPF
                     ->maxLength(14),
                 Forms\Components\TextInput::make('email')
                     ->label('E-mail')
                     ->placeholder('informe o e-mail')
                     ->email()
+                    ->rule(['email' => 'regex:/^.+@.+$/i'])
                     ->required()
+                    ->unique(ignoreRecord: true) // ignora o próprio registo na verificação de unicidade
+                    ->validationMessages([
+                        'unique' => 'Este :attribute já está sendo utilizado por um usuário cadastrado no sistema.',
+                        'email' => 'O :attribute informado não é válido'
+                    ])
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->placeholder('informe a senha')
                     ->label('Senha')
                     ->password()
-                    ->rule(['min:8', 'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/']) // Aplicação de regras para a senha
+                    ->revealable()
+                    ->rule([
+                        'min' => 'min:8',
+                        new ContemLetrasMinusculas(),
+                        new ContemLetrasMaiusculas(),
+                        new ContemNumeros(),
+                        new ContemCaracteresEspeciais(),
+                    ]) // Aplicação de regras para a senha
                     ->required()
+                    ->validationMessages([
+                        'min' => 'A :attribute deve ter no mínimo 8 caracteres entre letras minúsculas, Maiúsculas, caractere especial (@,#,$,%,...) e números',
+                    ])
                     ->maxLength(255),
             ]);
     }

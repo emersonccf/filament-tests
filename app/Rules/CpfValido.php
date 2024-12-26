@@ -4,9 +4,17 @@ namespace App\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Support\Facades\DB;
 
 class CpfValido implements ValidationRule
 {
+    protected ?int $ignoreId;
+
+    public function __construct($ignoreId = null)
+    {
+        $this->ignoreId = $ignoreId;
+    }
+
     /**
      * Run the validation rule.
      *
@@ -16,6 +24,19 @@ class CpfValido implements ValidationRule
     {
         // Remover caracteres não numéricos
         $cpf = preg_replace('/[^0-9]/', '', $value);
+
+        $query = DB::table('users')->where('cpf', $cpf);
+
+        if ($this->ignoreId) {
+            $query->where('id', '!=', $this->ignoreId);
+        }
+
+        // Verifica se o CPF já exite no banco de dados de usuários
+        if ($query->exists()) {
+            $fail('Este CPF já está cadastrado para um usuário do sistema.');
+            return;
+        }
+
 
         // Verificar se tem 11 dígitos
         if (strlen($cpf) != 11) {
