@@ -5,13 +5,13 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use App\Rules\CpfValido;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\ValidationException;
 
 class UserResource extends Resource
 {
@@ -37,6 +37,7 @@ class UserResource extends Resource
                     ->placeholder('informe o CPF')
                     ->mask('999.999.999-99')
                     ->required()
+                    ->rule([new CpfValido]) // Aplicação da regra personalizada para o CPF
                     ->maxLength(14),
                 Forms\Components\TextInput::make('email')
                     ->label('E-mail')
@@ -48,6 +49,7 @@ class UserResource extends Resource
                     ->placeholder('informe a senha')
                     ->label('Senha')
                     ->password()
+                    ->rule(['min:8', 'regex:/[a-z]/', 'regex:/[A-Z]/', 'regex:/[0-9]/']) // Aplicação de regras para a senha
                     ->required()
                     ->maxLength(255),
             ]);
@@ -100,4 +102,21 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
+
+    /**
+     * @throws ValidationException
+     */
+    public static function mutateFormDataBeforeSave(array $data): array
+    {
+        // Aplicar lógica ou validação adicional antes de salvar (tanto criar quanto atualizar)
+        validator($data, [
+            'name' => 'required|string|max:255',
+            'cpf' => [new CpfValido, 'unique:users,cpf'. $data['id']],
+            'email' => 'required|email|max:255|unique:users,email,' . $data['id'],
+            'password' => 'required|string|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/',
+        ])->validate();
+
+        return $data;
+    }
+
 }
