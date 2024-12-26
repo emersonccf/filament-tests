@@ -65,7 +65,8 @@ class UserResource extends Resource
                     ->label('E-mail'),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Atualizado em')
-                    ->dateTime('d-M-Y H:i:s'),
+                    ->dateTime('d-M-Y H:i:s')
+                    ->since(),
             ])
             ->filters([
                 //

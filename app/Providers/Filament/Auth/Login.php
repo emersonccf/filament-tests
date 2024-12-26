@@ -33,7 +33,7 @@ class Login extends BaseAuth
             ->extraInputAttributes(['tabindex' => 1]);
     }
 
-    
+
     protected function getCredentialsFromFormData(array $data): array
     {
         $login_type = filter_var($data['cpf'], FILTER_VALIDATE_EMAIL ) ? 'email' : 'cpf';
