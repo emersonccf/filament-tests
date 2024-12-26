@@ -53,6 +53,29 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
+    /**
+     * Set the user's CPF.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setCpfAttribute($value)
+    {
+        // Remove todos os caracteres que não são números
+        $this->attributes['cpf'] = preg_replace('/\D/', '', $value);
+    }
+
+    /**
+     * Get the formatted CPF.
+     *
+     * @return string
+     */
+    public function getCpfAttribute($value)
+    {
+        // Retorna o CPF formatado com máscara
+        return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $value);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         # TODO: Criar uma regra que retorne verdadeiro para que o usuário possa ser autorizado a ter acesso a area administrativa
