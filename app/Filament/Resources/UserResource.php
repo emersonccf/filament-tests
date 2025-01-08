@@ -42,13 +42,9 @@ class UserResource extends Resource
                     ->placeholder('informe o CPF')
                     ->mask('999.999.999-99')
                     ->required()
-//                    ->unique(ignoreRecord: true, modifyRuleUsing : function (Unique $rule) { #TODO: não é possível acessar o valor do campo dentro da closure, que pena...
-//                        return $rule->where('cpf', preg_replace('/[^0-9]/', '', $value));
-//                    })
-//                    ->validationMessages([
-//                        'unique' => "Este :attribute já está cadastrado para um usuário do sistema.",
-//                    ])
-                    ->rule([new CpfValido]) // Aplicação da regra personalizada para o CPF
+                    ->rule(function ($state, $get) {
+                        return [new CpfValido($get('id'))]; // Utiliza o ID do registro atual
+                    })
                     ->maxLength(14),
                 Forms\Components\TextInput::make('email')
                     ->label('E-mail')
@@ -68,16 +64,31 @@ class UserResource extends Resource
                     ->password()
                     ->revealable()
                     ->rule([
-                        'min' => 'min:8',
+                        'min:8',
+                        'nullable', // Permite que o campo seja opcional durante a edição
                         new ContemLetrasMinusculas(),
                         new ContemLetrasMaiusculas(),
                         new ContemNumeros(),
                         new ContemCaracteresEspeciais(),
                     ]) // Aplicação de regras para a senha
-                    ->required()
+                    //->required()
                     ->validationMessages([
                         'min' => 'A :attribute deve ter no mínimo 8 caracteres entre letras minúsculas, Maiúsculas, caractere especial (@,#,$,%,...) e números',
                     ])
+                    ->maxLength(255),
+
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->placeholder('Confirme a senha')
+                    ->label('Confirmação de Senha')
+                    ->password()
+                    ->revealable()
+//                    ->rule([
+//                        'required_with:password',
+//                        'same:password',
+//                    ])
+//                    ->validationMessages([
+//                        'same' => 'A confirmação da senha deve ser igual à senha informada.',
+//                    ])
                     ->maxLength(255),
             ]);
     }
@@ -135,12 +146,21 @@ class UserResource extends Resource
      */
     public static function mutateFormDataBeforeSave(array $data): array
     {
+        // Lógica para tratar o campo de senha
+        if (empty($data['password'])) {
+            // Remova a senha se ela não for fornecida
+            unset($data['password']);
+        } else {
+            // Criptografa a senha antes de salvar
+            $data['password'] = bcrypt($data['password']);
+        }
+        dd($data);
         // Aplicar lógica ou validação adicional antes de salvar (tanto criar quanto atualizar)
         validator($data, [
             'name' => 'required|string|max:255',
-            'cpf' => [new CpfValido, 'unique:users,cpf'. $data['id']],
-            'email' => 'required|email|max:255|unique:users,email,' . $data['id'],
-            'password' => 'required|string|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/',
+            'cpf' => [new CpfValido(), 'unique:users,cpf,' . ($data['id'] ?? '')],
+            'email' => 'required|email|max:255|unique:users,email,' . ($data['id'] ?? ''),
+            'password' => 'string|min:8|nullable|same:password_confirmation|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/',
         ])->validate();
 
         return $data;
