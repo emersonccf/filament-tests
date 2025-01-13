@@ -15,8 +15,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Validation\Rules\Unique;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserResource extends Resource
 {
@@ -62,6 +62,10 @@ class UserResource extends Resource
                     ->placeholder('informe a senha')
                     ->label('Senha')
                     ->password()
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state) ) //fazer o hash da senha quando o formulário fosse enviado
+                    ->dehydrated(fn ($state) => filled($state)) // Para não substituir a senha existente se o campo estiver vazio
+                    ->required(fn (string $context): bool => $context === 'create') //exigir que a senha seja preenchida na página Criar de um recurso do painel de administração
+                    ->confirmed()
                     ->revealable()
                     ->rule([
                         'min:8',
@@ -71,9 +75,9 @@ class UserResource extends Resource
                         new ContemNumeros(),
                         new ContemCaracteresEspeciais(),
                     ]) // Aplicação de regras para a senha
-                    //->required()
                     ->validationMessages([
                         'min' => 'A :attribute deve ter no mínimo 8 caracteres entre letras minúsculas, Maiúsculas, caractere especial (@,#,$,%,...) e números',
+                        'confirmed' => 'Preencha a Confirmação da Senha. Ela não foi informada ou é diferente da Senha!',
                     ])
                     ->maxLength(255),
 
@@ -81,14 +85,14 @@ class UserResource extends Resource
                     ->placeholder('Confirme a senha')
                     ->label('Confirmação de Senha')
                     ->password()
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state) ) //fazer o hash da senha quando o formulário fosse enviado
+                    ->dehydrated(fn ($state) => filled($state)) // Para não substituir a senha existente se o campo estiver vazio
+                    ->required(fn (string $context): bool => $context === 'create') //exigir que a senha seja preenchida na página Criar de um recurso do painel de administração
+                    ->same('password')
+                    ->validationMessages([
+                        'same' => 'A :attribute é diferente da Senha, faça a correção!',
+                    ])
                     ->revealable()
-//                    ->rule([
-//                        'required_with:password',
-//                        'same:password',
-//                    ])
-//                    ->validationMessages([
-//                        'same' => 'A confirmação da senha deve ser igual à senha informada.',
-//                    ])
                     ->maxLength(255),
             ]);
     }
@@ -106,7 +110,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Atualizado em')
                     ->dateTime('d-M-Y H:i:s')
-                    ->since(),
+                    //->since(),
             ])
             ->filters([
                 //
@@ -139,31 +143,6 @@ class UserResource extends Resource
             'view' => Pages\ViewUser::route('/{record}'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
-    }
-
-    /**
-     * @throws ValidationException
-     */
-    public static function mutateFormDataBeforeSave(array $data): array
-    {
-        // Lógica para tratar o campo de senha
-        if (empty($data['password'])) {
-            // Remova a senha se ela não for fornecida
-            unset($data['password']);
-        } else {
-            // Criptografa a senha antes de salvar
-            $data['password'] = bcrypt($data['password']);
-        }
-        dd($data);
-        // Aplicar lógica ou validação adicional antes de salvar (tanto criar quanto atualizar)
-        validator($data, [
-            'name' => 'required|string|max:255',
-            'cpf' => [new CpfValido(), 'unique:users,cpf,' . ($data['id'] ?? '')],
-            'email' => 'required|email|max:255|unique:users,email,' . ($data['id'] ?? ''),
-            'password' => 'string|min:8|nullable|same:password_confirmation|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/',
-        ])->validate();
-
-        return $data;
     }
 
 }
