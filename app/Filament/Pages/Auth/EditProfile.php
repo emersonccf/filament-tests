@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\NoResource\Pages\Auth;
+namespace App\Filament\Pages\Auth;
 
 use App\Rules\ContemCaracteresEspeciais;
 use App\Rules\ContemLetrasMaiusculas;

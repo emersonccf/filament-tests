@@ -2,7 +2,8 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Resources\NoResource\Pages\Auth\EditProfile;
+use App\Filament\Pages\Auth\EditProfile;
+use App\Filament\Pages\Auth\Register;
 use App\Providers\Filament\Auth\Login;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -30,6 +31,7 @@ class AdmPanelProvider extends PanelProvider
             ->path('adm')
             ->login(Login::class)
             ->profile(EditProfile::class)
+            //->registration(Register::class)
             ->colors([
                 'primary' => Color::Amber,
             ])
