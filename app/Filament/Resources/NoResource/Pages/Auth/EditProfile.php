@@ -1,64 +1,42 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\NoResource\Pages\Auth;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
 use App\Rules\ContemCaracteresEspeciais;
 use App\Rules\ContemLetrasMaiusculas;
 use App\Rules\ContemLetrasMinusculas;
 use App\Rules\ContemNumeros;
 use App\Rules\CpfValido;
-use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
+use Filament\Pages\Auth\EditProfile as BaseEditProfile;
 use Illuminate\Support\Facades\Hash;
 
-
-class UserResource extends Resource
+class EditProfile extends BaseEditProfile
 {
-    protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
-
-    protected static ?string $navigationLabel = 'Usuários';
-
-    protected static ?string $modelLabel = 'Usuários';
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                //$this->getNameFormComponent(),
+                TextInput::make('name')
                     ->label('Nome')
                     ->placeholder('informe o nome completo')
                     ->required()
+                    ->readOnly()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('cpf')
+                TextInput::make('cpf')
                     ->label('CPF')
+                    ->readOnly()
                     ->placeholder('informe o CPF')
                     ->mask('999.999.999-99')
                     ->required()
                     ->rule(function ($state, $get) {
                         return [new CpfValido($get('id'))]; // Utiliza o ID do registro atual
-                    })
-                    ->maxLength(14),
-                Forms\Components\TextInput::make('email')
-                    ->label('E-mail')
-                    ->placeholder('informe o e-mail')
-                    ->email()
-                    ->rule(['email' => 'regex:/^.+@.+$/i'])
-                    ->required()
-                    ->unique(ignoreRecord: true) // ignora o próprio registo na verificação de unicidade
-                    ->validationMessages([
-                        'unique' => 'Este :attribute já está sendo utilizado por um usuário cadastrado no sistema.',
-                        'email' => 'O :attribute informado não é válido'
-                    ])
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
+                    }),
+                $this->getEmailFormComponent(),
+                TextInput::make('password')
                     ->placeholder('informe a senha')
                     ->label('Senha')
                     ->password()
@@ -80,8 +58,7 @@ class UserResource extends Resource
                         'confirmed' => 'Preencha a Confirmação da Senha. Ela não foi informada ou é diferente da Senha!',
                     ])
                     ->maxLength(255),
-
-                Forms\Components\TextInput::make('password_confirmation')
+                TextInput::make('password_confirmation')
                     ->placeholder('Confirme a senha')
                     ->label('Confirmação de Senha')
                     ->password()
@@ -97,52 +74,10 @@ class UserResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    protected function getRedirectUrl(): ?string
     {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nome'),
-                Tables\Columns\TextColumn::make('cpf')
-                    ->label('CPF'),
-                Tables\Columns\TextColumn::make('email')
-                    ->label('E-mail'),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Atualizado em')
-                    ->dateTime('d-M-Y H:i:s')
-                    //->since(),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-//                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->paginated([25, 50, 75, 100, 'all'])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
-        ];
+        return 'users'; //TODO: Definir para qual rota irá encaminha quando a atualização for realizada
     }
 
 }
+
