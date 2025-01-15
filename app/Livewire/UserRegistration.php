@@ -73,7 +73,7 @@ class UserRegistration extends Component
         User::create([
             'name' => trim($this->pessoa->nome),
             'cpf' => $this->cpf,
-            'email' => $this->email ?? $this->cpf.'@faker.com',
+            'email' => $this->email ? $this->email : $this->cpf.'@faker.com',
             'password' => Hash::make($this->password),
         ]);
 

@@ -8,17 +8,18 @@
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100 min-h-screen">
-<div class="container mx-auto px-4 py-8">
+{{--class="bg-gray-100 min-h-screen"--}}
+<body class="bg-gray-50 dark:bg-gray-900">
+<div class="container mx-auto px-4 py-4">
     <header class="mb-8">
-        <h1 style="padding-top: 5px; font-size: 30px" class="text-3xl font-bold text-center text-gray-800">REALIZE SEU CADASTRO AQUI</h1>
+        <h1 class="text-3xl font-bold text-center text-gray-400">REALIZE SEU CADASTRO AQUI</h1>
     </header>
 
     <main>
         {{ $slot }}
     </main>
 
-    <footer class="mt-8 text-center text-gray-600">
+    <footer class="mt-8 text-right text-gray-500">
         <p>&copy; {{ date('Y') }} LivewireTeste. Todos os direitos reservados.</p>
     </footer>
 </div>
