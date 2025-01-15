@@ -5,6 +5,6 @@ namespace App\Enums;
 enum SexoEnum: string
 {
     case MASCULINO = 'M';
-    case FEMENINO = 'F';
+    case FEMININO = 'F';
     case OUTRO = 'O';
 }

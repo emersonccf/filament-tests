@@ -79,7 +79,8 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         # TODO: Criar uma regra que retorne verdadeiro para que o usuário possa ser autorizado a ter acesso a area administrativa
-        return str_ends_with($this->email, '@admin.com') && $this->hasVerifiedEmail();
+//        return str_ends_with($this->email, '@admin.com') && $this->hasVerifiedEmail();
+        return true;
     }
 
 }

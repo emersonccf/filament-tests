@@ -12,6 +12,7 @@ class UserRegistration extends Component
 {
     public $cpf;
     public $pessoa;
+    public $nomePessoa = '';
     public $dataNascimento;
     public $matricula;
     public $email;
@@ -19,6 +20,7 @@ class UserRegistration extends Component
     public $password_confirmation;
     public $step = 'cpf';
     public $message;
+    public $titulo = 'CADASTRO DE USUÁRIO';
 
     protected function rules()
     {
@@ -37,10 +39,11 @@ class UserRegistration extends Component
         $this->pessoa = Pessoa::where('cpf', $this->cpf)->first();
 
         if ($this->pessoa) {
+            $this->nomePessoa = trim($this->pessoa->nome);
             $user = User::where('cpf', $this->cpf)->first();
             if ($user) {
                 $this->step = 'user_exists';
-                $this->message = 'Este CPF já está cadastrado como usuário do sistema.';
+                $this->message = 'Já exite uma conta de usuário no sistema associado a este CPF.';
             } else {
                 $this->step = 'verify_data';
             }
@@ -68,18 +71,18 @@ class UserRegistration extends Component
         $this->validate();
 
         User::create([
-            'name' => $this->pessoa->nome,
+            'name' => trim($this->pessoa->nome),
             'cpf' => $this->cpf,
-            'email' => $this->email,
+            'email' => $this->email ?? $this->cpf.'@faker.com',
             'password' => Hash::make($this->password),
         ]);
 
         session()->flash('message', 'Conta criada com sucesso!');
-        return redirect()->route('login');
+        return redirect()->route('filament.adm.auth.login');
     }
 
     public function render()
     {
-        return view('livewire.user-registration');
+        return view('livewire.user-registration')->layout('components.layouts.app');
     }
 }

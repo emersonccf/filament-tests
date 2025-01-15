@@ -33,7 +33,7 @@ class CpfValido implements ValidationRule
 
         // Verifica se o CPF já exite no banco de dados de usuários
         if ($query->exists()) {
-            $fail('Este CPF já está cadastrado para um usuário do sistema.');
+            $fail('Já exite alguém no sistema associado a este CPF.');
             return;
         }
 

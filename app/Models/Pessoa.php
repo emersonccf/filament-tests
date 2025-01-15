@@ -53,33 +53,33 @@ class Pessoa extends Model
         });
     }
 
-    public function setSexoAttribute($value)
-    {
-        $this->attributes['sexo'] = $value instanceof SexoEnum ? $value : SexoEnum::from($value);
-    }
-
-    public function getSexoAttribute($value): SexoEnum
-    {
-        return SexoEnum::from($value);
-    }
-
-    public function setTipoSanguineoAttribute($value)
-    {
-        $this->attributes['tipo_sanguineo'] = $value instanceof TipoSanguineoEnum ? $value : TipoSanguineoEnum::from($value);
-    }
-
-    public function getTipoSanguineoAttribute($value): TipoSanguineoEnum
-    {
-        return TipoSanguineoEnum::from($value);
-    }
-
-    public function setEstadoCivilAttribute($value)
-    {
-        $this->attributes['estado_civil'] = $value instanceof EstadoCivilEnum ? $value : EstadoCivilEnum::from($value);
-    }
-
-    public function getEstadoCivilAttribute($value): EstadoCivilEnum
-    {
-        return EstadoCivilEnum::from($value);
-    }
+//    public function setSexoAttribute($value)
+//    {
+//        $this->attributes['sexo'] = $value instanceof SexoEnum ? $value : SexoEnum::from($value);
+//    }
+//
+//    public function getSexoAttribute($value): SexoEnum
+//    {
+//        return SexoEnum::from($value);
+//    }
+//
+//    public function setTipoSanguineoAttribute($value)
+//    {
+//        $this->attributes['tipo_sanguineo'] = $value instanceof TipoSanguineoEnum ? $value : TipoSanguineoEnum::from($value);
+//    }
+//
+//    public function getTipoSanguineoAttribute($value): TipoSanguineoEnum
+//    {
+//        return TipoSanguineoEnum::from($value);
+//    }
+//
+//    public function setEstadoCivilAttribute($value)
+//    {
+//        $this->attributes['estado_civil'] = $value instanceof EstadoCivilEnum ? $value : EstadoCivilEnum::from($value);
+//    }
+//
+//    public function getEstadoCivilAttribute($value): EstadoCivilEnum
+//    {
+//        return EstadoCivilEnum::from($value);
+//    }
 }
