@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $titulo ?? 'Cadastro de Usuários' }}</title>
+    <title>{{ $tituloPagina ?? 'Cadastro de Usuários' }}</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -12,7 +12,7 @@
 <body class="bg-gray-50 dark:bg-gray-900">
 <div class="container mx-auto px-4 py-4">
     <header class="mb-8">
-        <h1 class="text-3xl font-bold text-center text-gray-400">REALIZE SEU CADASTRO AQUI</h1>
+        <h1 class="text-3xl font-bold text-center text-gray-400">{{ $tituloFormulario ?? 'REALIZE SEU CADASTRO AQUI'}}</h1>
     </header>
 
     <main>

@@ -21,7 +21,8 @@ class UserRegistration extends Component
     public $password_confirmation;
     public $step = 'cpf';
     public $message;
-    public $titulo = 'CADASTRO DE USUÁRIO';
+    public $tituloPagina = 'CADASTRO DE USUÁRIO';
+    public $tituloFormulario = 'REALIZE SEU CADASTRO AQUI';
 
     protected function rules()
     {
@@ -88,6 +89,9 @@ class UserRegistration extends Component
     {
         return view('livewire.user-registration', [
             'step' => $this->step,
-        ])->layout('components.layouts.app', ['titulo' => $this->titulo]);
+        ])->layout('components.layouts.app', [
+            'tituloPagina' => $this->tituloPagina,
+            'tituloFormulario' => $this->tituloFormulario,
+        ]);
     }
 }

@@ -12,6 +12,9 @@
 <div x-data="{ showPassword: false }" class="space-y-1">
     <label for="{{ $name }}" class="block mb-2  text-sm font-medium text-gray-700 dark:text-gray-300">
         {{ $label }}
+        @if($required)
+            <span style="color: red">*</span>
+        @endif
     </label>
     <div class="relative">
         <input

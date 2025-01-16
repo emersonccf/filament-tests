@@ -26,7 +26,7 @@ class Login extends BaseAuth
     protected function getCpfFormComponent(): Component
     {
         return TextInput::make('cpf')
-            ->label('CPF ou E-mail')
+            ->label('CPF (só números) ou E-mail')
             ->required()
             ->autocomplete()
             ->autofocus()
