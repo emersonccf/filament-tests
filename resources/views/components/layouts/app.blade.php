@@ -19,9 +19,9 @@
         {{ $slot }}
     </main>
 
-    <footer class="mt-8 text-right text-gray-500">
-        <p>&copy; {{ date('Y') }} LivewireTeste. Todos os direitos reservados.</p>
-    </footer>
+{{--    <footer class="mt-8 text-right text-gray-500">--}}
+{{--        <p>&copy; {{ date('Y') }} LivewireTeste. Todos os direitos reservados.</p>--}}
+{{--    </footer>--}}
 </div>
 
 @livewireScripts
