@@ -27,17 +27,25 @@ class UserRegistration extends Component
         return [
             'cpf' => ['required', new CpfValido],
             'dataNascimento' => 'required|date',
-            'matricula' => 'required',
+            'matricula' => 'required|numeric',
             'email' => 'nullable|email|unique:users,email',
             'password' => 'required|min:8|confirmed',
         ];
     }
 
+    protected $messages = [
+        'matricula.required' => 'A matrícula é obrigatório.',
+        'matricula.numeric' => 'A matrícula deve conter apenas números.',
+        'email.unique' => 'Este e-mail já está vinculado a uma conta de usuário no sistema.',
+        'dataNascimento.required' => 'A data de nascimento é obrigatório.',
+    ];
+
     public function updatedCpf()
     {
         $this->validateOnly('cpf');
+        // Remover caracteres não numéricos
+        $this->cpf = preg_replace('/[^0-9]/', '', $this->cpf);
         $this->pessoa = Pessoa::where('cpf', $this->cpf)->first();
-
         if ($this->pessoa) {
             $this->nomePessoa = trim($this->pessoa->nome);
             $user = User::where('cpf', $this->cpf)->first();
@@ -63,6 +71,7 @@ class UserRegistration extends Component
         } else {
             $this->step = 'data_inconsistent';
             $this->message = 'Os dados informados são inconsistentes. Não é possível realizar o cadastro.';
+            $this->nomePessoa = '';
         }
     }
 
