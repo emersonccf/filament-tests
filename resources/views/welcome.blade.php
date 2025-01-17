@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,9 +9,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
+
 <body class="bg-gradient-to-r from-[#006eb6] to-[#002e98] min-h-screen">
+
 <div class="container mx-auto px-4 py-8">
     <!-- Barra de Navegação -->
     <nav class="bg-white bg-opacity-10 rounded-lg shadow-lg mb-8" x-data="{ open: false }">
@@ -35,7 +36,7 @@
 
                         @else
                             <a href="{{ route('filament.adm.auth.login') }}" class="text-white hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Login</a>
-                            <a href="{{ route('register') }}" class="text-white hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Cadastra-se</a>
+                            <a href="{{ route('register') }}" class="text-white hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Cadastre-se</a>
                         @endauth
                     </div>
                 </div>
@@ -64,7 +65,7 @@
                     </form>
                 @else
                     <a href="{{ route('filament.adm.auth.login') }}" class="text-white hover:bg-white hover:bg-opacity-20 block px-3 py-2 rounded-md text-base font-medium">Login</a>
-                    <a href="{{ route('register') }}" class="text-white hover:bg-white hover:bg-opacity-20 block px-3 py-2 rounded-md text-base font-medium">Registrar</a>
+                    <a href="{{ route('register') }}" class="text-white hover:bg-white hover:bg-opacity-20 block px-3 py-2 rounded-md text-base font-medium">Cadastre-se</a>
                 @endauth
             </div>
         </div>
@@ -79,25 +80,42 @@
                 <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Acesso Rápido</h2>
                 <div class="space-y-4">
                     <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
+                        Recadastramento Anual
+                    </a>
+                    <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
                         Fardamento
                     </a>
                     <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
                         E-Protocolo
                     </a>
                     <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
-                        Recadastramento Anual
+                        Acesso Seu Painel
                     </a>
                     <!-- Adicione mais links conforme necessário -->
                 </div>
             </div>
 
-            <!-- Jornal Transalvador -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
+            <!-- Frase para reflexão -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Frase para reflexão</h2>
+                <p id="quote" class="italic text-gray-600">
+                    <!-- Aqui será inserida a frase aleatória via JavaScript -->
+                </p>
+            </div>
+
+            <!-- Jornal Transalvador (movido para baixo) -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
                 <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Jornal Interno</h2>
                 <a href="#" class="block text-center">
                     <img src="/path/to/jornal-image.jpg" alt="Jornal Interno" class="w-full h-auto rounded-lg">
                 </a>
             </div>
+
+            <!-- Espaço vago (pode ser usado para futuras adições) -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <!-- Este espaço está intencionalmente vazio -->
+            </div>
+
         </div>
 
         <!-- Coluna Central -->
@@ -142,26 +160,23 @@
                             Diário Oficial
                         </a>
                         <a href="#" class="bg-[#006eb6] text-white p-3 rounded-lg text-center hover:bg-[#002e98] transition duration-300">
-                            Regimento Interno
-                        </a>
-                        <a href="#" class="bg-[#006eb6] text-white p-3 rounded-lg text-center hover:bg-[#002e98] transition duration-300">
                             Contra Cheque
                         </a>
                         <a href="#" class="bg-[#006eb6] text-white p-3 rounded-lg text-center hover:bg-[#002e98] transition duration-300">
-                            Plano de Saúde
+                            Tabela de Turnos
+                        </a>
+                        <a href="#" class="bg-[#006eb6] text-white p-3 rounded-lg text-center hover:bg-[#002e98] transition duration-300">
+                            Telefone Úteis
                         </a>
                     </div>
                 </div>
 
-                <!-- Aniversariantes -->
+                <!-- Aniversariantes do Mês -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Aniversariantes do Dia</h2>
-                    <ul class="space-y-2">
-                        <li>João da Silva</li>
-                        <li>Maria Souza</li>
-                        <li>Pedro Oliveira</li>
+                    <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Aniversariantes de <span id="currentMonth"></span></h2>
+                    <ul class="space-y-2" id="birthdayList">
+                        <!-- A lista de aniversariantes será preenchida via JavaScript -->
                     </ul>
-                    <a href="#" class="block mt-4 text-[#006eb6] hover:underline">Ver mês inteiro</a>
                 </div>
             </div>
         </div>
@@ -174,5 +189,68 @@
 </div>
 @livewireScripts
 <script src="{{ asset('js/app.js') }}"></script>
+<script>
+    // ... (mantenha o código anterior para as frases de reflexão) ...
+
+    // Função para obter o nome do mês atual
+    function getCurrentMonth() {
+        const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        const currentDate = new Date();
+        return months[currentDate.getMonth()];
+    }
+
+    // Função para verificar se é o aniversário da pessoa hoje
+    function isBirthdayToday(day) {
+        const currentDate = new Date();
+        return currentDate.getDate() === day;
+    }
+
+    // Lista de aniversariantes (dia, nome)
+    const birthdays = [
+        { day: 5, name: "João da Silva" },
+        { day: 17, name: "Maria Souza" },
+        { day: 18, name: "Pedro Oliveira" },
+        { day: 25, name: "Ana Santos" },
+        { day: 30, name: "Carlos Ferreira" }
+    ];
+
+    // Função para preencher a lista de aniversariantes
+    function fillBirthdayList() {
+        const birthdayList = document.getElementById('birthdayList');
+        birthdays.sort((a, b) => a.day - b.day); // Ordena por dia
+
+        birthdays.forEach(person => {
+            const listItem = document.createElement('li');
+            const birthdayCake = isBirthdayToday(person.day) ? "🎂 " : "";
+            listItem.textContent = `${birthdayCake}${person.day} - ${person.name}`;
+            birthdayList.appendChild(listItem);
+        });
+    }
+
+    // Preencher o mês atual e a lista de aniversariantes
+    document.getElementById('currentMonth').textContent = getCurrentMonth();
+    fillBirthdayList();
+</script>
+
+<script>
+    // Array de frases para reflexão
+    const quotes = [
+        "A persistência é o caminho do êxito.",
+        "O sucesso nasce do querer, da determinação e persistência em se chegar a um objetivo.",
+        "Obstáculo é o que você enxerga quando tira o olhar de seus objetivos.",
+        "Não espere por uma crise para descobrir o que é importante em sua vida.",
+        "A maior glória não é ficar de pé, mas levantar-se cada vez que se cai.",
+        "O insucesso é apenas uma oportunidade para recomeçar com mais inteligência."
+    ];
+
+    // Função para selecionar uma frase aleatória
+    function getRandomQuote() {
+        return quotes[Math.floor(Math.random() * quotes.length)];
+    }
+
+    // Inserir a frase aleatória no elemento HTML
+    document.getElementById('quote').textContent = getRandomQuote();
+</script>
+
 </body>
 </html>
