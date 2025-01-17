@@ -82,6 +82,7 @@ class UserRegistration extends Component
         ]);
 
         session()->flash('message', 'Conta criada com sucesso!');
+        session()->flash('message_type', 'success');
         return redirect()->route('filament.adm.auth.login');
     }
 

@@ -23,5 +23,6 @@ class AppServiceProvider extends ServiceProvider
         // Para manter a sintaxe <x-input /> para os componentes Livewire
         Blade::component('livewire.form.input', 'input');
         Blade::component('livewire.form.password-input', 'password-input');
+        Blade::component('livewire.flash-card.flash-message', 'flash-message');
     }
 }
