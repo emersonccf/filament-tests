@@ -1,6 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
-import Alpine from 'alpinejs';
+// import Alpine from 'alpinejs';
 import { cpfMask } from './masks/cpf-mask';
 import { numberOnly } from './functions/only-number';
 
