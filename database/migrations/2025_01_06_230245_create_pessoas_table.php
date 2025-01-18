@@ -31,9 +31,10 @@ return new class extends Migration
             $table->string('email',150)->unique()->nullable();
             //$table->foreign('id_endereco')->references('id')->on('enderecos')->cascadeOnDelete()->nullable();
             $table->text('observacoes')->nullable();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
+//            $table->timestamp('created_at')->useCurrent();
+//            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

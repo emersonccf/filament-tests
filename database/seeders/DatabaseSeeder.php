@@ -21,6 +21,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => bcrypt('123'),
             'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+            'is_admin' => true,
+            'is_active' => true,
+            'belongs_sector' => true,
         ]);
     }
 }

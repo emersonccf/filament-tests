@@ -15,8 +15,9 @@ return new class extends Migration
         Schema::create('sequencias', function (Blueprint $table) {
             $table->string('nome', 50)->primary();
             $table->integer('valor');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamps();
+//            $table->timestamp('created_at')->useCurrent();
+//            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
 
         // Inicializa o valor da sequência do RUS
