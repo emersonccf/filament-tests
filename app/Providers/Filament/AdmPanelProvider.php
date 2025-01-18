@@ -4,7 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Pages\Auth\Register;
-use App\filament\Pages\Auth\Login;
+use App\Providers\Filament\Auth\Login;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
