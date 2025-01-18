@@ -80,6 +80,9 @@
                 <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Acesso Rápido</h2>
                 <div class="space-y-4">
                     <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
+                        Meu Painel de Atividades
+                    </a>
+                    <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
                         Recadastramento Anual
                     </a>
                     <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
@@ -87,9 +90,6 @@
                     </a>
                     <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
                         E-Protocolo
-                    </a>
-                    <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
-                        Acesso Seu Painel
                     </a>
                     <!-- Adicione mais links conforme necessário -->
                 </div>

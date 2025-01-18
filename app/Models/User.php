@@ -27,6 +27,9 @@ class User extends Authenticatable implements FilamentUser
         'cpf',
         'email',
         'password',
+        'is_active',
+        'is_admin',
+        'belongs_sector',
     ];
 
     public $timestamps = false;
@@ -79,8 +82,9 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         # TODO: Criar uma regra que retorne verdadeiro para que o usuário possa ser autorizado a ter acesso a area administrativa
+        return $this->is_active && $this->is_admin && $this->hasVerifiedEmail();
 //        return str_ends_with($this->email, '@admin.com') && $this->hasVerifiedEmail();
-        return true;
+//        return true;
     }
 
 }

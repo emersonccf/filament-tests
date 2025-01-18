@@ -3,7 +3,7 @@
 
 namespace App\Providers\Filament\Auth;
 
-use Filament\Pages\Auth\Login as BaseAuth;
+use App\filament\Pages\Auth\Login as BaseAuth;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Component;

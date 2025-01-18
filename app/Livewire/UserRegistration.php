@@ -2,7 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Mail\WelcomeEmail;
 use App\Rules\CpfValido;
+use Exception;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use App\Models\Pessoa;
 use App\Models\User;
@@ -74,12 +78,25 @@ class UserRegistration extends Component
     {
         $this->validate();
 
-        User::create([
+        $user = User::create([
             'name' => trim($this->pessoa->nome),
             'cpf' => $this->cpf,
             'email' => $this->email ?: "{$this->cpf}@faker.com",
             'password' => Hash::make($this->password),
+            'is_active' => true,
+//            'is_admin' => false,
+//            'belongs_sector' => false,
         ]);
+
+        // Se o e-mail foi informado tenta enviar e registra log de sucesso ou fracasso
+        if ($this->email){
+            try {
+                Mail::to($user->email)->send(new WelcomeEmail($user));
+                Log::channel('email')->info("E-mail enviado com sucesso para: {$user->email}");
+            } catch (Exception $e) {
+                Log::channel('email')->error('Falha ao enviar e-mail: ' . $e->getMessage());
+            }
+        }
 
         session()->flash('message', 'Conta criada com sucesso!');
         session()->flash('message_type', 'success');
