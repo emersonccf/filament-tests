@@ -41,6 +41,7 @@ class Login extends BaseAuth
         return [
             $login_type => $data['cpf'],
             'password'  => $data['password'],
+            'is_active'  => true,
         ];
     }
 

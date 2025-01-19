@@ -1,6 +1,4 @@
 <?php
-//https://youtu.be/jimA0o8B43w?si=Yk7Z1Qkf3fWeMQSo
-//Filament: Gerenciar o acesso ao painel usando middleware
 
 namespace App\Http\Middleware;
 
@@ -9,7 +7,7 @@ use Filament\Facades\Filament;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class RedirectNotAdminUser
+class RedirectNotActiveUser
 {
     /**
      * Handle an incoming request.
@@ -19,14 +17,10 @@ class RedirectNotAdminUser
     public function handle(Request $request, Closure $next): Response
     {
         $user = Filament::auth()->user();
-
-        // Verifica se a rota atual é a rota de logout
-        $isLogoutRoute = $request->routeIs('filament.adm.auth.logout');
-
-        if ($user && !$user->is_admin && !$isLogoutRoute) {
-            //Filament::auth()->logout();
-            //$request->session()->invalidate();
-            //$request->session()->regenerateToken();
+        if ($user && !$user->is_active) {
+            Filament::auth()->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
             //return redirect()->route('filament.adm.auth.login');
             return redirect()->route('home');
         }

@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Pages\Auth\Register;
+use App\Http\Middleware\RedirectNotActiveUser;
 use App\Http\Middleware\RedirectNotAdminUser;
 use App\Http\Response\CustomLoginResponse;
 use App\Http\Response\CustomLogoutResponse;
@@ -62,6 +63,7 @@ class AdmPanelProvider extends PanelProvider
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
+                RedirectNotActiveUser::class, //cuidado com a ordem dos middlewares, essa ordem é importante
                 RedirectNotAdminUser::class, //cuidado com a ordem dos middlewares, essa ordem é importante
                 AuthenticateSession::class,
                 ShareErrorsFromSession::class,
