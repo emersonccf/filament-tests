@@ -80,7 +80,7 @@
                 <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Acesso Rápido</h2>
                 <div class="space-y-4">
                     <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
-                        Meu Painel de Atividades
+                        Painel de Atividades @auth de <span style="color: yellow;">{{ auth()->user()->name }}</span>@endauth
                     </a>
                     <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
                         Recadastramento Anual

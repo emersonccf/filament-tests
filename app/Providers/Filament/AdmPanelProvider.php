@@ -4,11 +4,15 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Pages\Auth\Register;
+use App\Http\Response\CustomLoginResponse;
+use App\Http\Response\CustomLogoutResponse;
 use App\Providers\Filament\Auth\Login;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Http\Responses\Auth\LoginResponse;
+use Filament\Http\Responses\Auth\LogoutResponse;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -26,6 +30,10 @@ class AdmPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->bootUsing(function ($panel) {
+                app()->bind(LoginResponse::class, CustomLoginResponse::class);
+                app()->bind(LogoutResponse::class, CustomLogoutResponse::class);
+            })
             ->default()
             ->id('adm')
             ->path('adm')
