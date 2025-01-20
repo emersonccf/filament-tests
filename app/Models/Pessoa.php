@@ -20,6 +20,7 @@ class Pessoa extends Model
 
     protected $primaryKey = 'rus_id';
 
+//    public $timestamps = false;
 
     protected $fillable = [
         'matricula',
