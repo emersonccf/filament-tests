@@ -210,7 +210,7 @@
         { day: 5, name: "João da Silva" },
         { day: 17, name: "Maria Souza" },
         { day: 18, name: "Pedro Oliveira" },
-        { day: 25, name: "Ana Santos" },
+        { day: 20, name: "Ana Santos" },
         { day: 30, name: "Carlos Ferreira" }
     ];
 
