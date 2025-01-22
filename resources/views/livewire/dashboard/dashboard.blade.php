@@ -38,7 +38,7 @@
                     >
                         <div class="py-2">
                             <a href="#" class="flex items-center px-4 py-3 border-b hover:bg-gray-100 dark:hover:bg-gray-700 -mx-2">
-                                <img class="h-8 w-8 rounded-full object-cover mx-1" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" alt="avatar">
+                                <img class="h-8 w-8 rounded-full object-cover mx-1" src="{{ Storage::url('images/avatar-2.jpg') }}" alt="avatar">
                                 <p class="text-gray-600 dark:text-gray-300 text-sm mx-2">
                                     <span class="font-bold">Sara Salah</span> replied on the <span class="font-bold text-blue-500">Upload Image</span> article. 2m
                                 </p>
@@ -55,7 +55,7 @@
                         @click="profileOpen = !profileOpen"
                         class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out"
                     >
-                        <img class="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Your avatar">
+                        <img class="h-8 w-8 rounded-full object-cover" src="{{ Storage::url('images/avatar-3.jpg') }}" alt="Sua Foto">
                     </button>
 
                     <div
@@ -65,7 +65,7 @@
                         class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md overflow-hidden shadow-xl z-20"
                     >
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Seu Perfil</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Configurações</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Altear Senha</a>
 
                         <a href="#"  class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" >Logout</a>
                         <form id="logout-form" action="{{ route('filament.adm.auth.logout') }}" method="POST" style="display: none;">

@@ -19,7 +19,7 @@
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 text-cyan-50">
-                        <img class="h-8 w-auto" src="/path/to/your/logo.png" alt="LOGOSYS">
+                        <img class="h-8 w-auto" src="{{ asset('images/icons/syscad.svg') }}" alt="SYSCAD">
                     </div>
                 </div>
                 <div class="hidden md:block">
@@ -103,11 +103,11 @@
                 </p>
             </div>
 
-            <!-- Jornal Interno (movido para baixo) -->
+            <!-- Jornal Interno -->
             <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
                 <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Pega a Visão</h2>
                 <a href="#" class="block text-center">
-                    <img src="/path/to/jornal-image.jpg" alt="Jornal Interno" class="w-full h-auto rounded-lg">
+                    <img src="{{ asset('images/praca-jardim-das-rosas.jpg') }}" alt="Notícia destaque" class="w-full h-auto rounded-lg">
                 </a>
             </div>
 
@@ -128,15 +128,15 @@
                         <div class="flex transition-transform duration-300 ease-in-out" :style="{ transform: `translateX(-${activeSlide * 100}%)` }">
                             <!-- Slide 1 -->
                             <div class="w-full flex-shrink-0">
-                                <img src="/path/to/news1.jpg" alt="Notícia 1" class="w-full h-64 object-cover rounded-lg">
-                                <h3 class="mt-4 text-xl font-semibold">Título da Notícia 1</h3>
-                                <p class="mt-2 text-gray-600">Breve descrição da notícia 1...</p>
+                                <img src="{{ asset('images/praca-jardim-das-rosas.jpg') }}" alt="Notícia 1" class="w-full h-64 object-cover rounded-lg">
+                                <h3 class="mt-4 text-xl font-semibold">Nossa Localização</h3>
+                                <p class="mt-2 text-gray-600">Venha nos visitar, ficamos aqui...</p>
                             </div>
                             <!-- Slide 2 -->
                             <div class="w-full flex-shrink-0">
-                                <img src="/path/to/news2.jpg" alt="Notícia 2" class="w-full h-64 object-cover rounded-lg">
-                                <h3 class="mt-4 text-xl font-semibold">Título da Notícia 2</h3>
-                                <p class="mt-2 text-gray-600">Breve descrição da notícia 2...</p>
+                                <img src="{{ asset('images/praca-jardim-das-rosas-02.jpg') }}" alt="Notícia 2" class="w-full h-64 object-cover rounded-lg">
+                                <h3 class="mt-4 text-xl font-semibold">Nossa sede</h3>
+                                <p class="mt-2 text-gray-600">Em breve estaremos realizando...</p>
                             </div>
                             <!-- Adicione mais slides conforme necessário -->
                         </div>
@@ -210,7 +210,7 @@
         { day: 5, name: "João da Silva" },
         { day: 17, name: "Maria Souza" },
         { day: 18, name: "Pedro Oliveira" },
-        { day: 20, name: "Ana Santos" },
+        { day: 22, name: "Ana Santos" },
         { day: 30, name: "Carlos Ferreira" }
     ];
 
