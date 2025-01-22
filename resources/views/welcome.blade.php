@@ -86,10 +86,10 @@
                         Recadastramento Anual
                     </a>
                     <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
-                        Fardamento
+                        Auxílio Uniforme - SIGAU
                     </a>
                     <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
-                        E-Protocolo
+                        Censo PMS
                     </a>
                     <!-- Adicione mais links conforme necessário -->
                 </div>
