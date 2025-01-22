@@ -25,9 +25,9 @@
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
                         @auth
-                            <a href="{{ '/' }}"  class="text-white hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Painel de <span style="color: yellow;">{{ auth()->user()->name }}</span></a>
+                            <a href="{{ route('dashboard') }}"  class="text-white hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium">Painel de <span style="color: yellow;">{{ getNomeReduzido(auth()->user()->name) }}</span></a>
 
-                            <a href="#"  class="text-white hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" >Logoff</a>
+                            <a href="#"  class="text-white hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" >Logout</a>
 
                             <form id="logout-form" action="{{ route('filament.adm.auth.logout') }}" method="POST" style="display: none;">
                                 @csrf
@@ -56,9 +56,9 @@
         <div x-show="open" class="md:hidden" style="display: none;">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 @auth
-                    <a href="{{ '/' }}"  class="text-white hover:bg-white hover:bg-opacity-20 block px-3 py-2 rounded-md text-base font-medium">Painel de <span style="color: yellow;">{{ auth()->user()->name }}</span></a>
+                    <a href="{{ route('dashboard') }}"  class="text-white hover:bg-white hover:bg-opacity-20 block px-3 py-2 rounded-md text-base font-medium">Painel de <span style="color: yellow;">{{ getNomeReduzido(auth()->user()->name) }}</span></a>
 
-                    <a href="#"  class="text-white hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" >Logoff</a>
+                    <a href="#"  class="text-white hover:bg-white hover:bg-opacity-20 px-3 py-2 rounded-md text-sm font-medium" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" >Logout</a>
 
                     <form id="logout-form" action="{{ route('filament.adm.auth.logout') }}" method="POST" style="display: none;">
                         @csrf
@@ -79,8 +79,8 @@
             <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
                 <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Acesso Rápido</h2>
                 <div class="space-y-4">
-                    <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
-                        Painel de Atividades @auth de <span style="color: yellow;">{{ auth()->user()->name }}</span>@endauth
+                    <a href="{{ route('dashboard') }}" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
+                        Painel de Atividades @auth de <span style="color: yellow;">{{ getNomeReduzido(auth()->user()->name) }}</span>@endauth
                     </a>
                     <a href="#" class="block bg-[#006eb6] text-white p-3 rounded-lg hover:bg-[#002e98] transition duration-300">
                         Recadastramento Anual
@@ -103,9 +103,9 @@
                 </p>
             </div>
 
-            <!-- Jornal Transalvador (movido para baixo) -->
+            <!-- Jornal Interno (movido para baixo) -->
             <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-                <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Jornal Interno</h2>
+                <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Pega a Visão</h2>
                 <a href="#" class="block text-center">
                     <img src="/path/to/jornal-image.jpg" alt="Jornal Interno" class="w-full h-auto rounded-lg">
                 </a>

@@ -158,3 +158,30 @@ function calcularDigitoVerificador($cpf, $pesoInicial) : int
     // Retorna o dígito verificador, ajustando para os casos em que o resto é menor que 2
     return ($resto < 2) ? 0 : 11 - $resto;
 }
+
+
+/**
+ * Retorna nome de uma pessoa reduzido, no máximo dois nomes no mínimo um nome
+ * @param string  $nomeCompleto : informe nome completo de uma pessoa
+ * @return string : Retorna o nome reduzido da pessoa Ex. getNomeReduzido("Ana Paula Souza Costa"); // Saída: Ana Costa
+ * getNomeReduzido("Maria"); // Saída: Maria ; getNomeReduzido("Carlos Eduardo"); // Saída: Carlos Eduardo
+ */
+function getNomeReduzido(string $nomeCompleto) : string
+{
+    // Remove espaços extras no início e no fim da string
+    $nomeCompleto = trim($nomeCompleto);
+
+    // Divide o nome em partes
+    $partes = explode(' ', $nomeCompleto);
+
+    // Se o nome tiver apenas uma parte, retorna ela mesma
+    if (count($partes) == 1) {
+        return $partes[0];
+    }
+
+    // Caso contrário, retorna o primeiro e o último nome
+    $primeiroNome = $partes[0];
+    $ultimoNome = $partes[count($partes) - 1];
+
+    return $primeiroNome . ' ' . $ultimoNome;
+}

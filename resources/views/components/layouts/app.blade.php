@@ -11,10 +11,12 @@
 {{--class="bg-gray-100 min-h-screen"--}}
 <body class="bg-gray-50 dark:bg-gray-900">
 <x-flash-message /> {{-- component flash-card --}}
-<div class="container mx-auto px-4 py-4">
+<div> <!-- class="container mx-auto px-4 py-4" -->
+    @if( $tituloFormulario )
     <header class="mb-8">
-        <h1 class="text-3xl font-bold text-center text-gray-400">{{ $tituloFormulario ?? 'REALIZE SEU CADASTRO AQUI'}}</h1>
+        <h1 class="text-3xl font-bold text-center text-gray-400">{{ $tituloFormulario }}</h1>
     </header>
+    @endif
 
     <main>
         {{ $slot }}
