@@ -1,4 +1,6 @@
 *
+!modelos-dashboards/*
+!modelos-dashboards/
 !private/
 !public/
 !.gitignore
