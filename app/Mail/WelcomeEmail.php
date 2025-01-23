@@ -3,17 +3,17 @@
 namespace App\Mail;
 
 use App\Models\User;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+//use Illuminate\Bus\Queueable;
+//use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
+//use Illuminate\Queue\SerializesModels;
 
-class WelcomeEmail extends Mailable implements ShouldQueue
+class WelcomeEmail extends Mailable //implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+   // use Queueable, SerializesModels;
 
     public User $user;
 
@@ -46,7 +46,7 @@ class WelcomeEmail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.welcome',
         );
     }
 

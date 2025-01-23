@@ -45,7 +45,7 @@
     <h1>Bem-vindo à Nossa Plataforma!</h1>
 </div>
 <div class="content">
-    <p>Olá, {{ $user->name }}!</p>
+    <p>Olá, {{ $nome  }}!</p>
     <p>Estamos muito felizes em tê-lo conosco. Seu cadastro foi realizado com sucesso e agora você faz parte da nossa comunidade.</p>
     <p>Aqui estão algumas coisas que você pode fazer para começar:</p>
     <ul>
