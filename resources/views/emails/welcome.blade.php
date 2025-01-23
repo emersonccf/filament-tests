@@ -45,7 +45,7 @@
     <h1>Bem-vindo à Nossa Plataforma!</h1>
 </div>
 <div class="content">
-    <p>Olá, {{ $nome  }}!</p>
+    <p>Olá, {{ $user->name }}!</p>
     <p>Estamos muito felizes em tê-lo conosco. Seu cadastro foi realizado com sucesso e agora você faz parte da nossa comunidade.</p>
     <p>Aqui estão algumas coisas que você pode fazer para começar:</p>
     <ul>
@@ -59,7 +59,7 @@
     </p>
 </div>
 <div class="footer">
-    <p>&copy; {{ date('Y') }} Emerson Ferreira. Todos os direitos reservados.</p>
+    <p>&copy; {{ date('Y') }} SYSCAD. Todos os direitos reservados.</p>
     <p>Você está recebendo este e-mail porque se cadastrou em nossa plataforma.</p>
 </div>
 </body>

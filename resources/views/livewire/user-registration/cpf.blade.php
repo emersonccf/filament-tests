@@ -9,5 +9,6 @@
         x-model="cpf"
         x-on:input="cpf = cpfMask($event.target.value)"
         required
+        autofocus
     />
 </form>

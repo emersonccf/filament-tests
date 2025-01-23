@@ -1,6 +1,8 @@
 <?php
 
 use App\Livewire\Dashboard\Dashboard;
+use App\Models\User;
+use App\Mail\WelcomeEmail;
 use Filament\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectNotActiveUser;
 use Illuminate\Support\Facades\Mail;
@@ -18,9 +20,6 @@ Route::get('/dashboard', Dashboard::class)->middleware([
                                                                 ])->name('dashboard');
 
 Route::get('/send-email', function () {
-    Mail::send('emails.welcome', ['nome' => 'Emerson Ferreira'], function ($message) {
-        $message->to('emecatarino@yahoo.com.br');
-        $message->from(config('mail.from.address'));
-        $message->subject('Teste Laravel');
-    });
+    $user = User::where('id', 1)->first();
+    Mail::to($user->email)->send(new WelcomeEmail($user));
 });

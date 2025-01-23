@@ -92,7 +92,8 @@ class UserRegistration extends Component
         if ($this->email){
             try {
                 Mail::to($user->email)->send(new WelcomeEmail($user));
-                Log::channel('email')->info("E-mail enviado com sucesso para: {$user->email}");
+                Log::channel(
+                    'email')->info("E-mail enviado com sucesso para: {$user->email}");
             } catch (Exception $e) {
                 Log::channel('email')->error('Falha ao enviar e-mail: ' . $e->getMessage());
             }
