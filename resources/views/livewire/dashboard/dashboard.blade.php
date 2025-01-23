@@ -6,16 +6,24 @@
     <div class="flex-1 flex flex-col overflow-hidden">
         <!-- Header -->
         <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 h-16 flex items-center justify-between px-6 transition-colors duration-300">
+            <div class="flex items-center">
+                <button
+                    @click="sidebarOpen = !sidebarOpen"
+                    class="text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 focus:outline-none transition duration-200 lg:hidden"
+                >
+                    <x-heroicon-o-bars-3 class="w-6 h-6" />
+                </button>
 
-            <button
-                @click="sidebarOpen = !sidebarOpen"
-                class="text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 focus:outline-none transition duration-200 lg:hidden"
-            >
-                <x-heroicon-o-bars-3 class="w-6 h-6" />
-            </button>
+                <!-- ALTERAÇÃO: Título movido para o header -->
+                <h1 class="text-xl text-slate-800 dark:text-slate-50 hidden lg:block">
+                    <i class="fa-solid fa-gauge"></i> Painel de Atividades de
+                    <span class="text-blue-700 dark:text-yellow-500">{{ $userName }}</span>
+                </h1>
 
-            <!-- Espaçador invisível para telas grandes -->
-            <div class="hidden lg:block flex-grow"></div>
+            </div>
+
+{{--            <!-- Espaçador invisível para telas grandes -->--}}
+{{--            <div class="hidden lg:block flex-grow"></div>--}}
 
            <!-- Right side menu -->
             <div class="flex items-center ml-auto">
@@ -80,7 +88,7 @@
 
         <!-- Main Content -->
         <main class="flex-1 overflow-x-hidden overflow-y-auto p-6 lg:px-8">
-            <h1 class="text-2xl text-slate-800 dark:text-slate-50 mb-4"><i class="fa-solid fa-gauge"></i> Painel de Atividades de <span class="text-2xl text-blue-700 dark:text-yellow-500">{{ $userName }}</span> </h1>
+{{--            <h1 class="text-2xl text-slate-800 dark:text-slate-50 mb-4"><i class="fa-solid fa-gauge"></i> Painel de Atividades de <span class="text-2xl text-blue-700 dark:text-yellow-500">{{ $userName }}</span> </h1>--}}
             <!-- Breadcrumb e conteúdo principal aqui -->
             <x-dashboard.breadcrumbs :breadcrumbs="$breadcrumbs"/>
     {{--        {{ $breadcrumbs ? json_encode($breadcrumbs) : 'Breadcrumbs não definidos' }}--}}
