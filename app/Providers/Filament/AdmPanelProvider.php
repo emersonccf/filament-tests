@@ -44,7 +44,7 @@ class AdmPanelProvider extends PanelProvider
             ->profile(EditProfile::class)
             ->spa()
             ->registration(Register::class)
-            //->emailVerification()
+            ->emailVerification()
             ->colors([
                 'primary' => Color::Amber,
             ])

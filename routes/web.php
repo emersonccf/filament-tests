@@ -3,6 +3,7 @@
 use App\Livewire\Dashboard\Dashboard;
 use Filament\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectNotActiveUser;
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\UserRegistration;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -15,6 +16,7 @@ Route::get('/', function () {
 Route::get('/register', UserRegistration::class)->name('register');
 Route::get('/dashboard', Dashboard::class)->middleware([
                                                                     Authenticate::class,
+                                                                    EnsureEmailIsVerified::class,
                                                                     RedirectNotActiveUser::class
                                                                 ])->name('dashboard');
 // Verificação de e-mail do usuário
