@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 use App\Enums\SexoEnum;
 use App\Enums\EstadoCivilEnum;
@@ -14,7 +17,7 @@ use App\Enums\TipoSanguineoEnum;
 
 class Pessoa extends Model
 {
-    use HasFactory, Notifiable, HasRoles, SoftDeletes;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes, HasUuids;
 
     protected $dates = ['deleted_at'];
 
@@ -23,6 +26,8 @@ class Pessoa extends Model
 //    public $timestamps = false;
 
     protected $fillable = [
+        'rus_id',
+        'uuid_id',
         'matricula',
         'registro_unico',
         'foto',
@@ -41,6 +46,26 @@ class Pessoa extends Model
         'email',
         'observacoes',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'uuid_id' => 'string',
+        ];
+    }
+
+    protected function uuidId(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value,
+            set: fn ($value) => $value ?? (string) Str::uuid(),
+        );
+    }
+
+    public function uniqueIds(): array
+    {
+        return ['uuid_id'];
+    }
 
     protected static function boot()
     {

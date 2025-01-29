@@ -19,14 +19,6 @@ return new class extends Migration
 //            $table->timestamp('created_at')->useCurrent();
 //            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
-
-        // Inicializa o valor da sequência do RUS
-        $valorInicial = DB::table('pessoas')->max('rus_id') ?? 9999;
-
-        DB::table('sequencias')->insert([
-            'nome' => 'RUS',
-            'valor' => $valorInicial,
-        ]);
     }
 
     /**
