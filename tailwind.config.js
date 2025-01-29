@@ -22,7 +22,18 @@ export default {
                     700: '#0369a1',
                 },
             },
+            transitionProperty: {
+                'opacity': 'opacity',
+            },
+            transitionDuration: {
+                '1000': '1000ms',
+            },
         },
     },
     plugins: [],
+    variants: {
+        extend: {
+            opacity: ['responsive', 'hover', 'focus', 'group-hover', 'group-focus'],
+        }
+    },
 };

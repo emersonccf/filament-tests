@@ -1,7 +1,7 @@
 <?php
 
 use App\Livewire\Dashboard\Dashboard;
-use Filament\Http\Middleware\Authenticate;
+use App\Http\Middleware\Authenticate; //personalizado não é o do Filament\Http\Middleware\Authenticate
 use App\Http\Middleware\RedirectNotActiveUser;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +32,10 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
-    return back()->with('message', 'Verifique o link enviado para seu email!');
+    return redirect()->route('home')->with('message', 'Verifique o link enviado para seu email!'); //back()->with('message', 'Verifique o link enviado para seu email!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
+// Rota de fallback para login
+Route::get('/login', function() {
+    return redirect()->route('filament.adm.auth.login');
+})->name('login');
