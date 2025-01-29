@@ -3,20 +3,25 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
-    use HasFactory, Notifiable, HasRoles, SoftDeletes;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes, HasUuids;
 
+    // Indica que o UUID não é a chave primária.
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
     /**
      * The attributes that are mass assignable.
@@ -24,13 +29,16 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
      * @var list<string>
      */
     protected $fillable = [
+        'uuid_id',
         'name',
         'cpf',
         'email',
+        'profile_photo_path',
         'password',
-        'is_active',
+        'is_active', //TODO: Campos devem sair daqui...
         'is_admin',
         'belongs_sector',
+        'change_password',
     ];
 
 //    public $timestamps = false;
@@ -54,7 +62,26 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'uuid_id' => 'string',
         ];
+    }
+
+    protected function uuidId(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value,
+            set: fn ($value) => $value ?? (string) Str::uuid(),
+        );
+    }
+
+    /**
+     * Get the columns that should receive a unique identifier.
+     *
+     * @return array<int, string>
+     */
+    public function uniqueIds(): array
+    {
+        return ['uuid_id'];
     }
 
     /**
