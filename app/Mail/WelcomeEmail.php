@@ -10,12 +10,14 @@ use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\URL;
 
 class WelcomeEmail extends Mailable //implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public User $user;
+    public string $verificationUrl;
 
     /**
      * Create a new message instance.
@@ -23,6 +25,11 @@ class WelcomeEmail extends Mailable //implements ShouldQueue
     public function __construct(User $user)
     {
         $this->user = $user;
+        $this->verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $user->getKey(), 'hash' => sha1($user->getEmailForVerification())]
+        );
     }
 
     public function build() : WelcomeEmail
@@ -36,7 +43,7 @@ class WelcomeEmail extends Mailable //implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Bem Vindo ao nosso site',
+            subject: 'Bem-vindo ao nosso site - Verifique seu e-mail',
         );
     }
 

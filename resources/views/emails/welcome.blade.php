@@ -47,16 +47,19 @@
 <div class="content">
     <p>Olá, {{ $user->name }}!</p>
     <p>Estamos muito felizes em tê-lo conosco. Seu cadastro foi realizado com sucesso e agora você faz parte da nossa comunidade.</p>
-    <p>Aqui estão algumas coisas que você pode fazer para começar:</p>
+    <p>Para começar a usar nossos serviços, por favor, verifique seu e-mail clicando no botão abaixo:</p>
+    <p>
+        <a href="{{ $verificationUrl }}" class="button">Verificar E-mail</a>
+    </p>
+    <p>Se o botão acima não funcionar, você pode copiar e colar o seguinte link no seu navegador:</p>
+    <p>{{ $verificationUrl }}</p>
+    <p>Após a verificação, você poderá:</p>
     <ul>
-        <li>Complete seu perfil</li>
-        <li>Explore nossos recursos</li>
-        <li>Conecte-se com outros usuários</li>
+        <li>Verificar seus dados e atualizá-los</li>
+        <li>Explorar nossos recursos</li>
+        <li>Conectar-se com outros usuários</li>
     </ul>
     <p>Se tiver qualquer dúvida, não hesite em nos contatar.</p>
-    <p>
-        <a href="{{ url('/') }}" class="button">Acessar Minha Conta</a>
-    </p>
 </div>
 <div class="footer">
     <p>&copy; {{ date('Y') }} SYSCAD. Todos os direitos reservados.</p>

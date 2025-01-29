@@ -89,20 +89,22 @@ class UserRegistration extends Component
 //            'belongs_sector' => false,
         ]);
 
-        // Se o e-mail foi informado tenta enviar e registra log de sucesso ou fracasso
-        if ($this->email){
+        if (Str::endsWith($user->email, '@faker.com')) {
+            // Redirecionar para uma página especial para usuários com e-mail faker
+            session()->flash('message', 'Sua conta foi criada, mas precisa ser ativada pelo administrador do sistema.');
+            return redirect()->route('admin.activation.required');
+        } else {
             try {
                 Mail::to($user->email)->send(new WelcomeEmail($user));
-                Log::channel(
-                    'email')->info("E-mail enviado com sucesso para: {$user->email}");
+                $user->sendEmailVerificationNotification();
+                Log::channel('email')->info("E-mail de boas-vindas e verificação enviado com sucesso para: {$user->email}");
             } catch (Exception $e) {
                 Log::channel('email')->error('Falha ao enviar e-mail: ' . $e->getMessage());
             }
-        }
 
-        session()->flash('message', 'Conta criada com sucesso!');
-        session()->flash('message_type', 'success');
-        return redirect()->route('filament.adm.auth.login');
+            //session()->flash('message', 'Conta criada com sucesso! Por favor, verifique seu e-mail para ativar sua conta.');
+            return redirect()->route('verification.notice')->with('message', 'Conta criada com sucesso! Por favor, verifique seu e-mail para ativar sua conta.');
+        }
     }
 
     public function render()

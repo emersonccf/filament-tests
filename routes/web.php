@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckFakerEmail;
 use App\Livewire\Dashboard\Dashboard;
 use App\Http\Middleware\Authenticate; //personalizado não é o do Filament\Http\Middleware\Authenticate
 use App\Http\Middleware\RedirectNotActiveUser;
@@ -16,6 +17,7 @@ Route::get('/', function () {
 Route::get('/register', UserRegistration::class)->name('register');
 Route::get('/dashboard', Dashboard::class)->middleware([
                                                                     Authenticate::class,
+                                                                    CheckFakerEmail::class,
                                                                     EnsureEmailIsVerified::class,
                                                                     RedirectNotActiveUser::class
                                                                 ])->name('dashboard');
@@ -27,15 +29,20 @@ Route::get('/email/verify', function () {
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-    return redirect(route('dashboard')); // Redireciona para o painel após a verificação
+    return redirect()->route('dashboard')->with('message', 'E-mail verificado com sucesso!');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
-    return redirect()->route('home')->with('message', 'Verifique o link enviado para seu email!'); //back()->with('message', 'Verifique o link enviado para seu email!');
+    return redirect()->route('dashboard')->with('message', 'Link de verificação reenviado!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Rota de fallback para login
 Route::get('/login', function() {
     return redirect()->route('filament.adm.auth.login');
 })->name('login');
+
+// Rota para e-mails não informados
+Route::get('/admin-activation-required', function () {
+    return view('auth.admin-activation-required');
+})->name('admin.activation.required');
