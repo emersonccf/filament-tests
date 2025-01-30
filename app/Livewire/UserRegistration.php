@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Mail\WelcomeEmail;
 use App\Rules\CpfValido;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -89,22 +90,24 @@ class UserRegistration extends Component
 //            'belongs_sector' => false,
         ]);
 
+        Auth::login($user); //faz login automático com o usuário criado
+
         if (Str::endsWith($user->email, '@faker.com')) {
             // Redirecionar para uma página especial para usuários com e-mail faker
             session()->flash('message', 'Sua conta foi criada, mas precisa ser ativada pelo administrador do sistema.');
             return redirect()->route('admin.activation.required');
         } else {
             try {
-                Mail::to($user->email)->send(new WelcomeEmail($user));
-                $user->sendEmailVerificationNotification();
+                Mail::to($user->email)->send(new WelcomeEmail($user)); // Envio de boas-vindas com verificação de e-mail
+                //$user->sendEmailVerificationNotification(); // Envio de e-mail de verificação do e-mail
                 Log::channel('email')->info("E-mail de boas-vindas e verificação enviado com sucesso para: {$user->email}");
             } catch (Exception $e) {
                 Log::channel('email')->error('Falha ao enviar e-mail: ' . $e->getMessage());
             }
 
-            //session()->flash('message', 'Conta criada com sucesso! Por favor, verifique seu e-mail para ativar sua conta.');
-            return redirect()->route('verification.notice')->with('message', 'Conta criada com sucesso! Por favor, verifique seu e-mail para ativar sua conta.');
         }
+        //session()->flash('message', 'Conta criada com sucesso! Por favor, verifique seu e-mail para ativar sua conta.'); // 'verification.notice'
+        return redirect()->route('home')->with('message', 'Conta criada com sucesso! Por favor, verifique seu e-mail para ativar sua conta.');
     }
 
     public function render()

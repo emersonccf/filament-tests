@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bem-vindo à Nossa Plataforma</title>
+    <title>{{ config('app.name') }} - Confirmação de E-mail</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,10 +52,10 @@
     <p>Estamos muito felizes em tê-lo conosco. Seu cadastro foi realizado com sucesso e agora você faz parte da nossa comunidade.</p>
     <p>Para começar a usar nossos serviços, por favor, verifique seu e-mail clicando no botão abaixo:</p>
     <p>
-        <a href="{{ $verificationUrl }}" class="button">Verificar E-mail</a>
+        <a href="{{ $url }}" class="button">Verificar E-mail</a>
     </p>
     <p>Se o botão acima não funcionar, você pode copiar e colar o seguinte link no seu navegador:</p>
-    <p>{{ $verificationUrl }}</p>
+    <p>{{ $url }}</p>
     <p>Após a verificação, você poderá:</p>
     <ul>
         <li>Verificar seus dados e atualizá-los</li>
@@ -65,7 +65,7 @@
     <p>Se tiver qualquer dúvida, não hesite em nos contatar.</p>
 </div>
 <div class="footer">
-    <p>&copy; {{ date('Y') }} SYSCAD. Todos os direitos reservados.</p>
+    <p>&copy; {{ date('Y') }} {{ config('app.name') }}. Todos os direitos reservados.</p>
     <p>Você está recebendo este e-mail porque se cadastrou em nossa plataforma.</p>
 </div>
 </body>

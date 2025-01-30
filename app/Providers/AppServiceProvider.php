@@ -2,6 +2,11 @@
 
 namespace App\Providers;
 
+use App\Filament\Pages\Auth\EmailVerification;
+use Filament\Pages;
+use Filament\Facades\Filament;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +25,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        VerifyEmail::toMailUsing(function ($notifiable, $url) {
+            return (new MailMessage)
+                ->subject('Confirmação de E-mail')
+                ->view(
+                    'emails.email-verify',
+                    ['url' => $url, 'user' => $notifiable]
+                );
+        });
+
         // Para manter a sintaxe <x-input /> para os componentes Livewire
         Blade::component('livewire.form.input', 'input');
         Blade::component('livewire.form.password-input', 'password-input');

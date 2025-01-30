@@ -34,7 +34,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
-    return redirect()->route('dashboard')->with('message', 'Link de verificação reenviado!');
+    return redirect()->route('home')->with('message', 'Link de verificação reenviado! Acesse seu email e clique no link para ativar sua conta.');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Rota de fallback para login
