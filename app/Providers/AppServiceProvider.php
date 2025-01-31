@@ -3,8 +3,7 @@
 namespace App\Providers;
 
 use App\Filament\Pages\Auth\EmailVerification;
-use Filament\Pages;
-use Filament\Facades\Filament;
+use App\Services\QuoteService;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Blade;
@@ -17,7 +16,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(QuoteService::class, function ($app) {
+            return new QuoteService();
+        });
     }
 
     /**

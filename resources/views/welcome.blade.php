@@ -133,8 +133,9 @@
             <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
                 <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Frase para reflexão</h2>
                 <p id="quote" class="italic text-gray-600">
-                    <!-- Aqui será inserida a frase aleatória via JavaScript -->
+                    "{{ $quote['text'] }}"
                 </p>
+                <p class="text-right mt-2 text-gray-500">- {{ $quote['author'] }}</p>
             </div>
 
             <!-- Jornal Interno -->
@@ -252,23 +253,7 @@
 </script>
 
 <script>
-    // Array de frases para reflexão
-    const quotes = [
-        "A persistência é o caminho do êxito.",
-        "O sucesso nasce do querer, da determinação e persistência em se chegar a um objetivo.",
-        "Obstáculo é o que você enxerga quando tira o olhar de seus objetivos.",
-        "Não espere por uma crise para descobrir o que é importante em sua vida.",
-        "A maior glória não é ficar de pé, mas levantar-se cada vez que se cai.",
-        "O insucesso é apenas uma oportunidade para recomeçar com mais inteligência."
-    ];
-
-    // Função para selecionar uma frase aleatória
-    function getRandomQuote() {
-        return quotes[Math.floor(Math.random() * quotes.length)];
-    }
-
-    // Inserir a frase aleatória no elemento HTML
-    document.getElementById('quote').textContent = getRandomQuote();
+    // frases
 </script>
 
 </body>

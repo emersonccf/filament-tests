@@ -1,0 +1,526 @@
+[
+    {
+        "text": "A vida é simples, mas insistimos em complicá-la.",
+        "author": "Confúcio"
+    },
+    {
+        "text": "A felicidade depende de nós mesmos.",
+        "author": "Aristóteles"
+    },
+    {
+        "text": "A humildade não te faz melhor do que ninguém, mas te faz diferente de muitos.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "A ignorância é a noite da mente, mas uma noite sem lua e sem estrelas.",
+        "author": "Confúcio"
+    },
+    {
+        "text": "Sem saber que era impossível, foi lá e fez.",
+        "author": "Jean Cocteau"
+    },
+    {
+        "text": "A verdadeira medida de um homem não é como ele se comporta em momentos de conforto e conveniência, mas como ele se mantém em tempos de controvérsia e desafio.",
+        "author": "Martin Luther King Jr."
+    },
+    {
+        "text": "Caia sete vezes, levante-se oito.",
+        "author": "Provérbio japonês"
+    },
+    {
+        "text": "A dúvida é o princípio da sabedoria.",
+        "author": "Aristóteles"
+    },
+    {
+        "text": "Viver é a melhor coisa do mundo! Acredite, mesmo que berrem em contrário pelas ruas.",
+        "author": "Clarice Lispector"
+    },
+    {
+        "text": "Transformação é um processo e como a vida acontece. Transformation literally means going beyond your form.",
+        "author": "Wayne Dyer"
+    },
+    {
+        "text": "Ninguém é tão grande que não possa aprender, nem tão pequeno que não possa ensinar.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "A sabedoria começa na reflexão.",
+        "author": "Sócrates"
+    },
+    {
+        "text": "Tudo o que é belo morre no instante em que nasce.",
+        "author": "Luis Cernuda"
+    },
+    {
+        "text": "Dentro de você está a resposta, você sabe quem você é e o que quer.",
+        "author": "Lao-Tzu"
+    },
+    {
+        "text": "Conhecer a si mesmo é o começo de toda sabedoria.",
+        "author": "Aristóteles"
+    },
+    {
+        "text": "O encontro entre a preparação e a oportunidade gera o rebento que chamamos de sorte.",
+        "author": "Anthony Robbins"
+    },
+    {
+        "text": "Sonho que se sonha junto é realidade.",
+        "author": "Raul Seixas"
+    },
+    {
+        "text": "Tropeçavas nos astros desastrada. Quase não havia estrelas no chão.",
+        "author": "Chico Buarque"
+    },
+    {
+        "text": "Um homem pode alcançar seu sonho a partir da fuga ou aceita o chamado, atendendo ao seu destino.",
+        "author": "Joseph Campbell"
+    },
+    {
+        "text": "Caminhe por trilhas que te façam feliz.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "A paz interior começa no momento em que você escolhe não permitir que outra pessoa ou evento controle suas emoções.",
+        "author": "Pema Chödrön"
+    },
+    {
+        "text": "A felicidade não é uma estação a ser alcançada, mas sim uma forma de viajar.",
+        "author": "Margaret Lee Runbeck"
+    },
+    {
+        "text": "Nunca te deixes abater pelas quedas da vida, reergue-te, mais forte e mais sábio.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "Ter problemas na vida é inevitável, ser derrotado por eles é opcional.",
+        "author": "Roger Crawford"
+    },
+    {
+        "text": "A felicidade não é a ausência de problemas, é a habilidade para lidar com eles.",
+        "author": "Steve Maraboli"
+    },
+    {
+        "text": "É necessário ter o caos cá dentro para gerar uma estrela.",
+        "author": "Friedrich Nietzsche"
+    },
+    {
+        "text": "A sabedoria é filha da dor.",
+        "author": "Ésquilo"
+    },
+    {
+        "text": "A medida que enfrentamos nossos medos, ganhamos coragem.",
+        "author": "Ralph Waldo Emerson"
+    },
+    {
+        "text": "Sendo muitos inimigos, sejamos como o bambu, que se dobra mas não se quebra.",
+        "author": "Provérbio Japonês"
+    },
+    {
+        "text": "Descobrir consiste em olhar para o que todos olham e pensar algo que ninguém pensou.",
+        "author": "Albert Szent-Györgyi"
+    },
+    {
+        "text": "A luz que me ilumina é mais forte que os olhares que me condenam.",
+        "author": "Autor desconhecido"
+    },
+    {
+        "text": "Os dias prósperos não vêm por acaso; nascem de muita fadiga e persistência.",
+        "author": "Henry Ford"
+    },
+    {
+        "text": "É preciso amar as pessoas como se não houvesse amanhã, porque se você parar para pensar, na verdade não há.",
+        "author": "Renato Russo"
+    },
+    {
+        "text": "Se exagerássemos em nossas alegrias como fazemos em nossos pesares, nossos problemas perderiam toda a sua importância.",
+        "author": "Anatole France"
+    },
+    {
+        "text": "A arte do descanso é uma parte da arte de trabalhar.",
+        "author": "John Steinbeck"
+    },
+    {
+        "text": "Não é a carga que o quebra, mas a maneira como você a carrega.",
+        "author": "Lou Holtz"
+    },
+    {
+        "text": "Um coração alegre faz tanto bem quanto o melhor remédio.",
+        "author": "Provérbio Indiano"
+    },
+    {
+        "text": "É preciso conviver para conhecer, conhecer para confiar. E confiar para atuar.",
+        "author": "Nuno Cavaco"
+    },
+    {
+        "text": "O verdadeiro segredo da felicidade está em exigir muito de si mesmo e pouco dos outros.",
+        "author": "Albert Guinon"
+    },
+    {
+        "text": "A flor que floresce na adversidade é a mais rara e bela de todas.",
+        "author": "Mulan (Disney)"
+    },
+    {
+        "text": "Onde há amor e inspiração, você não pode errar.",
+        "author": "Ella Fitzgerald"
+    },
+    {
+        "text": "A gente não faz amigos, reconhece-os.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "Retire todas as coisas da vida para reter somente aquilo que é importante.",
+        "author": "Dogen Zenji"
+    },
+    {
+        "text": "A funcionalidade vem muitas vezes na desconexão do pensamento comum.",
+        "author": "Tom Peters"
+    },
+    {
+        "text": "O tempo desmorona coisas, mas também são construídas aqueles que suportam.",
+        "author": "Publius Virgilius Maro"
+    },
+    {
+        "text": "Construir pontes em vez de muros traz inúmeras alegrias aos corações humanos.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "A liberdade torna o homem capaz de seus próprios sentimentos e aspirações.",
+        "author": "H.J. Brownstone"
+    },
+    {
+        "text": "A adversidade desperta em nós capacidades que, em circunstâncias favoráveis, teriam ficado adormecidas.",
+        "author": "Horácio"
+    },
+    {
+        "text": "A jornada é o destino.",
+        "author": "Dan Eldon"
+    },
+    {
+        "text": "Só um idiota pode ser completamente feliz.",
+        "author": "Mario Vargas Llosa"
+    },
+    {
+        "text": "A simplicidade é o último grau de sofisticação.",
+        "author": "Leonardo da Vinci"
+    },
+    {
+        "text": "Se você quer que algo seja dito, peça a um homem; se quer que algo seja feito, peça a uma mulher.",
+        "author": "Margaret Thatcher"
+    },
+    {
+        "text": "A coragem não é a ausência do medo, mas a determinação de que algo é mais importante que o medo.",
+        "author": "Ambrose Redmoon"
+    },
+    {
+        "text": "A verdadeira generosidade para com o futuro consiste em dar tudo ao presente.",
+        "author": "Albert Camus"
+    },
+    {
+        "text": "Quando a mente está em paz, o mundo também está em paz.",
+        "author": "Tulku Lama Lobsang"
+    },
+    {
+        "text": "Nunca é alto o preço a pagar pelo privilégio de pertencer a si mesmo.",
+        "author": "Friedrich Nietzsche"
+    },
+    {
+        "text": "O problema não é existir belas palavras, mas saber usá-las com sabedoria.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "O imprevisto é o mais esperado de todos os eventos.",
+        "author": "Periandro"
+    },
+    {
+        "text": "A diferença entre quem você é e quem você quer ser é o que você faz.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "Tropeçar pelos obstáculos pode ser a direta via para o sentido correto.",
+        "author": "Publilius Syrus"
+    },
+    {
+        "text": "Uma pessoa autêntica é o melhor presente que o mundo pode receber.",
+        "author": "C.C. Peçanha"
+    },
+    {
+        "text": "O passado é um prólogo. Quanto ao futuro, basta compreender que vão haver jornadas agradáveis e áreas perigosas que precisam ser vencidas.",
+        "author": "Ursula K. Le Guin"
+    },
+    {
+        "text": "Bom caráter, respeito pelos outros, e generosidade constituem os três pilares de uma boa vida.",
+        "author": "Jamake Highwater"
+    },
+    {
+        "text": "Os momentos mais difíceis muitas vezes apresentam as melhores oportunidades para crescimento.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "A dúvida é uma dor muito solitária até que optemos a vivê-la acompanhado de resolução.",
+        "author": "C.S. Lewis"
+    },
+    {
+        "text": "Navegar às vezes é necessário.",
+        "author": "Louis-Ferdinand Céline"
+    },
+    {
+        "text": "A equação mais poderosa da matemática é o rendimento composto.",
+        "author": "Albert Einstein"
+    },
+    {
+        "text": "No futuro, todos terão seu momento de fama por quinze minutos.",
+        "author": "Andy Warhol"
+    },
+    {
+        "text": "A bela visão derrota obstáculos e torna a vida desesperadamente comovente.",
+        "author": "Franz Kafka"
+    },
+    {
+        "text": "Um homem começa a vida em busca de riqueza, na esperança de que a felicidade o seguirá. Mas a felicidade é a mão direita da riqueza. Quando ele finalmente tem sucesso, descobre que queria era ter.",
+        "author": "Josh Billings"
+    },
+    {
+        "text": "Que obtenha vantagens conquanto seja lícito.",
+        "author": "Públio Siro"
+    },
+    {
+        "text": "A fortaleza não vem com as consequências de quem dança sob céus meritadiso.",
+        "author": "Rumi"
+    },
+    {
+        "text": "Tudo vale a pena se fazia por amor.",
+        "author": "Teresa de Lisieux"
+    },
+    {
+        "text": "A tragédia é quando um menino esquecido crescer seguro. É por isso que ele não pode recordar o sorriso arrancado do rosto agora.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "Quando perceber que não há solo, só restará a capacidade de voar ilimitadamente.",
+        "author": "Jeb Dickerson"
+    },
+    {
+        "text": "Nunca se é velho demais para estabelecer outra meta ou sonhar um novo sonho.",
+        "author": "C.S. Lewis"
+    },
+    {
+        "text": "A vida é 10% o que acontece comigo e 90% como eu reajo a isso.",
+        "author": "Charles Swindoll"
+    },
+    {
+        "text": "As dificuldades frequentemente preparam pessoas comuns para um destino extraordinário.",
+        "author": "C.S. Lewis"
+    },
+    {
+        "text": "Não se entristeça por causa do que as pessoas dizem das suas costas. Elas estão, no fundo, com medo daquilo que é verdadeiro em você que não podem imitar.",
+        "author": "Bruce Lee"
+    },
+    {
+        "text": "Sejam quais forem seus sonhos, comece a persegui-los. A audácia contém genialidade, poder e mágica.",
+        "author": "Goethe"
+    },
+    {
+        "text": "O sucesso é um professor imperfeito. Seduz as pessoas inteligentes a pensar que não podem perder.",
+        "author": "Bill Gates"
+    },
+    {
+        "text": "O tempo é a substância da qual sou feito.",
+        "author": "Jorge Luis Borges"
+    },
+    {
+        "text": "Não é vergonhoso não saber, o que é vergonhoso é não perguntar.",
+        "author": "Provérbio Árabe"
+    },
+    {
+        "text": "O que sabemos é uma gota; o que ignoramos é um oceano.",
+        "author": "Isaac Newton"
+    },
+    {
+        "text": "O destino não é uma questão de sorte, é uma questão de escolha.",
+        "author": "William Jennings Bryan"
+    },
+    {
+        "text": "A oração traz sabedoria para a vida é desconcertante.",
+        "author": "Swami Prabhupada"
+    },
+    {
+        "text": "Só conheço uma liberdade e essa é a liberdade da mente.",
+        "author": "Antoine de Saint-Exupéry"
+    },
+    {
+        "text": "Quem vive em harmonia consigo mesmo, vive em harmonia com o universo.",
+        "author": "Marco Aurélio"
+    },
+    {
+        "text": "Aonde termina o medo, começa a vida novamente.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "O que vale na vida não é o ponto de partida e sim a caminhada.",
+        "author": "Cora Coralina"
+    },
+    {
+        "text": "A coisa mais feroz de viver é superar seu próprio passado.",
+        "author": "Nelson Mandela"
+    },
+    {
+        "text": "O silencio das pessoas inteligentes é mais desagradável, constrangedor e inconveniente do que deve ser a burrice dos que nada tem a dizer.",
+        "author": "Eduardo Galeano"
+    },
+    {
+        "text": "Um intelecto rasgado pelo saber é sempre mais nobre.",
+        "author": "William Blake"
+    },
+    {
+        "text": "O homem que remove montanhas começa carregando pequenas pedras.",
+        "author": "Confúcio"
+    },
+    {
+        "text": "Desenvolvemos nossa coragem nos pontos fortes mais profundos virados para uma vida mais profunda à medida que nos afastamos de cada de nossos medos.",
+        "author": "Simone de Beauvoir"
+    },
+    {
+        "text": "O maior perigo em tempos de turbulência não é a turbulência em si, mas agir com a lógica de ontem.",
+        "author": "Peter Drucker"
+    },
+    {
+        "text": "Mudamos através da combinação de crítica e autocrítica todo conjunto programático de qualquer cultura autêntica de debates.",
+        "author": "Paulo Freire"
+    },
+    {
+        "text": "Para ter sucesso hoje você precisa defrontar sua experiencia diretamente no ramo.",
+        "author": "Brian Tracy"
+    },
+    {
+        "text": "A vida formiga e se retira. Perigos inúmeros são guardados por seus íntimos.",
+        "author": "Friedrich Nietzsche"
+    },
+    {
+        "text": "Para envelhecer um pouco é preciso muito tempo, enquanto viver unicamente experimentamos constantemente por vida suas próprias inconsistência.",
+        "author": "Simone de Beauvoir"
+    },
+    {
+        "text": "Uma ideia que não é perigosa não merece ser chamada de ideia.",
+        "author": "Oscar Wilde"
+    },
+    {
+        "text": "O trabalho afasta de nós três grandes males: o tédio, o vício e a necessidade.",
+        "author": "Voltaire"
+    },
+    {
+        "text": "A única maneira de fazer um ótimo trabalho é amar o que você faz.",
+        "author": "Steve Jobs"
+    },
+    {
+        "text": "A vida é realmente simples, mas nós insistimos em complicá-la.",
+        "author": "Confúcio"
+    },
+    {
+        "text": "A única fonte de conhecimento é a experiência.",
+        "author": "Albert Einstein"
+    },
+    {
+        "text": "Se a oportunidade não bate, construa uma porta.",
+        "author": "Milton Berle"
+    },
+    {
+        "text": "Você nunca sabe que resultados virão da sua ação. Mas, se você não fizer nada, não existirão resultados.",
+        "author": "Mahatma Gandhi"
+    },
+    {
+        "text": "O homem é mortal por seus temores e imortal por seus desejos.",
+        "author": "Pítaco de Mitilene"
+    },
+    {
+        "text": "A felicidade é o significado e o propósito da vida, o objetivo último e a finalidade da existência humana.",
+        "author": "Aristóteles"
+    },
+    {
+        "text": "O melhor modo de prever o futuro é inventá-lo.",
+        "author": "Alan Kay"
+    },
+    {
+        "text": "A maior recompensa pelo nosso trabalho não é o que nos pagam por ele, mas aquilo em que ele nos transforma.",
+        "author": "John Ruskin"
+    },
+    {
+        "text": "Viver é como escalar uma montanha. Cada vez que subimos, aumentamos nossa visão se o destino for esclarecido.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "Segure os valores dos outros intactos até que os seus sejam contestados.",
+        "author": "Tenzin Gyatso, 14º Dalai Lama"
+    },
+    {
+        "text": "O amor é a força mais sutil do mundo.",
+        "author": "Mahatma Gandhi"
+    },
+    {
+        "text": "Um navio está seguro no porto, mas não é para isso que os navios são feitos.",
+        "author": "John A. Shedd"
+    },
+    {
+        "text": "Nós não vemos as coisas como são, nós as vemos como somos.",
+        "author": "Anaïs Nin"
+    },
+    {
+        "text": "A mente não é um vaso para ser preenchido, mas uma fogueira para ser acesa.",
+        "author": "Plutarco"
+    },
+    {
+        "text": "O caminho mais certo de vencer é tentar mais uma vez.",
+        "author": "Thomas A. Edison"
+    },
+    {
+        "text": "A origem da coragem deve ser julgada por seu futuro desempenho, e da bravura pelo número de balas que ela expulsa da estrada.",
+        "author": "ZEN DOUGE"
+    },
+    {
+        "text": "Talhar uma pedra é realizar planos antigos usando elementos que modificam ao contato do ar.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "Palavras suaves enganam, o silêncio vai até as forças mais potentes.",
+        "author": "Antonio Porchia"
+    },
+    {
+        "text": "Arrisque, viva com dedicação e sonhe alto. Deve-se brigar por tudo aquilo que se julga ser importante.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "A palavra é o território onde se finca o verdadeiro sentido da equivalência, em cada canto encontra repouso o núcleo de significados possíveis.",
+        "author": "Roland Barthes"
+    },
+    {
+        "text": "O real verdadeiro sem falsificações eleva-se somente quando não se atinge toda sorte recente.",
+        "author": "Arthur Schopenhauer"
+    },
+    {
+        "text": "O pensamento é a cola que nos mantêm hipoteticamente inventivos.",
+        "author": "Autor desconhecido"
+    },
+    {
+        "text": "A persistência é o caminho do êxito.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "O sucesso nasce do querer, da determinação e persistência em se chegar a um objetivo.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "Obstáculo é o que você enxerga quando tira o olhar de seus objetivos.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "Não espere por uma crise para descobrir o que é importante em sua vida.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "A maior glória não é ficar de pé, mas levantar-se cada vez que se cai.",
+        "author": "Desconhecido"
+    },
+    {
+        "text": "O insucesso é apenas uma oportunidade para recomeçar com mais inteligência.",
+        "author": "Desconhecido"
+    }
+]
