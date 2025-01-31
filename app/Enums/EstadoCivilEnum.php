@@ -10,4 +10,5 @@ enum EstadoCivilEnum: int
     case SEPARADO = 4;
     case DIVORCIADO = 5;
     case VIUVO = 6;
+    case OUTRO = 7;
 }

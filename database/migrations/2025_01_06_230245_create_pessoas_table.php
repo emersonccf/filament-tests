@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('sexo', 1)->nullable(); //enum
             $table->date('data_nascimento')->nullable();
             $table->string('tipo_sanguineo',3)->nullable(); //enum
-            $table->integer('estado_civil')->nullable(); //enum
+            $table->unsignedSmallInteger('estado_civil')->nullable(); //enum
             $table->boolean('possui_filhos')->default(false);
             $table->string('cpf', 15)->unique();
             $table->string('rg', 20)->unique()->nullable();
