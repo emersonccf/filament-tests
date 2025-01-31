@@ -145,6 +145,21 @@
                 </a>
             </div>
 
+            <!-- Aniversariantes do Mês -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Aniversariantes de <span id="currentMonth"></span></h2>
+                <ul class="space-y-2" id="birthdayList">
+                    @foreach($aniversariantesFormatados as $aniversariante)
+                        <li>
+                            @if($aniversariante['ehAniversarioHoje'])
+                                🎂
+                            @endif
+                            {{ $aniversariante['dia'] }} - {{ $aniversariante['nome'] }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+
             <!-- Espaço vago (pode ser usado para futuras adições) -->
             <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
                 <!-- Este espaço está intencionalmente vazio -->
@@ -205,14 +220,15 @@
                     </div>
                 </div>
 
-                <!-- Aniversariantes do Mês -->
+                <!-- Espaço vago (pode ser usado para futuras adições) -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Aniversariantes de <span id="currentMonth"></span></h2>
-                    <ul class="space-y-2" id="birthdayList">
-                        <!-- A lista de aniversariantes será preenchida via JavaScript -->
-                    </ul>
+                    <!-- Este espaço está intencionalmente vazio -->
                 </div>
+
             </div>
+
+
+
         </div>
     </div>
 
@@ -224,8 +240,6 @@
 @livewireScripts
 <script src="{{ asset('js/app.js') }}"></script>
 <script>
-    // ... (mantenha o código anterior para as frases de reflexão) ...
-
     // Função para obter o nome do mês atual
     function getCurrentMonth() {
         const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -233,37 +247,8 @@
         return months[currentDate.getMonth()];
     }
 
-    // Função para verificar se é o aniversário da pessoa hoje
-    function isBirthdayToday(day) {
-        const currentDate = new Date();
-        return currentDate.getDate() === day;
-    }
-
-    // Lista de aniversariantes (dia, nome)
-    const birthdays = [
-        { day: 5, name: "João da Silva" },
-        { day: 17, name: "Maria Souza" },
-        { day: 18, name: "Pedro Oliveira" },
-        { day: 22, name: "Ana Santos" },
-        { day: 30, name: "Carlos Ferreira" }
-    ];
-
-    // Função para preencher a lista de aniversariantes
-    function fillBirthdayList() {
-        const birthdayList = document.getElementById('birthdayList');
-        birthdays.sort((a, b) => a.day - b.day); // Ordena por dia
-
-        birthdays.forEach(person => {
-            const listItem = document.createElement('li');
-            const birthdayCake = isBirthdayToday(person.day) ? "🎂 " : "";
-            listItem.textContent = `${birthdayCake}${person.day} - ${person.name}`;
-            birthdayList.appendChild(listItem);
-        });
-    }
-
-    // Preencher o mês atual e a lista de aniversariantes
+    // Preencher o mês atual
     document.getElementById('currentMonth').textContent = getCurrentMonth();
-    fillBirthdayList();
 </script>
 
 <script>

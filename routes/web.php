@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LandingPageController;
 use App\Http\Middleware\CheckFakerEmail;
 use App\Livewire\Dashboard\Dashboard;
 use App\Http\Middleware\Authenticate; //personalizado não é o do Filament\Http\Middleware\Authenticate
@@ -10,9 +11,7 @@ use App\Livewire\UserRegistration;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [LandingPageController::class, 'index'])->name('home');
 
 Route::get('/register', UserRegistration::class)->name('register');
 Route::get('/dashboard', Dashboard::class)->middleware([
