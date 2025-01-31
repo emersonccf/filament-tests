@@ -132,10 +132,12 @@
             <!-- Frase para reflexão -->
             <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
                 <h2 class="text-2xl font-bold text-[#006eb6] mb-4">Frase para reflexão</h2>
-                <p id="quote" class="italic text-gray-600">
-                    "{{ $quote['text'] }}"
-                </p>
-                <p class="text-right mt-2 text-gray-500">- {{ $quote['author'] }}</p>
+                <div id="quote">
+                    <p  class="italic text-gray-600">
+                        "{{ $quote['text'] }}"
+                    </p>
+                    <p class="text-right mt-2 text-gray-500">- {{ $quote['author'] }}</p>
+                </div>
             </div>
 
             <!-- Jornal Interno -->
@@ -253,7 +255,20 @@
 </script>
 
 <script>
-    // frases
+    // Atualiza a frase
+    function updateQuote() {
+        fetch('/api/quote')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('quote').innerHTML = `
+                <p class="italic text-gray-600">"${data.text}"</p>
+                <p class="text-right mt-2 text-gray-500">- ${data.author}</p>
+            `;
+            });
+    }
+
+    // Atualiza a frase a cada 5 minutos - 300000
+    setInterval(updateQuote, 300000);
 </script>
 
 </body>
