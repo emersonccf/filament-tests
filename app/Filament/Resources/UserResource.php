@@ -118,6 +118,10 @@ class UserResource extends Resource
                 ImageColumn::make('profile_photo_url')
                     ->label('Foto')
                     ->circular()
+                    ->width(40)
+                    ->height(40)
+                    ->extraImgAttributes(['loading' => 'lazy'])
+//                    ->defaultImageUrl(fn (url()),
                     ->defaultImageUrl(fn ($record) => $record->defaultProfilePhotoUrl()),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nome'),

@@ -112,7 +112,7 @@ class UserRegistration extends Component
 
     public function render()
     {
-        return view('livewire.user-registration', [
+        return view('livewire.user-registration.user-registration', [
             'step' => $this->step,
         ])->layout('components.layouts.app', [
             'tituloPagina' => $this->tituloPagina,

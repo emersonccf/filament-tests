@@ -93,6 +93,23 @@
             <x-dashboard.breadcrumbs :breadcrumbs="$breadcrumbs"/>
     {{--        {{ $breadcrumbs ? json_encode($breadcrumbs) : 'Breadcrumbs não definidos' }}--}}
             <hr class="mt-2 dark:border-slate-600">
+
+            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+                <!-- ... outros elementos da dashboard ... -->
+
+                <div class="mt-8">
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+                        <i class="fas fa-user-circle mr-2"></i>Foto de Perfil
+                    </h2>
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <livewire:profile-photo-uploader />
+                    </div>
+                </div>
+
+                <!-- ... -->
+            </div>
+
+
         </main>
     </div>
 
