@@ -132,10 +132,13 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
      *
      * @return string
      */
-    public function getProfilePhotoUrlAttribute() : string
+    public function getProfilePhotoUrlAttribute()
     {
         if ($this->profile_photo_path) {
-            return Storage::url($this->profile_photo_path);
+//            return Storage::url($this->profile_photo_path);
+                $caminho = Storage::url($this->profile_photo_path);
+//            return "http://filament-tests.test{$caminho}";
+            return config('app.url')."{$caminho}";
         }
 
         return $this->defaultProfilePhotoUrl();
