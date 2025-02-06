@@ -18,6 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\ImageColumn;
+use Illuminate\Support\Facades\Storage;
 
 
 class UserResource extends Resource
@@ -37,14 +38,13 @@ class UserResource extends Resource
                 FileUpload::make('profile_photo_path')
                     ->label('Foto do Perfil')
                     ->image()
-                    ->disk('public')
                     ->directory('profile-photos')
                     ->maxSize(1024) // 1MB
                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
                     ->imageCropAspectRatio('1:1')
                     ->imageResizeTargetWidth('300')
                     ->imageResizeTargetHeight('300')
-                    ->directory('profile-photos')
+                    ->disk('public')
                     ->visibility('public'),
                 Forms\Components\TextInput::make('name')
                     ->label('Nome')
@@ -120,9 +120,9 @@ class UserResource extends Resource
                     ->circular()
                     ->width(40)
                     ->height(40)
-                    ->extraImgAttributes(['loading' => 'lazy'])
-//                    ->defaultImageUrl(fn (url()),
-                    ->defaultImageUrl(fn ($record) => $record->defaultProfilePhotoUrl()),
+                    ->disk('public')
+                    ->visibility('public')
+                    ->extraImgAttributes(['loading' => 'lazy']),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nome'),
                 Tables\Columns\TextColumn::make('cpf')
