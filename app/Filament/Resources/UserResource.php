@@ -125,10 +125,16 @@ class UserResource extends Resource
                     ->extraImgAttributes(['loading' => 'lazy']),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nome'),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->label('Ativo?'),
                 Tables\Columns\TextColumn::make('cpf')
                     ->label('CPF'),
                 Tables\Columns\TextColumn::make('email')
                     ->label('E-mail'),
+                Tables\Columns\ToggleColumn::make('change_password')
+                    ->label('Alterar senha?'),
+                Tables\Columns\ToggleColumn::make('belongs_sector')
+                    ->label('É do setor?'),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Atualizado em')
                     ->dateTime('d-M-Y H:i:s')

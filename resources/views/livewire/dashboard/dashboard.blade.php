@@ -63,7 +63,7 @@
                         @click="profileOpen = !profileOpen"
                         class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out"
                     >
-                        <img class="h-8 w-8 rounded-full object-cover" src="{{ Storage::url('images/avatar-3.jpg') }}" alt="Sua Foto">
+                        <img id="header-profile-image" class="h-8 w-8 rounded-full object-cover" src="{{ Storage::url($userPhoto) }}" alt="Sua Foto">
                     </button>
 
                     <div
@@ -102,7 +102,7 @@
                         <i class="fas fa-user-circle mr-2"></i>Foto de Perfil
                     </h2>
                     <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                        <livewire:profile-photo-uploader />
+                        <livewire:profile-photo-uploader wire:key="profile-photo-uploader" />
                     </div>
                 </div>
 
@@ -114,3 +114,14 @@
     </div>
 
 </div>
+
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.on('user-photo-updated', newPhotoUrl => {
+            const profileImage = document.getElementById('header-profile-image');
+            if (profileImage) {
+                profileImage.src = newPhotoUrl + '?t=' + new Date().getTime();
+            }
+        });
+    });
+</script>

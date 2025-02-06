@@ -14,38 +14,31 @@ class ProfilePhotoUploader extends Component
 
     public $photo;
 
+    protected $rules = [
+        'photo' => 'nullable|image|max:1024', // 1MB Max
+    ];
+
     public function updatedPhoto()
     {
-        $this->validate([
-            'photo' => 'image|max:1024', // 1MB Max
-        ]);
+        $this->validateOnly('photo');
     }
 
-    public function save()
+    public function savePhoto()
     {
-        $this->validate([
-            'photo' => 'required|image|max:1024', // 1MB Max
-        ]);
+        $this->validate();
 
         $user = Auth::user();
 
         if ($this->photo) {
-            // Generate a unique filename
             $filename = 'profile-' . $user->id . '-' . time() . '.' . $this->photo->getClientOriginalExtension();
-
-            // Store the file
             $path = $this->photo->storeAs('profile-photos', $filename, 'public');
 
             if ($path) {
-                // Delete the old photo if it exists
                 if ($user->profile_photo_path) {
                     Storage::disk('public')->delete($user->profile_photo_path);
                 }
 
-                // Update user's profile photo path
-                $user->update([
-                    'profile_photo_path' => $path,
-                ]);
+                $user->update(['profile_photo_path' => $path]);
 
                 $this->dispatch('profile-photo-updated');
                 session()->flash('message', 'Foto de perfil atualizada com sucesso!');
@@ -57,6 +50,20 @@ class ProfilePhotoUploader extends Component
         }
 
         $this->reset('photo');
+    }
+
+    public function removePhoto()
+    {
+        $user = Auth::user();
+
+        if ($user->profile_photo_path) {
+            Storage::disk('public')->delete($user->profile_photo_path);
+            $user->update(['profile_photo_path' => null]);
+            $this->dispatch('photo:removed');
+            session()->flash('message', 'Foto de perfil removida com sucesso!');
+        } else {
+            session()->flash('error', 'Não há foto de perfil para remover.');
+        }
     }
 
     public function render()
