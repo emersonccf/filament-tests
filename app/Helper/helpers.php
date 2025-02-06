@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -184,4 +186,24 @@ function getNomeReduzido(string $nomeCompleto) : string
     $ultimoNome = $partes[count($partes) - 1];
 
     return $primeiroNome . ' ' . $ultimoNome;
+}
+
+/**
+ * Gera um URL completo para um caminho de arquivo, com cache.
+ *
+ * @param string|null $path O caminho do arquivo
+ * @param string $disk O disco de armazenamento (opcional, padrão: 'public')
+ * @param int $cacheMinutes Tempo de cache em minutos (opcional, padrão: 1440 - 24 horas)
+ * @return string
+ */
+function full_url(?string $path, string $disk = 'public', int $cacheMinutes = 1440): string
+{
+    if (empty($path)) {
+        return '';
+    }
+
+    return Cache::remember("full_url_{$disk}_{$path}", now()->addMinutes($cacheMinutes), function () use ($path, $disk) {
+        $url = Storage::disk($disk)->url($path);
+        return filter_var($url, FILTER_VALIDATE_URL) ? $url : config('app.url') . $url;
+    });
 }
