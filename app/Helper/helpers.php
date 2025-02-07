@@ -207,3 +207,57 @@ function full_url(?string $path, string $disk = 'public', int $cacheMinutes = 14
         return filter_var($url, FILTER_VALIDATE_URL) ? $url : config('app.url') . $url;
     });
 }
+
+/**
+ * Retorna só os números de um valor informado.
+ *
+ * @param string $value texto que pode conter ou não números
+ * @return string
+ */
+function soNumeros(string $value): string
+{
+    return preg_replace('/[^0-9]/', '', $value);
+}
+
+
+/**
+ * Procura a ocorrência de palavras em um texto e retorna true ao encontra pelo menos uma das palavras
+ *
+ * @param string|array $palavras Uma string ou um array de strings para procurar.
+ * @param string $texto O texto onde procurar as palavras.
+ * @return bool Retorna true se pelo menos uma palavra for encontrada, false caso contrário.
+ */
+function encontraPalavras(string|array $palavras, string $texto): bool
+{
+    // Verifica se $palavras é uma string e converte para array se for
+    if (is_string($palavras)) {
+        $palavras = [$palavras];
+    }
+
+    // Verifica se $palavras é um array
+    if (!is_array($palavras)) {
+        throw new InvalidArgumentException('O primeiro argumento deve ser uma string ou um array de strings.');
+    }
+
+    // Converte o texto para minúsculas para fazer uma busca case-insensitive
+    $textoMinusculo = mb_strtolower($texto);
+
+    // Itera sobre cada palavra
+    foreach ($palavras as $palavra) {
+        // Verifica se a palavra é uma string
+        if (!is_string($palavra)) {
+            throw new InvalidArgumentException('Todas as palavras devem ser strings.');
+        }
+
+        // Converte a palavra para minúsculas
+        $palavraMinuscula = mb_strtolower($palavra);
+
+        // Se encontrar a palavra, retorna true imediatamente
+        if (mb_strpos($textoMinusculo, $palavraMinuscula) !== false) {
+            return true;
+        }
+    }
+
+    // Se nenhuma palavra for encontrada, retorna false
+    return false;
+}

@@ -20,6 +20,7 @@ class AniversarianteService
         $mesAtual = Carbon::now()->month;
         // TODO: implantar filtro para exibir apenas as pessoas ativas excluindo: falecidos, exonerados, etc.
         return Pessoa::whereMonth('data_nascimento', $mesAtual)
+            ->where('ativo', true)
             ->orderBy(DB::raw('DAY(data_nascimento)'))
             ->select('nome', 'data_nascimento')
             ->get();

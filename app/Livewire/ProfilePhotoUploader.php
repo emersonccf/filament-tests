@@ -15,7 +15,7 @@ class ProfilePhotoUploader extends Component
     public $photo;
 
     protected $rules = [
-        'photo' => 'nullable|image|max:1024', // 1MB Max
+        'photo' => 'required|image|max:1024|mimes:jpg,jpeg,png,gif', // 1MB Max
     ];
 
     public function updatedPhoto()
@@ -30,7 +30,7 @@ class ProfilePhotoUploader extends Component
         $user = Auth::user();
 
         if ($this->photo) {
-            $filename = 'profile-' . $user->id . '-' . time() . '.' . $this->photo->getClientOriginalExtension();
+            $filename = converteParaSlug('foto-'. $user->id . '-' . $user->uuid_id .'-'. soNumeros($user->cpf) . '-'. now()) . '.' . $this->photo->getClientOriginalExtension();
             $path = $this->photo->storeAs('profile-photos', $filename, 'public');
 
             if ($path) {

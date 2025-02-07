@@ -105,6 +105,21 @@
                 const file = event.target.files[0];
                 if (!file) return;
 
+                // Check file type
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Por favor, selecione apenas arquivos de imagem (JPEG, PNG, GIF).');
+                    event.target.value = ''; // Clear the input
+                    return;
+                }
+
+                // Check file size (1MB = 1048576 bytes)
+                if (file.size > 1048576) {
+                    alert('O arquivo é muito grande. Por favor, selecione uma imagem com menos de 1MB.');
+                    event.target.value = ''; // Clear the input
+                    return;
+                }
+
                 this.photoPreview = URL.createObjectURL(file);
                 this.isCurrentPhoto = false;
                 this.isUploading = true;

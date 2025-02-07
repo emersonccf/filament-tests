@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('registro_unico')->unsigned()->unique()->nullable();
             $table->string('foto', 2048)->nullable();
             $table->string('nome', 150)->index();
+            $table->boolean('ativo')->default(false);
             $table->string('sexo', 1)->nullable(); //enum
             $table->date('data_nascimento')->nullable();
             $table->string('tipo_sanguineo',3)->nullable(); //enum

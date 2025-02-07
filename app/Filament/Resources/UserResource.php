@@ -18,7 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\ImageColumn;
-use Illuminate\Support\Facades\Storage;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 
 class UserResource extends Resource
@@ -45,7 +45,10 @@ class UserResource extends Resource
                     ->imageResizeTargetWidth('300')
                     ->imageResizeTargetHeight('300')
                     ->disk('public')
-                    ->visibility('public'),
+                    ->visibility('public')
+                    ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                        return converteParaSlug('foto-' . auth()->id() . '-' . auth()->user()->uuid_id .'-'. soNumeros(auth()->user()->cpf) . '-'. now() ). '.' . $file->getClientOriginalExtension();
+                    }),
                 Forms\Components\TextInput::make('name')
                     ->label('Nome')
                     ->placeholder('informe o nome completo')

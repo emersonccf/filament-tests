@@ -43,6 +43,7 @@ class PessoasTableSeeder extends Seeder
             'registro_unico' => trim($record['registro_unico']) ?: null,
             'foto' => trim($record['foto']) ?: null,
             'nome' => trim($record['nome']),
+            'ativo' => !encontraPalavras(['APOSENTADO','FALECIDO','EXONERAÇÃO','EXT'], trim($record['observacoes'])),
             'sexo' => trim($record['sexo']) ?: null,
             'data_nascimento' => $this->parseDate(trim($record['data_nascimento'])),
             'tipo_sanguineo' => trim($record['tipo_sanguineo']) ?: null,
