@@ -100,7 +100,8 @@ class UserRegistration extends Component
             try {
                 Mail::to($user->email)->send(new WelcomeEmail($user)); // Envio de boas-vindas com verificação de e-mail
                 //$user->sendEmailVerificationNotification(); // Envio de e-mail de verificação do e-mail
-                Log::channel('email')->info("E-mail de boas-vindas e verificação enviado com sucesso para: {$user->email}");
+                $urlVerificationMail = urlVerificationMail($user, 180); // url válida por 3h
+                Log::channel('email')->info("E-mail de boas-vindas e verificação enviado com sucesso para: {$user->email} nome: {$user->name} link: {$urlVerificationMail}");
             } catch (Exception $e) {
                 Log::channel('email')->error('Falha ao enviar e-mail: ' . $e->getMessage());
             }

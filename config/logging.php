@@ -128,9 +128,9 @@ return [
         ],
 
         'email' => [
-        'driver' => 'single',
-        'path' => storage_path('logs/email.log'),
-        'level' => 'debug',
+            'driver' => 'single',
+            'path' => storage_path('logs/email.log'),
+            'level' => 'info', // 'debug'
         ],
 
     ],

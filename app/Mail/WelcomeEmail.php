@@ -25,11 +25,7 @@ class WelcomeEmail extends Mailable //implements ShouldQueue
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->verificationUrl = URL::temporarySignedRoute(
-            'verification.verify',
-            now()->addMinutes(60),
-            ['id' => $user->getKey(), 'hash' => sha1($user->getEmailForVerification())]
-        );
+        $this->verificationUrl = urlVerificationMail($user);
     }
 
     public function build() : WelcomeEmail

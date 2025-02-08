@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 /**
@@ -260,4 +262,30 @@ function encontraPalavras(string|array $palavras, string $texto): bool
 
     // Se nenhuma palavra for encontrada, retorna false
     return false;
+}
+
+
+/**
+ * Retorna o timestamp atual formatado.
+ * @param string $format formato em que deve ser apresentada a data por default 'Y-m-d H:i:s'
+ * @return string retorna a date e hora atual formatada
+ */
+function getCurrentTimestamp(string $format = 'Y-m-d H:i:s'): string
+{
+    return now()->format($format);
+}
+
+/**
+ * Retorna uma URL para confirmação de e-mail por um tempo definido
+ * @param User $user usuário que deve realizar a verificação do e-mail
+ * @param int $minutes quantidade de minutos de validade da URL, default = 60 mim
+ * @return string retorna URL de verificação de e-mail do usuário informado
+ */
+function urlVerificationMail(User $user, int $minutes = 60) : string
+{
+    return URL::temporarySignedRoute(
+        'verification.verify',
+        now()->addMinutes($minutes),
+        ['id' => $user->getKey(), 'hash' => sha1($user->getEmailForVerification())]
+    );
 }
