@@ -32,9 +32,9 @@ return new class extends Migration
             $table->year('ano_modelo')->nullable()->comment('Ano do modelo');
             $table->string('cor', 30)->nullable()->comment('Cor do veículo');
             $table->decimal('valor_diaria', 12, 2)->nullable()->comment('Valor da diária do veículo');
-            $table->integer('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
+            $table->bigInteger('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
             $table->timestamps(); // Substitui data_cadastro e data_atualizacao
-            $table->integer('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
+            $table->bigInteger('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
 
             $table->foreign('id_modelo')->references('id_modelo')->on('modelos');
             $table->foreign('cadastrado_por')->references('id')->on('users');

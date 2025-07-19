@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('codigo_unidade', 20)->unique()->comment('Código identificador da unidade');
             $table->string('telefone', 15)->nullable()->comment('Telefone da unidade');
             $table->string('responsavel', 100)->nullable()->comment('Nome do responsável');
-            $table->integer('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
+            $table->bigInteger('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
             $table->timestamps();
-            $table->integer('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
+            $table->bigInteger('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
 
             $table->foreign('cadastrado_por')->references('id')->on('users');
             $table->foreign('atualizado_por')->references('id')->on('users');

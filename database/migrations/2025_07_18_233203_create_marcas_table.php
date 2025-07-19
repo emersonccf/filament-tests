@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('marcas', function (Blueprint $table) {
             $table->increments('id_marca'); // Chave primária
             $table->string('nome_marca', 50)->unique()->comment('Nome da marca');
-            $table->integer('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
+            $table->bigInteger('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
             $table->timestamps();
-            $table->integer('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
+            $table->bigInteger('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
 
             $table->foreign('cadastrado_por')->references('id')->on('users');
             $table->foreign('atualizado_por')->references('id')->on('users');

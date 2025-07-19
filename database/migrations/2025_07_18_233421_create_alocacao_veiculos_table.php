@@ -18,9 +18,9 @@ return new class extends Migration
             $table->date('data_inicio')->comment('Data de início da alocação');
             $table->date('data_fim')->nullable()->comment('Data de fim da alocação');
             $table->text('observacoes')->nullable()->comment('Observações sobre a alocação');
-            $table->integer('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
+            $table->bigInteger('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
             $table->timestamps();
-            $table->integer('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
+            $table->bigInteger('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
 
             $table->foreign('id_veiculo')->references('id_veiculo')->on('veiculos');
             $table->foreign('id_unidade')->references('id_unidade')->on('unidades');

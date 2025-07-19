@@ -30,9 +30,9 @@ return new class extends Migration
             $table->date('data_prevista_conclusao')->nullable()->comment('Data prevista para conclusão');
             $table->date('data_conclusao')->nullable()->comment('Data real de conclusão');
             $table->text('observacoes')->nullable()->comment('Observações adicionais');
-            $table->integer('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
+            $table->bigInteger('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
             $table->timestamps();
-            $table->integer('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
+            $table->bigInteger('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
 
             $table->foreign('id_veiculo')->references('id_veiculo')->on('veiculos');
             $table->foreign('cadastrado_por')->references('id')->on('users');

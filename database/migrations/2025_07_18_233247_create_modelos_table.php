@@ -23,9 +23,9 @@ return new class extends Migration
             $table->tinyInteger('numero_rodas')->default(4)->comment('Número de rodas');
             $table->string('cilindrada', 10)->nullable()->comment('Cilindrada do motor');
             $table->decimal('peso_bruto', 8, 2)->nullable()->comment('Peso bruto total (kg)');
-            $table->integer('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
+            $table->bigInteger('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
             $table->timestamps();
-            $table->integer('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
+            $table->bigInteger('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
 
             $table->foreign('id_marca')->references('id_marca')->on('marcas');
             $table->foreign('cadastrado_por')->references('id')->on('users');
