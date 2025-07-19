@@ -17,7 +17,9 @@ class UnidadeResource extends Resource
 {
     protected static ?string $model = Unidade::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+    protected static ?string $navigationGroup = 'Controle de Frota'; // <--- Adicione esta linha
+    protected static ?int $navigationSort = 40; // <--- Adicione esta linha para ordenar dentro do grupo
 
     public static function form(Form $form): Form
     {

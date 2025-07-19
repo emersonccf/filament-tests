@@ -13,6 +13,7 @@ use Filament\Pages\Auth\EditProfile; // Permitir que o usuário edite seu própr
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationGroup; // Certifique-se de que este import está presente
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -50,6 +51,13 @@ class SevopPanelProvider extends PanelProvider
             ])
             ->sidebarCollapsibleOnDesktop(true)
             ->favicon('https://www.flaticon.com/svg/static/icons/svg/2972/2972413.svg') // Favicon customizado
+            ->navigationGroups([
+                 NavigationGroup::make('Controle de Frota')
+                     ->label('Controle de Frota') // Isso já é o padrão, mas pode ser explícito
+                     ->icon('heroicon-o-truck') // Opcional: Adiciona um ícone ao menu pai "Controle de Frota"
+                 // Se você tiver outros grupos, defina-os aqui também:
+                 // NavigationGroup::make('Gerenciamento de Usuários'),
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

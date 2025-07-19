@@ -8,6 +8,8 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use App\Models\Marca;         // Importe o modelo Marca
+use App\Observers\MarcaObserver; // Importe o Observer
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,5 +41,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('livewire.form.input', 'input');
         Blade::component('livewire.form.password-input', 'password-input');
         Blade::component('livewire.flash-card.flash-message', 'flash-message');
+
+        // Observers
+        Marca::observe(MarcaObserver::class); // Registre o Observer Marca
     }
 }

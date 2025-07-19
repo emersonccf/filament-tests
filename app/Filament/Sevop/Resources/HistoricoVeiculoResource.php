@@ -17,7 +17,9 @@ class HistoricoVeiculoResource extends Resource
 {
     protected static ?string $model = HistoricoVeiculo::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static ?string $navigationGroup = 'Controle de Frota'; // <--- Adicione esta linha
+    protected static ?int $navigationSort = 60; // <--- Adicione esta linha para ordenar dentro do grupo
 
     public static function form(Form $form): Form
     {

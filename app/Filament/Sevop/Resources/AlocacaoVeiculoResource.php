@@ -17,7 +17,9 @@ class AlocacaoVeiculoResource extends Resource
 {
     protected static ?string $model = AlocacaoVeiculo::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-arrows-right-left';
+    protected static ?string $navigationGroup = 'Controle de Frota'; // <--- Adicione esta linha
+    protected static ?int $navigationSort = 50; // <--- Adicione esta linha para ordenar dentro do grupo
 
     public static function form(Form $form): Form
     {
