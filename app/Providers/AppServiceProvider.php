@@ -8,8 +8,11 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+
 use App\Models\Marca;         // Importe o modelo Marca
 use App\Observers\MarcaObserver; // Importe o Observer
+use App\Models\Modelo; // Importe o modelo Modelo
+use App\Observers\ModeloObserver; // Importe o Observer de Modelo
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,5 +47,6 @@ class AppServiceProvider extends ServiceProvider
 
         // Observers
         Marca::observe(MarcaObserver::class); // Registre o Observer Marca
+        Modelo::observe(ModeloObserver::class); //  Registre o Observer Modelo
     }
 }

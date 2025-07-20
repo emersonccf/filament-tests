@@ -39,6 +39,7 @@ class HistoricoVeiculoResource extends Resource
                     ->default(null),
                 Forms\Components\TextInput::make('prioridade')
                     ->maxLength(20)
+                    ->required()
                     ->default(null),
                 Forms\Components\Toggle::make('afeta_disponibilidade')
                     ->required(),

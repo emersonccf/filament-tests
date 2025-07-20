@@ -27,6 +27,7 @@ class VeiculoResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('placa')
                     ->maxLength(8)
+                    ->required()
                     ->default(null),
                 Forms\Components\TextInput::make('id_modelo')
                     ->required()

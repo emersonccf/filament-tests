@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('data_evento')->comment('Data do evento');
             $table->time('hora_evento')->nullable()->comment('Hora do evento');
             $table->decimal('quilometragem', 10, 2)->nullable()->comment('Quilometragem no momento');
-            $table->string('prioridade', 20)->nullable()->comment('Nível de prioridade');
+            $table->string('prioridade', 20)->comment('Nível de prioridade');
             $table->boolean('afeta_disponibilidade')->default(false)->comment('Se o evento afeta disponibilidade');
             $table->string('status_evento', 20)->comment('Status do evento');
             $table->text('descricao')->comment('Descrição detalhada do evento');

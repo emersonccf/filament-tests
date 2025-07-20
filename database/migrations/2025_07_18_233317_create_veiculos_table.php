@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('veiculos', function (Blueprint $table) {
             $table->increments('id_veiculo'); // Chave primária
-            $table->string('placa', 8)->unique()->nullable()->comment('Placa do veículo (NULL para bicicletas)');
+            $table->string('placa', 8)->unique()->comment('Placa do veículo (NULL para bicicletas)');
             $table->integer('id_modelo')->unsigned()->comment('Chave estrangeira para modelo');
             $table->string('prefixo_veiculo', 10)->comment('Prefixo da viatura para ativação');
             $table->string('direcionamento', 20)->default(DirecionamentoVeiculo::NORMAL->value)->comment('Destinação do veículo em operações');

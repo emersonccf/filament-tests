@@ -12,6 +12,15 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Forms\Components\Select; // Adicione este import para campos de seleção
+use Filament\Forms\Components\TextInput; // Mantenha este para outros TextInputs
+use Filament\Forms\Components\Placeholder; // Para exibir informações não editáveis
+use Filament\Forms\Components\Hidden; // Para campos ocultos que são preenchidos por observers
+use Illuminate\Support\Facades\Auth; // Para acessar o usuário logado no Placeholder
+
+use App\Models\Marca; // Importar o modelo Marca para a relação
+use App\Enums\CategoriaVeiculo; // Importar o Enum CategoriaVeiculo
 
 class ModeloResource extends Resource
 {
@@ -25,85 +34,156 @@ class ModeloResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('id_marca')
+                // 1. Campo de Chave Estrangeira: id_marca
+                Select::make('id_marca')
+                    ->label('Marca do Veículo') // Rótulo amigável
+                    ->relationship('marca', 'nome_marca') // Nome da relação no Model, e o campo a ser exibido
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('nome_modelo')
+                    ->searchable() // Torna o campo pesquisável
+                    ->preload() // Carrega todas as opções inicialmente para melhor UX em listas pequenas/médias
+                    ->createOptionForm([ // Opcional: Permite criar uma nova marca diretamente no formulário de Modelo
+                                         TextInput::make('nome_marca')
+                                             ->required()
+                                             ->maxLength(50),
+                    ]),
+
+                // 2. Campo de Enum: categoria
+                Select::make('categoria')
+                    ->label('Categoria do Veículo')
+                    ->options(CategoriaVeiculo::class) // Filament 3.x suporta diretamente o Enum
+                    ->required()
+                    ->searchable() // Torna o campo pesquisável
+                    ->native(false), // Opcional: Renderiza um select personalizado do Filament, não o nativo do navegador
+                // O valor padrão 'OUTROS' é definido no seu Model via $casts se o Enum tiver um caso padrão,
+                // ou você pode definir aqui com ->default(CategoriaVeiculo::OUTROS), mas o cast já deve lidar com isso.
+
+                // Outros campos de texto para Modelo (mantidos como TextInput)
+                TextInput::make('nome_modelo')
                     ->required()
                     ->maxLength(50),
-                Forms\Components\TextInput::make('categoria')
-                    ->required()
-                    ->maxLength(50)
-                    ->default('OUTROS'),
-                Forms\Components\TextInput::make('numero_portas')
+                TextInput::make('numero_portas')
                     ->required()
                     ->numeric()
                     ->default(0),
-                Forms\Components\TextInput::make('capacidade_passageiros')
+                TextInput::make('capacidade_passageiros')
                     ->required()
                     ->numeric()
                     ->default(2),
-                Forms\Components\TextInput::make('numero_rodas')
+                TextInput::make('numero_rodas')
                     ->required()
                     ->numeric()
                     ->default(4),
-                Forms\Components\TextInput::make('cilindrada')
+                TextInput::make('cilindrada')
                     ->maxLength(10)
                     ->default(null),
-                Forms\Components\TextInput::make('peso_bruto')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('cadastrado_por')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('atualizado_por')
-                    ->numeric()
-                    ->default(null),
+                Forms\Components\TextInput::make('peso_bruto') // Use TextInput para campos numéricos
+                ->numeric() // Garante que apenas números podem ser digitados
+                ->step('0.01')
+                ->default(null),
+                // Opcional: Você pode adicionar ->step('0.01') se precisar de um seletor de passo no campo,
+                // mas a validação de decimais é mais controlada pelo tipo da coluna no banco de dados.
+
+                // 3. Campos de Auditoria: cadastrado_por e atualizado_por
+                // Oculta os campos para que o Observer possa preenchê-los sem interferência do usuário.
+                Hidden::make('cadastrado_por'),
+                Hidden::make('atualizado_por'),
+
+                // Placeholder para 'Cadastrado Por' - Exibe o nome do usuário, não editável.
+                Placeholder::make('cadastrado_por_display')
+                    ->label('Cadastrado Por')
+                    ->content(function (string $operation, ?Modelo $record): string {
+                        if ($operation === 'create') {
+                            return Auth::user()->name; // Exibe o nome do usuário logado na criação
+                        }
+                        // Busca o nome do usuário através da relação no Model
+                        return $record?->userCreatedBy?->name ?? 'N/A';
+                    })
+                    ->columnSpan(1), // Ajuste o layout conforme necessário
+
+                // Placeholder para 'Atualizado Por' - Exibe o nome do usuário, não editável.
+                Placeholder::make('atualizado_por_display')
+                    ->label('Atualizado Por')
+                    ->content(function (string $operation, ?Modelo $record): string {
+                        if ($operation === 'create') {
+                            return Auth::user()->name; // Exibe o nome do usuário logado na criação
+                        }
+                        // Busca o nome do usuário através da relação no Model
+                        return $record?->userUpdatedBy?->name ?? 'N/A';
+                    })
+                    ->columnSpan(1), // Ajuste o layout conforme necessário
             ]);
     }
 
+    // Modificação da Função `table()`
+    // Isso garante que os nomes dos usuários sejam exibidos nas colunas da tabela
+    // em vez dos IDs, e que as relações de chave estrangeira sejam bem formatadas.
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id_marca')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('marca.nome_marca') // Exibe o nome da marca
+                ->label('Marca')
+                    ->sortable()
+                    ->searchable(), // Adicione searchable para a coluna de marca
+
                 Tables\Columns\TextColumn::make('nome_modelo')
+                    ->sortable()
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('categoria')
-                    ->searchable(),
+                    ->searchable()
+                    ->badge(), // Exibe o Enum como um badge, usando o getLabel() do Enum
+
                 Tables\Columns\TextColumn::make('numero_portas')
                     ->numeric()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('capacidade_passageiros')
                     ->numeric()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('numero_rodas')
                     ->numeric()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('cilindrada')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('peso_bruto')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('cadastrado_por')
-                    ->numeric()
-                    ->sortable(),
+
+                // Colunas para cadastrado_por e atualizado_por (nomes dos usuários)
+                Tables\Columns\TextColumn::make('userCreatedBy.name')
+                    ->label('Cadastrado Por')
+                    ->sortable()
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('userUpdatedBy.name')
+                    ->label('Atualizado Por')
+                    ->sortable()
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('atualizado_por')
-                    ->numeric()
-                    ->sortable(),
             ])
             ->filters([
-                //
+                // Filtros podem ser adicionados aqui, por exemplo:
+                SelectFilter::make('id_marca')
+                    ->label('Filtrar por Marca')
+                    ->relationship('marca', 'nome_marca')
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('categoria')
+                    ->label('Filtrar por Categoria')
+                    ->options(CategoriaVeiculo::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
