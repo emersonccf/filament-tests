@@ -3,8 +3,15 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\sefit\PessoasSeeder;
+use Database\Seeders\sevop\AlocacaoVeiculosUnidadesSeeder;
+use Database\Seeders\sevop\MarcasSeeder;
+use Database\Seeders\sevop\ModelosSeeder;
+use Database\Seeders\sevop\UnidadesSeeder;
+use Database\Seeders\sevop\VeiculosSeeder;
 use Illuminate\Database\Seeder;
+
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,5 +34,12 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
             'belongs_sector' => true,
         ]);
+
+        $this->call([PessoasSeeder::class]);
+//        $this->call([MarcasSeeder::class]);
+//        $this->call([ModelosSeeder::class]);
+//        $this->call([UnidadesSeeder::class]);
+//        $this->call([VeiculosSeeder::class]);
+//        $this->call([AlocacaoVeiculosUnidadesSeeder::class]);
     }
 }
