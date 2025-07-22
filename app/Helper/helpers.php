@@ -1,10 +1,14 @@
 <?php
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use League\Csv\InvalidArgument;
+use League\Csv\Reader;
+use League\Csv\UnavailableStream;
 
 /**
  * Remove acentos de uma string
@@ -288,4 +292,42 @@ function urlVerificationMail(User $user, int $minutes = 60) : string
         now()->addMinutes($minutes),
         ['id' => $user->getKey(), 'hash' => sha1($user->getEmailForVerification())]
     );
+}
+
+/**
+ * Retorna uma coleção de registros para um CSV com cabeçalho delimitado por padrão por ';'
+ * @param string $csvPath caminho do arquivo CSV a ser lido
+ * @param string $delimiter delimitador do CSV por padrão ';'
+ * @return Reader retorna um CSV lido em forma de registros
+ * @throws \League\Csv\Exception
+ * @throws InvalidArgument
+ * @throws UnavailableStream
+ */
+function registrosCSV(string $csvPath, string $delimiter = ';'): Reader
+{
+    // Caminho para o arquivo CSV
+    $path = storage_path($csvPath);
+
+    // Criar um leitor CSV
+    $csv = Reader::createFromPath($path, 'r');
+    $csv->setDelimiter($delimiter); // Define o delimitador como ponto e vírgula
+    $csv->setHeaderOffset(0); // A primeira linha contém os cabeçalhos
+
+    return $csv;
+}
+
+/**
+ * Converte a string de data para o formato correto.
+ *
+ * @param string|null $date
+ * @return string|null
+ */
+function parseDate(?string $date): ?string
+{
+    if (!$date) return null;
+    try {
+        return Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+    } catch (\Exception $e) {
+        return null;
+    }
 }

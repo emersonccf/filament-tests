@@ -11,8 +11,6 @@ use Database\Seeders\sevop\UnidadesSeeder;
 use Database\Seeders\sevop\VeiculosSeeder;
 use Illuminate\Database\Seeder;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -36,10 +34,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([PessoasSeeder::class]);
-//        $this->call([MarcasSeeder::class]);
-//        $this->call([ModelosSeeder::class]);
-//        $this->call([UnidadesSeeder::class]);
-//        $this->call([VeiculosSeeder::class]);
-//        $this->call([AlocacaoVeiculosUnidadesSeeder::class]);
+        $this->call([MarcasSeeder::class]);
+        $this->call([ModelosSeeder::class]);
+        $this->call([VeiculosSeeder::class]);
+        $this->call([UnidadesSeeder::class]);
+        $this->call([AlocacaoVeiculosUnidadesSeeder::class]);
     }
 }

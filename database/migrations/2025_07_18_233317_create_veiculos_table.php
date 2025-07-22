@@ -19,11 +19,13 @@ return new class extends Migration
             $table->increments('id_veiculo'); // Chave primária
             $table->string('placa', 8)->unique()->comment('Placa do veículo (NULL para bicicletas)');
             $table->integer('id_modelo')->unsigned()->comment('Chave estrangeira para modelo');
-            $table->string('prefixo_veiculo', 10)->comment('Prefixo da viatura para ativação');
+            $table->string('prefixo_veiculo', 10)->index()->comment('Prefixo da viatura para ativação');
             $table->string('direcionamento', 20)->default(DirecionamentoVeiculo::NORMAL->value)->comment('Destinação do veículo em operações');
             $table->string('local_ativacao', 50)->default(LocalAtivacaoVeiculo::GTRAN->value)->comment('Localidade onde o veículo é ativado e/ou desativado');
             $table->string('combustivel', 20)->default(CombustivelVeiculo::FLEX->value)->comment('Tipo de combustível');
             $table->string('status', 20)->default(StatusVeiculo::ATIVO->value)->comment('Status operacional');
+            $table->boolean('possui_bateria_auxiliar')->default(false)->comment('Informa de o veículo possui bateria auxiliar');
+            $table->boolean('possui_gps')->default(false)->comment('Informa de o veículo possui GPS');
             $table->decimal('quilometragem', 10, 2)->default(0)->comment('Quilometragem atual');
             $table->date('data_recebimento')->nullable()->comment('Data de recebimento do veículo');
             $table->string('chassi', 17)->unique()->nullable()->comment('Número do chassi (VIN) (NULL para bicicletas)');
