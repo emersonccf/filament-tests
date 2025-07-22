@@ -31,7 +31,8 @@ class MarcaResource extends Resource
             ->schema([
                 TextInput::make('nome_marca')
                     ->required()
-                    ->maxLength(50),
+                    ->maxLength(50)
+                    ->dehydrateStateUsing(fn (string $state): string => mb_strtoupper($state)),
 
                 // Campos ocultos para 'cadastrado_por' e 'atualizado_por'.
                 // Estes são importantes se você estiver usando mutateFormDataBeforeCreate/Save

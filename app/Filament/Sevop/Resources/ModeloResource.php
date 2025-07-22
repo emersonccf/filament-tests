@@ -60,7 +60,8 @@ class ModeloResource extends Resource
                 // Outros campos de texto para Modelo (mantidos como TextInput)
                 TextInput::make('nome_modelo')
                     ->required()
-                    ->maxLength(50),
+                    ->maxLength(50)
+                    ->dehydrateStateUsing(fn (string $state): string => mb_strtoupper($state)),
                 TextInput::make('numero_portas')
                     ->required()
                     ->numeric()

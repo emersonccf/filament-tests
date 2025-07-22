@@ -26,6 +26,8 @@ class Veiculo extends Model
         'local_ativacao',
         'combustivel',
         'status',
+        'possui_bateria_auxiliar',
+        'possui_gps',
         'quilometragem',
         'data_recebimento',
         'chassi',

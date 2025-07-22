@@ -27,17 +27,21 @@ class UnidadeResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nome_unidade')
                     ->required()
-                    ->maxLength(100),
+                    ->maxLength(100)
+                    ->dehydrateStateUsing(fn (string $state): string => mb_strtoupper($state)),
                 Forms\Components\TextInput::make('codigo_unidade')
                     ->required()
-                    ->maxLength(20),
+                    ->maxLength(20)
+                    ->dehydrateStateUsing(fn (string $state): string => mb_strtoupper($state)),
                 Forms\Components\TextInput::make('telefone')
                     ->tel()
+                    ->mask('(99) 99999-9999')
                     ->maxLength(15)
                     ->default(null),
                 Forms\Components\TextInput::make('responsavel')
                     ->maxLength(100)
-                    ->default(null),
+                    ->default(null)
+                    ->dehydrateStateUsing(fn (string $state): string => mb_strtoupper($state)),
                 Forms\Components\TextInput::make('cadastrado_por')
                     ->required()
                     ->numeric(),
@@ -63,11 +67,11 @@ class UnidadeResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d-M-Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d-M-Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('atualizado_por')
