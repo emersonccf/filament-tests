@@ -21,6 +21,14 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+// Importe seus widgets
+use Filament\Widgets;
+use App\Filament\Sevop\Widgets\ActiveVehiclesOverview;
+use App\Filament\Sevop\Widgets\ActiveVehiclesByModelChart;
+use App\Filament\Sevop\Widgets\ActiveVehiclesByLocationChart;
+use App\Filament\Sevop\Widgets\ActiveVehiclesByLocationTable;
+use App\Filament\Sevop\Widgets\ActiveVehiclesByUnitAllocationTable;
+
 class SevopPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -46,8 +54,15 @@ class SevopPanelProvider extends PanelProvider
             // Eles deverão estar na pasta app/Filament/Sevop/Widgets
             ->discoverWidgets(in: app_path('Filament/Sevop/Widgets'), for: 'App\Filament\Sevop\Widgets')
             ->widgets([
-                //Widgets\AccountWidget::class, // Exemplo de widget comum
-                // Adicione outros widgets específicos para gestão de frota aqui
+                // Registre seus widgets aqui
+//                Widgets\AccountWidget::class,
+//                Widgets\FilamentInfoWidget::class,
+                ActiveVehiclesOverview::class,      // Seu primeiro widget
+                ActiveVehiclesByModelChart::class,  // Seu segundo widget
+                ActiveVehiclesByLocationChart::class, // Seu novo widget
+                ActiveVehiclesByLocationTable::class, // Seu novo widget de tabela
+                ActiveVehiclesByUnitAllocationTable::class, // Seu widget de tabela (por unidade de alocação)
+
             ])
             ->sidebarCollapsibleOnDesktop(true)
             ->favicon('https://www.flaticon.com/svg/static/icons/svg/2972/2972413.svg') // Favicon customizado
