@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\StatusVeiculo;
 use App\Models\Veiculo;
 use Illuminate\Support\Facades\Auth; // Importar Auth para pegar o usuário logado
 
@@ -30,6 +31,11 @@ class VeiculoObserver
         if (Auth::check()) {
             $veiculo->atualizado_por = Auth::id(); // Atualiza com o ID do usuário logado na modificação
         }
+
+        // Verifica se a data de devolução foi preenchida e nesse caso coloca o veículo como inativo
+        if ($veiculo->data_devolucao <> null) {
+            $veiculo->status = StatusVeiculo::INATIVO;
+        } // else $veiculo->status = StatusVeiculo::ATIVO;
     }
 
     /**

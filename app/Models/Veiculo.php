@@ -30,6 +30,7 @@ class Veiculo extends Model
         'possui_gps',
         'quilometragem',
         'data_recebimento',
+        'data_devolucao',
         'chassi',
         'renavam',
         'ano_fabricacao',

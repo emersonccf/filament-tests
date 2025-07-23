@@ -173,13 +173,13 @@ class HistoricoVeiculoResource extends Resource
                     ->searchable()
                     ->badge(), // Exibe o Enum como um badge
                 Tables\Columns\TextColumn::make('data_evento')
-                    ->date()
+                    ->dateTime('d-M-Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hora_evento')
                     ->time('H:i') // Formato de hora
                     ->sortable(),
                 Tables\Columns\TextColumn::make('quilometragem')
-                    ->numeric()
+                    ->numeric(0)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('prioridade')
                     ->searchable()

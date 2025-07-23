@@ -138,6 +138,11 @@ class VeiculoResource extends Resource
                         ->nullable()
                         ->columnSpan(1),
 
+                    Forms\Components\DatePicker::make('data_devolucao')
+                        ->label('Data de Devolução')
+                        ->nullable()
+                        ->columnSpan(1),
+
                     Forms\Components\TextInput::make('chassi')
                         ->maxLength(17)
                         ->unique(ignoreRecord: true)
@@ -249,11 +254,11 @@ class VeiculoResource extends Resource
                     ->searchable()
                     ->badge(),
 
-                Tables\Columns\BooleanColumn::make('possui_bateria_auxiliar') // Exibe como ícone (check/x)
+                Tables\Columns\ToggleColumn::make('possui_bateria_auxiliar') // Exibe como ícone (check/x)
                 ->label('Bateria Aux.')
                     ->sortable(),
 
-                Tables\Columns\BooleanColumn::make('possui_gps')
+                Tables\Columns\ToggleColumn::make('possui_gps')
                     ->label('GPS')
                     ->sortable(),
 
@@ -262,6 +267,11 @@ class VeiculoResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('data_recebimento')
+                    ->date()
+                    ->dateTime('d-M-Y')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('data_devolucao')
                     ->date()
                     ->dateTime('d-M-Y')
                     ->sortable(),

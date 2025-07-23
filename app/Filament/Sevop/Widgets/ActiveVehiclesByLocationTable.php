@@ -45,7 +45,8 @@ class ActiveVehiclesByLocationTable extends Widget
 
         // 2. Buscar a contagem de veículos ativos por local de ativação e número de rodas no banco de dados.
         $rawData = Veiculo::query()
-            ->where('status', StatusVeiculo::ATIVO)
+//            ->where('status', StatusVeiculo::ATIVO)
+            ->where('data_devolucao', null) // para possibilitar contabilizar os veículos reservas que estão inativos
             // Faz um JOIN com a tabela de modelos para acessar a coluna 'numero_rodas'
             ->join('modelos', 'veiculos.id_modelo', '=', 'modelos.id_modelo')
             ->select(

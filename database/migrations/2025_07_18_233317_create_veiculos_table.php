@@ -28,6 +28,7 @@ return new class extends Migration
             $table->boolean('possui_gps')->default(false)->comment('Informa de o veículo possui GPS');
             $table->decimal('quilometragem', 10, 2)->default(0)->comment('Quilometragem atual');
             $table->date('data_recebimento')->nullable()->comment('Data de recebimento do veículo');
+            $table->date('data_devolucao')->nullable()->comment('Data de recebimento do veículo, fim de contrato');
             $table->string('chassi', 17)->unique()->nullable()->comment('Número do chassi (VIN) (NULL para bicicletas)');
             $table->string('renavam', 11)->unique()->nullable()->comment('RENAVAM (NULL para bicicletas)');
             $table->year('ano_fabricacao')->nullable()->comment('Ano de fabricação');
