@@ -10,6 +10,7 @@ use Database\Seeders\sevop\ModelosSeeder;
 use Database\Seeders\sevop\UnidadesSeeder;
 use Database\Seeders\sevop\VeiculosSeeder;
 use Illuminate\Database\Seeder;
+use App\Models\HistoricoVeiculo;
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,11 +34,26 @@ class DatabaseSeeder extends Seeder
             'belongs_sector' => true,
         ]);
 
+        User::factory()->create([
+            'name' => 'Usuário Teste Adm',
+            'cpf' => '15432366002',
+            'email' => 'usuario@teste.com',
+            'password' => bcrypt('123'),
+            'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+            'is_admin' => true,
+            'is_active' => true,
+            'belongs_sector' => true,
+        ]);
+
         $this->call([PessoasSeeder::class]);
         $this->call([MarcasSeeder::class]);
         $this->call([ModelosSeeder::class]);
         $this->call([VeiculosSeeder::class]);
         $this->call([UnidadesSeeder::class]);
         $this->call([AlocacaoVeiculosUnidadesSeeder::class]);
+        // Agora, crie os históricos de veículos
+        HistoricoVeiculo::factory(1000)->create(); // Cria 1000 registros de histórico de veículos
     }
 }
