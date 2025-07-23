@@ -23,6 +23,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 // Importe seus widgets
 use Filament\Widgets;
+use App\Filament\Sevop\Widgets\MaintenanceVehiclesTable;
 use App\Filament\Sevop\Widgets\ActiveVehiclesOverview;
 use App\Filament\Sevop\Widgets\ActiveVehiclesByModelChart;
 use App\Filament\Sevop\Widgets\ActiveVehiclesByLocationChart;
@@ -62,6 +63,7 @@ class SevopPanelProvider extends PanelProvider
                 ActiveVehiclesByLocationChart::class, // Seu novo widget
                 ActiveVehiclesByLocationTable::class, // Seu novo widget de tabela
                 ActiveVehiclesByUnitAllocationTable::class, // Seu widget de tabela (por unidade de alocação)
+                MaintenanceVehiclesTable::class, // <-- Seu novo widget de veículos em manutenção
 
             ])
             ->sidebarCollapsibleOnDesktop(true)
