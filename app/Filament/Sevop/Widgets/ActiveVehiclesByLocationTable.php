@@ -14,7 +14,7 @@ class ActiveVehiclesByLocationTable extends Widget
     protected static string $view = 'filament.sevop.widgets.active-vehicles-by-location-table';
 
     // Define o título que aparecerá no cabeçalho do widget
-    protected static ?string $heading = 'Total de Veículos Ativos por Local de Ativação (Detalhes)';
+    protected static ?string $heading = 'Total de Todos os Veículos por Local de Ativação';
 
     // Opcional: Faz o widget recarregar seus dados periodicamente (a cada 60 segundos)
 //    protected static ?string $pollingInterval = '60s';

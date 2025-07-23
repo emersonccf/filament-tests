@@ -15,7 +15,7 @@ class ActiveVehiclesByUnitAllocationTable extends Widget
     protected static string $view = 'filament.sevop.widgets.active-vehicles-by-unit-allocation-table';
 
     // Define o título que aparecerá no cabeçalho do widget
-    protected static ?string $heading = 'Veículos Ativos por Unidade de Alocação (Detalhes)';
+    protected static ?string $heading = 'Veículos Ativos por Unidade de Alocação';
 
     // Opcional: Faz o widget recarregar seus dados periodicamente (a cada 60 segundos)
     protected static ?string $pollingInterval = '60s';
