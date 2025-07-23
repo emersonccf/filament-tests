@@ -161,7 +161,7 @@ class ModeloResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d-M-Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
@@ -171,7 +171,7 @@ class ModeloResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d-M-Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

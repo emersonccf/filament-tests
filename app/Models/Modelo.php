@@ -63,5 +63,12 @@ class Modelo extends Model
     {
         return $this->belongsTo(User::class, 'atualizado_por', 'id');
     }
+
+    // NOVO ACESSOR: formata Marca / Modelo
+    public function getMarcaModeloAttribute(): string
+    {
+        // Certifica-se de que a relação 'marca' está carregada antes de acessá-la
+        return ($this->relationLoaded('marca') && $this->marca) ? "{$this->marca->nome_marca} / {$this->nome_modelo}" : $this->nome_modelo;
+    }
 }
 

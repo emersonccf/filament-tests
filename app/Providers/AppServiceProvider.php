@@ -15,6 +15,12 @@ use App\Models\Modelo; // Importe o modelo Modelo
 use App\Observers\ModeloObserver; // Importe o Observer de Modelo
 use App\Models\Veiculo; // NOVO: Importe o modelo Veiculo
 use App\Observers\VeiculoObserver;
+use App\Models\AlocacaoVeiculo;
+use App\Observers\AlocacaoVeiculoObserver;
+use App\Models\Unidade;
+use App\Observers\UnidadeObserver;
+use App\Models\HistoricoVeiculo; // Importe o modelo
+use App\Observers\HistoricoVeiculoObserver; // Importe o Observer
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -51,5 +57,8 @@ class AppServiceProvider extends ServiceProvider
         Marca::observe(MarcaObserver::class); // Registre o Observer Marca
         Modelo::observe(ModeloObserver::class); //  Registre o Observer Modelo
         Veiculo::observe(VeiculoObserver::class); //  Registre o Observer Veiculo
+        Unidade::observe(UnidadeObserver::class); // Registre o Observer Unidade
+        AlocacaoVeiculo::observe(AlocacaoVeiculoObserver::class); //  Registre o Observer Alocação
+        HistoricoVeiculo::observe(HistoricoVeiculoObserver::class);
     }
 }

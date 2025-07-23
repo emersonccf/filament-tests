@@ -174,7 +174,7 @@ class VeiculoResource extends Resource
 
                     Forms\Components\TextInput::make('valor_diaria')
                         ->numeric()
-                        ->prefix('R\$') // Adiciona um prefixo
+                        ->prefix('R$') // Adiciona um prefixo
                         ->inputMode('decimal')
                         ->nullable()
                         ->columnSpan(1),

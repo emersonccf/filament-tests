@@ -16,6 +16,7 @@ use Filament\Forms\Components\TextInput; // Garanta que este import está presen
 use Filament\Forms\Components\Placeholder; // Adicione este import
 use Filament\Forms\Components\Hidden; // Adicione este import
 use Illuminate\Support\Facades\Auth; // Adicione este import para usar Auth::user()
+use Filament\Forms\Components\Section;    // Para organizar melhor o formulário
 
 class MarcaResource extends Resource
 {
@@ -80,14 +81,14 @@ class MarcaResource extends Resource
                 ->label('Cadastrado Por')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d-M-Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('userUpdatedBy.name') // OK para tabelas
                 ->label('Atualizado Por')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d-M-Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
