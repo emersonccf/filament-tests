@@ -12,6 +12,9 @@ enum DirecionamentoVeiculo: string implements HasLabel
     case GART = 'GART';
     case ESCOLTA = 'ESCOLTA';
     case SEMOB = 'SEMOB';
+    case GESIN = 'GESIN';
+    case DTRAN = 'DTRAN';
+    case COESP = 'COESP';
     case RESERVA = 'RESERVA';
 
     public function getLabel(): ?string
@@ -23,6 +26,9 @@ enum DirecionamentoVeiculo: string implements HasLabel
             self::GART => 'GART',
             self::ESCOLTA => 'Escolta',
             self::SEMOB => 'SEMOB',
+            self::GESIN => 'GESIN',
+            self::DTRAN => 'DTRAN',
+            self::COESP => 'COESP',
             self::RESERVA => 'Reserva',
         };
     }

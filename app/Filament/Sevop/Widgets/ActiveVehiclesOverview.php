@@ -16,6 +16,7 @@ class ActiveVehiclesOverview extends BaseWidget
         // Obtém todos os veículos ativos, carregando a relação 'modelo'
         // Isso é importante para acessar 'modelo.numero_rodas'
         $activeVehicles = Veiculo::query()
+            ->where('direcionamento', '<>', 'RESERVA') // para não contabilizar os veículos reserva
             ->where('status', StatusVeiculo::ATIVO)
             ->with('modelo') // Carrega a relação 'modelo' para cada veículo
             ->get();
@@ -35,16 +36,16 @@ class ActiveVehiclesOverview extends BaseWidget
         })->count();
 
         return [
-            Stat::make('Total de Veículos Ativos', $totalActive)
+            Stat::make('Total de Veículos Ativos (sem os reservas)', $totalActive)
                 ->description('Veículos prontos para uso')
                 ->descriptionIcon('heroicon-s-check-circle')
                 ->color('success'),
-            Stat::make('Veículos 4 Rodas (Ativos)', $fourWheelers)
+            Stat::make('Veículos 4 Rodas Ativos (sem os reservas)', $fourWheelers)
                 ->description('Carros, vans etc.')
                 ->descriptionIcon('heroicon-s-truck')
 //                ->descriptionIcon('heroicon-s-car')
                 ->color('info'),
-            Stat::make('Veículos 2 Rodas (Ativos)', $twoWheelers)
+            Stat::make('Veículos 2 Rodas Ativos (sem os reservas)', $twoWheelers)
                 ->description('Motos, etc.')
                 ->descriptionIcon('heroicon-s-bolt')
 //                ->descriptionIcon('heroicon-s-moped')
