@@ -222,6 +222,7 @@ class VeiculoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginationPageOptions([5, 10]) // Limita para APENAS 5 a 10 registros por página
             ->columns([
                 Tables\Columns\TextColumn::make('placa')
                     ->sortable()
@@ -360,7 +361,9 @@ class VeiculoResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // ADICIONA O RELATION MANAGER AQUI!
+            // Isso fará com que uma nova aba "Histórico do Veículo" apareça na página de edição.
+            RelationManagers\HistoricoVeiculosRelationManager::class,
         ];
     }
 

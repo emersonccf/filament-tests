@@ -74,6 +74,7 @@ class MarcaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginationPageOptions([5, 10]) // Limita para APENAS 5 a 10 registros por página
             ->columns([
                 Tables\Columns\TextColumn::make('nome_marca')
                     ->searchable(),

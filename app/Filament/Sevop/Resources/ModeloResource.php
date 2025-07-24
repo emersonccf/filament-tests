@@ -121,6 +121,7 @@ class ModeloResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginationPageOptions([5, 10]) // Limita para APENAS 5 a 10 registros por página
             ->columns([
                 Tables\Columns\TextColumn::make('marca.nome_marca') // Exibe o nome da marca
                 ->label('Marca')

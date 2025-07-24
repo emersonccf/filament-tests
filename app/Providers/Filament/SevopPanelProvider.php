@@ -29,6 +29,7 @@ use App\Filament\Sevop\Widgets\ActiveVehiclesByModelChart;
 use App\Filament\Sevop\Widgets\ActiveVehiclesByLocationChart;
 use App\Filament\Sevop\Widgets\ActiveVehiclesByLocationTable;
 use App\Filament\Sevop\Widgets\ActiveVehiclesByUnitAllocationTable;
+use App\Filament\Widgets\FleetEventCrossTabulation;
 
 class SevopPanelProvider extends PanelProvider
 {
@@ -63,7 +64,8 @@ class SevopPanelProvider extends PanelProvider
                 ActiveVehiclesByLocationChart::class, // Seu novo widget
                 ActiveVehiclesByLocationTable::class, // Seu novo widget de tabela
                 ActiveVehiclesByUnitAllocationTable::class, // Seu widget de tabela (por unidade de alocação)
-                MaintenanceVehiclesTable::class, // <-- Seu novo widget de veículos em manutenção
+                MaintenanceVehiclesTable::class, // Seu novo widget de veículos em manutenção
+                FleetEventCrossTabulation::class, // Seu novo widget de ocorrências histórico
 
             ])
             ->sidebarCollapsibleOnDesktop(true)
