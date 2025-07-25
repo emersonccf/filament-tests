@@ -2,6 +2,8 @@
 
 namespace App\Filament\Sevop\Resources;
 
+use App\Enums\CategoriaVeiculo;
+use App\Enums\LocalidadeAtivacaoTurnoVeiculo;
 use App\Filament\Sevop\Resources\VeiculoResource\Pages;
 use App\Filament\Sevop\Resources\VeiculoResource\RelationManagers;
 use App\Models\Veiculo;
@@ -111,6 +113,42 @@ class VeiculoResource extends Resource
                     Select::make('status')
                         ->label('Status Operacional')
                         ->options(StatusVeiculo::class)
+                        ->required()
+                        ->searchable()
+                        ->native(false)
+                        ->columnSpan(1),
+
+                    Forms\Components\TextInput::make('km_proxima_revisao')
+                        ->required()
+                        ->numeric()
+                        ->default(0.00)
+                        ->step('1000') // Permite decimais
+                        ->columnSpan(1),
+
+                    Forms\Components\Toggle::make('revisao_pendente') // Usando Toggle para booleanos
+                    ->label('Revisão Pendente?')
+                        ->default(false)
+                        ->columnSpan(1),
+
+                    Select::make('localidade_ativacao_mat')
+                        ->label('Loc. Ativação Matutina')
+                        ->options(LocalidadeAtivacaoTurnoVeiculo::class)
+                        ->required()
+                        ->searchable()
+                        ->native(false)
+                        ->columnSpan(1),
+
+                    Select::make('localidade_ativacao_vesp')
+                        ->label('Loc. Ativação Vespertina')
+                        ->options(LocalidadeAtivacaoTurnoVeiculo::class)
+                        ->required()
+                        ->searchable()
+                        ->native(false)
+                        ->columnSpan(1),
+
+                    Select::make('localidade_ativacao_not')
+                        ->label('Loc. Ativação Noturna')
+                        ->options(LocalidadeAtivacaoTurnoVeiculo::class)
                         ->required()
                         ->searchable()
                         ->native(false)
