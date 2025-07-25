@@ -323,7 +323,7 @@ class HistoricoVeiculosRelationManager extends RelationManager
                     }),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(), // Botão para criar novo registro de histórico
+//                Tables\Actions\CreateAction::make(), // Botão para criar novo registro de histórico
             ])
             ->actions([
                 Tables\Actions\EditAction::make(), // Ação de edição para cada registro

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Sevop\Resources;
 
+use App\Enums\DirecionamentoVeiculo;
 use App\Filament\Sevop\Resources\HistoricoVeiculoResource\Pages;
 use App\Filament\Sevop\Resources\HistoricoVeiculoResource\RelationManagers;
 use App\Models\HistoricoVeiculo;
@@ -44,8 +45,28 @@ class HistoricoVeiculoResource extends Resource
                         // Campo de Chave Estrangeira: id_veiculo
                         Select::make('id_veiculo')
                             ->label('Veículo (Placa)')
-                            ->relationship('veiculo', 'placa')
-                            ->required()
+                            ->relationship(
+                                name: 'veiculo',
+                                titleAttribute: 'placa', // Voltar para uma coluna real do banco
+                                modifyQueryUsing: fn (Builder $query) => $query
+                                    ->with('modelo') // Eager load o relacionamento 'modelo'
+                            )
+                            ->getOptionLabelFromRecordUsing(fn (Veiculo $record) => $record->placa_modelo_direcionamento)
+//                            ->getSearchResultsUsing(function (string $search) {
+//                                return Veiculo::where('direcionamento', DirecionamentoVeiculo::RESERVA)
+//                                    ->with('modelo')
+//                                    ->where(function ($query) use ($search) {
+//                                        $query->where('placa', 'like', "%{$search}%")
+//                                            ->orWhereHas('modelo', function ($q) use ($search) {
+//                                                $q->where('nome_modelo', 'like', "%{$search}%");
+//                                            });
+//                                    })
+//                                    ->limit(50)
+//                                    ->get()
+//                                    ->mapWithKeys(fn (Veiculo $veiculo) => [
+//                                        $veiculo->id_veiculo => $veiculo->placa_modelo_direcionamento
+//                                    ]);
+//                            })
                             ->searchable()
                             ->preload()
                             ->columnSpan(1),
@@ -57,6 +78,11 @@ class HistoricoVeiculoResource extends Resource
                             ->required()
                             ->searchable()
                             ->native(false)
+                            ->columnSpan(1),
+
+                        Forms\Components\Toggle::make('teve_vitima')
+                            ->label('Teve vítima?')
+                            ->inline(false) // Coloca o label acima do toggle
                             ->columnSpan(1),
 
                         Forms\Components\DatePicker::make('data_evento')
@@ -87,6 +113,20 @@ class HistoricoVeiculoResource extends Resource
                         Forms\Components\Toggle::make('afeta_disponibilidade')
                             ->label('Afeta Disponibilidade?')
                             ->inline(false) // Coloca o label acima do toggle
+                            ->columnSpan(1),
+
+                        Select::make('id_veiculo_substituto')
+                            ->label('Veículo Substituto Reserva')
+                            ->relationship(
+                                name: 'veiculoSubstituto',
+                                titleAttribute: 'placa',
+                                modifyQueryUsing: fn (Builder $query) => $query
+                                    ->where('direcionamento', DirecionamentoVeiculo::RESERVA)
+                                    ->with('modelo')
+                            )
+                            ->getOptionLabelFromRecordUsing(fn (Veiculo $record) => $record->placa_modelo_direcionamento)
+                            ->searchable()
+                            ->preload()
                             ->columnSpan(1),
 
                         // Campo de Enum: status_evento
@@ -128,6 +168,11 @@ class HistoricoVeiculoResource extends Resource
                             ->nullable()
                             ->columnSpan(1),
 
+                        TimePicker::make('hora_conclusao')
+                            ->label('Hora retorno veículo')
+                            ->nullable()
+                            ->columnSpan(1),
+
                         Forms\Components\Textarea::make('observacoes')
                             ->label('Observações Adicionais')
                             ->maxLength(65535)
@@ -166,13 +211,16 @@ class HistoricoVeiculoResource extends Resource
         return $table
             ->paginationPageOptions([5, 10]) // Limita para APENAS 5 a 10 registros por página
             ->columns([
-                Tables\Columns\TextColumn::make('veiculo.placa')
+                Tables\Columns\TextColumn::make('veiculo.placa_modelo_direcionamento')
                     ->label('Veículo')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tipo_evento')
                     ->searchable()
                     ->badge(), // Exibe o Enum como um badge
+                Tables\Columns\IconColumn::make('teve_vitima')
+                    ->label('Teve Vitima?')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('data_evento')
                     ->dateTime('d-M-Y')
                     ->sortable(),
@@ -188,6 +236,21 @@ class HistoricoVeiculoResource extends Resource
                 Tables\Columns\IconColumn::make('afeta_disponibilidade')
                     ->label('Afeta Dispon.')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('veiculoSubstituto.placa_modelo_direcionamento')
+                    ->label('Veículo Substituto'),
+//                    ->searchable(query: function (Builder $query, string $search): Builder {
+//                        return $query->whereHas('veiculoSubstituto', function ($q) use ($search) {
+//                            $q->where('placa', 'like', "%{$search}%")
+//                                ->orWhereHas('modelo', function ($subQ) use ($search) {
+//                                    $subQ->where('nome_modelo', 'like', "%{$search}%");
+//                                });
+//                        });
+//                    })
+//                    ->sortable(query: function (Builder $query, string $direction): Builder {
+//                        return $query->join('veiculos as v_substituto', 'v_substituto.id_veiculo', '=', $query->getModel()->getTable() . '.id_veiculo_substituto')
+//                            ->join('modelos as m_substituto', 'm_substituto.id_modelo', '=', 'v_substituto.id_modelo')
+//                            ->orderBy('v_substituto.placa', $direction);
+//                    }),
                 Tables\Columns\TextColumn::make('status_evento')
                     ->searchable()
                     ->badge(), // Exibe o Enum como um badge
@@ -208,6 +271,10 @@ class HistoricoVeiculoResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('data_conclusao')
                     ->dateTime('d-M-Y')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('hora_conclusao')
+                    ->time('H:i') // Formato de hora
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('userCreatedBy.name')

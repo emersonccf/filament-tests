@@ -18,6 +18,7 @@ class Modelo extends Model
     protected $fillable = [
         'id_marca',
         'nome_modelo',
+        'quilometragem_revisao',
         'categoria',
         'numero_portas',
         'capacidade_passageiros',

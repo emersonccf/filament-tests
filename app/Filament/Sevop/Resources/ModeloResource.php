@@ -62,6 +62,11 @@ class ModeloResource extends Resource
                     ->required()
                     ->maxLength(50)
                     ->dehydrateStateUsing(fn (string $state): string => mb_strtoupper($state)),
+                TextInput::make('quilometragem_revisao')
+                    ->required()
+                    ->numeric()
+                    ->default(10000.00)
+                    ->step('1000.00'), // Permite decimais
                 TextInput::make('numero_portas')
                     ->required()
                     ->numeric()
@@ -131,6 +136,10 @@ class ModeloResource extends Resource
                 Tables\Columns\TextColumn::make('nome_modelo')
                     ->sortable()
                     ->searchable(),
+
+                Tables\Columns\TextColumn::make('quilometragem_revisao')
+                    ->numeric(0)
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('categoria')
                     ->searchable()

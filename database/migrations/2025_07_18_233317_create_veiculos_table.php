@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\LocalidadeAtivacaoTurnoVeiculo;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +25,11 @@ return new class extends Migration
             $table->string('local_ativacao', 50)->default(LocalAtivacaoVeiculo::GTRAN->value)->comment('Localidade onde o veículo é ativado e/ou desativado');
             $table->string('combustivel', 20)->default(CombustivelVeiculo::FLEX->value)->comment('Tipo de combustível');
             $table->string('status', 20)->default(StatusVeiculo::ATIVO->value)->comment('Status operacional');
+            $table->decimal('km_proxima_revisao', 10, 2)->default(10000)->comment('Quilometragem definida para realização da próxima revisão');
+            $table->boolean('revisao_pendente')->default(false)->comment('Se a revisão do veículo está pendente');
+            $table->string('localidade_ativacao_mat', 20)->default(LocalidadeAtivacaoTurnoVeiculo::OUTRAS->value)->comment('Local onde o veículo deve ativar durante o turno matutino'); // ENUM PARA ESSE CAMPO
+            $table->string('localidade_ativacao_vesp', 20)->default(LocalidadeAtivacaoTurnoVeiculo::OUTRAS->value)->comment('Local onde o veículo deve ativar durante o turno vespertino'); // ENUM PARA ESSE CAMPO
+            $table->string('localidade_ativacao_not', 20)->default(LocalidadeAtivacaoTurnoVeiculo::OUTRAS->value)->comment('Local onde o veículo deve ativar durante o turno noturno'); // ENUM PARA ESSE CAMPO
             $table->boolean('possui_bateria_auxiliar')->default(false)->comment('Informa de o veículo possui bateria auxiliar');
             $table->boolean('possui_gps')->default(false)->comment('Informa de o veículo possui GPS');
             $table->decimal('quilometragem', 10, 2)->default(0)->comment('Quilometragem atual');

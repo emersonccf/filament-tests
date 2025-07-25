@@ -26,7 +26,12 @@ class Veiculo extends Model
         'local_ativacao',
         'combustivel',
         'status',
-        'possui_bateria_auxiliar',
+        'km_proxima_revisao', //add
+        'revisao_pendente', //add
+        'localidade_ativacao_mat', //add
+        'localidade_ativacao_vesp', //add
+        'localidade_ativacao_not', //add
+        'possui_bateria_auxiliar', //add
         'possui_gps',
         'quilometragem',
         'data_recebimento',
@@ -49,6 +54,13 @@ class Veiculo extends Model
         'data_recebimento' => 'date',
         'valor_diaria' => 'decimal:2',
     ];
+
+    /**
+     * Adiciona 'placa_modelo_direcionamento' à lista de atributos que devem ser anexados
+     * ao array/JSON do modelo.
+     * Isso garante que o atributo calculado esteja disponível ao serializar o modelo.
+     */
+    protected $appends = ['placa_modelo_direcionamento'];
 
     /**
      * Get the modelo that owns the veiculo.
@@ -88,5 +100,19 @@ class Veiculo extends Model
     public function userUpdatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'atualizado_por', 'id');
+    }
+
+    /**
+     * Get the formatted placa, modelo, and direcionamento for the veiculo.
+     *
+     * @return string
+     */
+    public function getPlacaModeloDirecionamentoAttribute(): string
+    {
+        // Certifica-se de que o relacionamento 'modelo' está carregado para evitar N+1 queries.
+        // Se o modelo não estiver carregado, ele será carregado aqui.
+        $modeloNome = $this->modelo->nome_modelo ?? 'N/A';
+
+        return "{$this->placa} / {$modeloNome} / {$this->direcionamento->value}";
     }
 }

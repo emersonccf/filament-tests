@@ -19,17 +19,20 @@ class HistoricoVeiculo extends Model
     protected $fillable = [
         'id_veiculo',
         'tipo_evento',
+        'teve_vitima',
         'data_evento',
         'hora_evento',
         'quilometragem',
         'prioridade',
         'afeta_disponibilidade',
+        'id_veiculo_substituto',
         'status_evento',
         'descricao',
         'local_ocorrencia',
         'prestador_servico',
         'data_prevista_conclusao',
         'data_conclusao',
+        'hora_conclusao',
         'observacoes',
         'cadastrado_por',
         'atualizado_por',
@@ -69,5 +72,13 @@ class HistoricoVeiculo extends Model
     public function userUpdatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'atualizado_por', 'id');
+    }
+
+    /**
+     * Get the substitute vehicle for the historico.
+     */
+    public function veiculoSubstituto(): BelongsTo
+    {
+        return $this->belongsTo(Veiculo::class, 'id_veiculo_substituto', 'id_veiculo');
     }
 }

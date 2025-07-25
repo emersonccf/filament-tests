@@ -6,17 +6,27 @@ use Filament\Support\Contracts\HasLabel;
 
 enum TipoEventoHistorico: string implements HasLabel
 {
-    case MANUTENCAO_PREVENTIVA = 'MANUTENCAO_PREVENTIVA';
-    case MANUTENCAO_CORRETIVA = 'MANUTENCAO_CORRETIVA';
     case REVISAO = 'REVISAO';
-    case ACIDENTE = 'ACIDENTE';
+    case MANUTENCAO_CORRETIVA = 'MANUTENCAO_CORRETIVA';
+    case ACIDENTE_CHOQUE = 'ACIDENTE_CHOQUE';
+    case ACIDENTE_QUEDA = 'ACIDENTE_QUEDA';
+    case ACIDENTE_ATROPELAMENTO = 'ACIDENTE_ATROPELAMENTO';
+    case ACIDENTE_COLISAO = 'ACIDENTE_COLISAO';
+    case ACIDENTE_TOMBAMENTO = 'ACIDENTE_TOMBAMENTO';
+    case ACIDENTE_ABALROAMENTO = 'ACIDENTE_ABALROAMENTO';
+    case ACIDENTE_CAPOTAMENTO = 'ACIDENTE_CAPOTAMENTO';
+    case ACIDENTE_ENGAVETAMENTO = 'ACIDENTE_ENGAVETAMENTO';
+    case ACIDENTE_OUTROS = 'ACIDENTE_OUTROS';
     case AUSENCIA_EQUIPAMENTO = 'AUSENCIA_EQUIPAMENTO';
     case SUJEIRA = 'SUJEIRA';
     case PNEU_FURADO = 'PNEU_FURADO';
-    case AMASSADO_CHAPARIA = 'AMASSADO_CHAPARIA';
-    case AMASSADO_PARA_CHOQUE = 'AMASSADO_PARA_CHOQUE';
+    case CHAPARIA_DANIFICADA = 'CHAPARIA_DANIFICADA';
+    case PARA_CHOQUE_DANIFICADO = 'PARA_CHOQUE_DANIFICADO';
     case DEFEITO_RADIO = 'DEFEITO_RADIO';
     case DEFEITO_FAROL = 'DEFEITO_FAROL';
+    case PANE = 'PANE';
+    case EXTRAVIO = 'EXTRAVIO';
+    case VANDALISMO = 'VANDALISMO';
     case DEFEITO_LANTERNA = 'DEFEITO_LANTERNA';
     case FALHA_GIROFLEX = 'FALHA_GIROFLEX';
     case TROCA_OLEO = 'TROCA_OLEO';
@@ -32,17 +42,27 @@ enum TipoEventoHistorico: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::MANUTENCAO_PREVENTIVA => 'Manutenção Preventiva',
-            self::MANUTENCAO_CORRETIVA => 'Manutenção Corretiva',
             self::REVISAO => 'Revisão',
-            self::ACIDENTE => 'Acidente',
+            self::MANUTENCAO_CORRETIVA => 'Manutenção Corretiva',
+            self::ACIDENTE_CHOQUE => 'Acidente tipo Choque',
+            self::ACIDENTE_QUEDA => 'Acidente tipo Queda',
+            self::ACIDENTE_ATROPELAMENTO => 'Acidente tipo Atropelamento',
+            self::ACIDENTE_COLISAO => 'Acidente tipo Colisão',
+            self::ACIDENTE_TOMBAMENTO => 'Acidente tipo Tombamento',
+            self::ACIDENTE_ABALROAMENTO => 'Acidente tipo Abalroamento',
+            self::ACIDENTE_CAPOTAMENTO => 'Acidente tipo Capotamento',
+            self::ACIDENTE_ENGAVETAMENTO => 'Acidente tipo Engavetamento',
+            self::ACIDENTE_OUTROS => 'Acidente Outros',
             self::AUSENCIA_EQUIPAMENTO => 'Ausência de Equipamento',
             self::SUJEIRA => 'Sujeira',
             self::PNEU_FURADO => 'Pneu Furado',
-            self::AMASSADO_CHAPARIA => 'Amassado Chapa',
-            self::AMASSADO_PARA_CHOQUE => 'Amassado Para-choque',
+            self::CHAPARIA_DANIFICADA => 'Chaparia danificada',
+            self::PARA_CHOQUE_DANIFICADO => 'Para-choque danificado',
             self::DEFEITO_RADIO => 'Defeito Rádio',
             self::DEFEITO_FAROL => 'Defeito Farol',
+            self::PANE => 'Pane',
+            self::EXTRAVIO => 'Extravio',
+            self::VANDALISMO => 'Vandalismo',
             self::DEFEITO_LANTERNA => 'Defeito Lanterna',
             self::FALHA_GIROFLEX => 'Falha Giroflex',
             self::TROCA_OLEO => 'Troca Óleo',

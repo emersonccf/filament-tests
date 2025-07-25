@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('id_marca')->unsigned()->comment('Chave estrangeira para marca');
             $table->string('nome_modelo', 50)->comment('Nome do modelo');
             // Usando string para ENUM no banco, e o Enum no Model para tipagem segura
+            $table->decimal('quilometragem_revisao', 10, 2)->default(10000)->comment('Quilometragem definida para periodicidade de revisão');
             $table->string('categoria', 50)->default(CategoriaVeiculo::OUTROS->value)->comment('Categoria do veículo');
             $table->tinyInteger('numero_portas')->default(0)->comment('Número de portas');
             $table->tinyInteger('capacidade_passageiros')->default(2)->comment('Capacidade de passageiros');

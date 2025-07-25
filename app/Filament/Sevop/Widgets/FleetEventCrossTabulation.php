@@ -15,7 +15,7 @@ class FleetEventCrossTabulation extends Widget
     protected static string $view = 'filament.sevop.widgets.fleet-event-cross-tabulation';
 
     // Define o título que aparecerá no cabeçalho do widget
-    protected static ?string $heading = 'Ocorrências de Eventos da Frota (Veículos Ativos)';
+    protected static ?string $heading = 'Ocorrências de Eventos da Frota (Veículos Ativos ou em Manutenção)';
 
     // Opcional: Faz o widget recarregar seus dados periodicamente (a cada 30 segundos)
     protected static ?string $pollingInterval = '30s';
@@ -52,6 +52,7 @@ class FleetEventCrossTabulation extends Widget
             // Juntar com a tabela de veículos para filtrar apenas os ativos
             ->join('veiculos', 'historico_veiculos.id_veiculo', '=', 'veiculos.id_veiculo')
             ->where('veiculos.status', StatusVeiculo::ATIVO->value) // Filtrar por veículos ativos
+            ->orWhere('veiculos.status', StatusVeiculo::MANUTENCAO->value) // Filtrar por veículos em manutenção
             // Selecionar os tipos de evento, status e a contagem de ocorrências
             ->select(
                 'historico_veiculos.tipo_evento',
