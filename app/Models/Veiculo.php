@@ -26,11 +26,11 @@ class Veiculo extends Model
         'local_ativacao',
         'combustivel',
         'status',
-        'km_proxima_revisao', //add - falta colocar na tabela
-        'revisao_pendente', //add
-        'localidade_ativacao_mat', //add
-        'localidade_ativacao_vesp', //add
-        'localidade_ativacao_not', //add
+        'km_proxima_revisao',
+        'revisao_pendente',
+        'localidade_ativacao_mat',
+        'localidade_ativacao_vesp',
+        'localidade_ativacao_not',
         'possui_bateria_auxiliar',
         'possui_gps',
         'quilometragem',
@@ -60,7 +60,9 @@ class Veiculo extends Model
      * ao array/JSON do modelo.
      * Isso garante que o atributo calculado esteja disponível ao serializar o modelo.
      */
-    protected $appends = ['placa_modelo_direcionamento'];
+    protected $appends = ['placa_modelo_direcionamento',
+                          'veiculo_em_dias_com_revisao'
+    ];
 
     /**
      * Get the modelo that owns the veiculo.
@@ -81,7 +83,7 @@ class Veiculo extends Model
     /**
      * Get the historicos for the veiculo.
      */
-    public function historicos(): HasMany
+    public function historicoVeiculos(): HasMany
     {
         return $this->hasMany(HistoricoVeiculo::class, 'id_veiculo', 'id_veiculo');
     }
@@ -114,5 +116,20 @@ class Veiculo extends Model
         $modeloNome = $this->modelo->nome_modelo ?? 'N/A';
 
         return "{$this->placa} / {$modeloNome} / {$this->direcionamento->value}";
+    }
+
+    /**
+     * Retorna true se tudo ok com a revisão
+     *
+     * @return boolean
+     */
+    public function getVeiculoEmDiasComRevisaoAttribute(): bool
+    {
+        // Verifica se km_proxima_revisao não é null para evitar erros
+        if ($this->km_proxima_revisao === null) {
+            return false;
+        }
+
+        return $this->quilometragem <= $this->km_proxima_revisao;
     }
 }

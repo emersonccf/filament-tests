@@ -22,6 +22,7 @@ class HistoricoVeiculo extends Model
         'teve_vitima',
         'data_evento',
         'hora_evento',
+        'id_pessoa',
         'quilometragem',
         'prioridade',
         'afeta_disponibilidade',
@@ -80,5 +81,13 @@ class HistoricoVeiculo extends Model
     public function veiculoSubstituto(): BelongsTo
     {
         return $this->belongsTo(Veiculo::class, 'id_veiculo_substituto', 'id_veiculo');
+    }
+
+    /**
+     * Get the user that registered the veiculo.
+     */
+    public function pessoa(): BelongsTo
+    {
+        return $this->belongsTo(Pessoa::class, 'id_pessoa', 'rus_id');
     }
 }

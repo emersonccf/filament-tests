@@ -12,124 +12,209 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
-
-// NOVOS IMPORTS NECESSÁRIOS:
-use Filament\Forms\Components\TextInput; // Garanta que este import está presente
-use App\Models\User;   // Para as relações de usuário (cadastrado_por, atualizado_por)
-use Filament\Forms\Components\Placeholder; // Para exibir informações não editáveis (nome do usuário)
-use Filament\Forms\Components\Hidden;     // Para ocultar campos preenchidos automaticamente
-use Illuminate\Support\Facades\Auth;      // Para acessar o usuário logado
-use Filament\Forms\Components\Section;    // Para organizar melhor o formulário
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Section;
+use Illuminate\Support\Facades\Auth;
 
 class UnidadeResource extends Resource
 {
     protected static ?string $model = Unidade::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-    protected static ?string $navigationGroup = 'Controle de Frota'; // <--- Adicione esta linha
-    protected static ?int $navigationSort = 40; // <--- Adicione esta linha para ordenar dentro do grupo
+    protected static ?string $navigationGroup = 'Controle de Frota';
+    protected static ?int $navigationSort = 40;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make('Informações da Unidade') // Adiciona uma seção para organização
-                ->schema([
-                    Forms\Components\TextInput::make('nome_unidade')
-                        ->required()
-                        ->maxLength(100)
-                        ->unique(ignoreRecord: true) // Adicionado para garantir nome único
-                        ->dehydrateStateUsing(fn (string $state): string => mb_strtoupper($state)),
-                    Forms\Components\TextInput::make('codigo_unidade')
-                        ->required()
-                        ->maxLength(20)
-                        ->unique(ignoreRecord: true) // Adicionado para garantir código único
-                        ->dehydrateStateUsing(fn (string $state): string => mb_strtoupper($state)),
-                    Forms\Components\TextInput::make('telefone')
-                        ->tel()
-                        ->mask('(99) 99999-9999')
-                        ->maxLength(15)
-                        ->default(null),
-                    Forms\Components\TextInput::make('responsavel')
-                        ->maxLength(100)
-                        ->default(null)
-                        ->dehydrateStateUsing(fn (string $state): string => mb_strtoupper($state)),
-                ])->columns(2), // Define 2 colunas para esta seção
+                Section::make('Informações da Unidade')
+                    ->description('Dados principais da unidade organizacional')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                TextInput::make('nome_unidade')
+                                    ->required()
+                                    ->maxLength(100)
+                                    ->unique(ignoreRecord: true)
+                                    ->dehydrateStateUsing(fn (string $state): string => mb_strtoupper($state))
+                                    ->helperText('Nome será convertido para maiúsculas')
+                                    ->columnSpan(1),
 
-                Section::make('Informações de Auditoria') // Nova seção para campos de auditoria
-                ->schema([
-                    // Campos ocultos para 'cadastrado_por' e 'atualizado_por'.
-                    // Estes são preenchidos automaticamente pelo Observer.
-                    Hidden::make('cadastrado_por'),
-                    Hidden::make('atualizado_por'),
+                                TextInput::make('codigo_unidade')
+                                    ->required()
+                                    ->maxLength(20)
+                                    ->unique(ignoreRecord: true)
+                                    ->dehydrateStateUsing(fn (string $state): string => mb_strtoupper($state))
+                                    ->helperText('Código será convertido para maiúsculas')
+                                    ->columnSpan(1),
 
-                    // Placeholder para 'Cadastrado Por' - Exibe o nome do usuário, não editável.
-                    Placeholder::make('cadastrado_por_display')
-                        ->label('Cadastrado Por')
-                        ->content(function (string $operation, ?Unidade $record): string {
-                            if ($operation === 'create') {
-                                return Auth::user()->name; // Exibe o nome do usuário logado na criação
-                            }
-                            // Busca o nome do usuário através da relação no Model
-                            return $record?->userCreatedBy?->name ?? 'N/A';
-                        })
-                        ->columnSpan(1),
+                                TextInput::make('telefone')
+                                    ->tel()
+                                    ->mask('(99) 99999-9999')
+                                    ->maxLength(15)
+                                    ->placeholder('(00) 00000-0000')
+                                    ->columnSpan(1),
 
-                    // Placeholder para 'Atualizado Por' - Exibe o nome do usuário, não editável.
-                    Placeholder::make('atualizado_por_display')
-                        ->label('Atualizado Por')
-                        ->content(function (string $operation, ?Unidade $record): string {
-                            if ($operation === 'create') {
-                                return Auth::user()->name; // Exibe o nome do usuário logado na criação
-                            }
-                            // Busca o nome do usuário através da relação no Model
-                            return $record?->userUpdatedBy?->name ?? 'N/A';
-                        })
-                        ->columnSpan(1),
-                ])->columns(2),
+                                TextInput::make('responsavel')
+                                    ->maxLength(100)
+                                    ->dehydrateStateUsing(fn (?string $state): ?string =>
+                                    $state ? mb_strtoupper($state) : null
+                                    )
+                                    ->helperText('Nome será convertido para maiúsculas')
+                                    ->columnSpan(1),
+                            ]),
+                    ])
+                    ->collapsible(),
+
+                Section::make('Informações de Auditoria')
+                    ->description('Dados de controle e rastreabilidade')
+                    ->schema([
+                        // Campos ocultos para preenchimento automático
+                        Hidden::make('cadastrado_por'),
+                        Hidden::make('atualizado_por'),
+
+                        // Grid para organizar as informações de auditoria
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                // Coluna 1: Informações de criação
+                                Forms\Components\Group::make([
+                                    Placeholder::make('cadastrado_por_display')
+                                        ->label('Cadastrado Por')
+                                        ->content(function (string $operation, ?Unidade $record): string {
+                                            if ($operation === 'create') {
+                                                return Auth::user()->name;
+                                            }
+                                            return $record?->userCreatedBy?->name ?? 'N/A';
+                                        }),
+
+                                    Placeholder::make('created_at_display')
+                                        ->label('Data de Criação')
+                                        ->content(function (string $operation, ?Unidade $record): string {
+                                            if ($operation === 'create') {
+                                                return 'Será definida ao salvar';
+                                            }
+                                            return $record?->created_at?->format('d/m/Y H:i:s') ?? 'N/A';
+                                        }),
+                                ])->columnSpan(1),
+
+                                // Coluna 2: Informações de atualização
+                                Forms\Components\Group::make([
+                                    Placeholder::make('atualizado_por_display')
+                                        ->label('Atualizado Por')
+                                        ->content(function (string $operation, ?Unidade $record): string {
+                                            if ($operation === 'create') {
+                                                return Auth::user()->name;
+                                            }
+                                            return $record?->userUpdatedBy?->name ?? 'N/A';
+                                        }),
+
+                                    Placeholder::make('updated_at_display')
+                                        ->label('Última Atualização')
+                                        ->content(function (string $operation, ?Unidade $record): string {
+                                            if ($operation === 'create') {
+                                                return 'Será definida ao salvar';
+                                            }
+                                            return $record?->updated_at?->format('d/m/Y H:i:s') ?? 'N/A';
+                                        }),
+                                ])->columnSpan(1),
+                            ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed()
+                    ->visible(fn (string $operation): bool => $operation === 'edit'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->paginationPageOptions([5, 10]) // Limita para APENAS 5 a 10 registros por página
+            ->paginationPageOptions([5, 10])
+            ->defaultSort('nome_unidade', 'asc')
             ->columns([
                 Tables\Columns\TextColumn::make('nome_unidade')
+                    ->label('Nome da Unidade')
                     ->searchable()
-                    ->sortable(), // Adicionado sortable
+                    ->sortable()
+                    ->weight('bold'),
+
                 Tables\Columns\TextColumn::make('codigo_unidade')
+                    ->label('Código')
                     ->searchable()
-                    ->sortable(), // Adicionado sortable
+                    ->sortable()
+                    ->badge()
+                    ->color('primary'),
+
                 Tables\Columns\TextColumn::make('telefone')
-                    ->searchable(),
+                    ->label('Telefone')
+                    ->searchable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('responsavel')
-                    ->searchable(),
-                // Exibindo o nome do usuário em vez do ID
+                    ->label('Responsável')
+                    ->searchable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('userCreatedBy.name')
                     ->label('Cadastrado Por')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d-M-Y H:i:s') // Formato padrão de data/hora do Filament
+                    ->label('Data de Criação')
+                    ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                // Exibindo o nome do usuário em vez do ID
+
                 Tables\Columns\TextColumn::make('userUpdatedBy.name')
                     ->label('Atualizado Por')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime('d-M-Y H:i:s') // Formato padrão de data/hora do Filament
+                    ->label('Última Atualização')
+                    ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // Não há filtros específicos para Enums ou outras chaves estrangeiras aqui.
+                Tables\Filters\SelectFilter::make('responsavel')
+                    ->options(function (): array {
+                        return Unidade::query()
+                            ->whereNotNull('responsavel')
+                            ->distinct()
+                            ->pluck('responsavel', 'responsavel')
+                            ->toArray();
+                    })
+                    ->searchable(),
+
+                Tables\Filters\Filter::make('created_at')
+                    ->form([
+                        Forms\Components\DatePicker::make('created_from')
+                            ->label('Criado a partir de'),
+                        Forms\Components\DatePicker::make('created_until')
+                            ->label('Criado até'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    }),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

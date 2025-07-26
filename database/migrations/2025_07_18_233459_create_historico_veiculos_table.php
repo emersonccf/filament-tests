@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('teve_vitima')->default(false)->comment('Se hove vítima em decorrência do evento');
             $table->date('data_evento')->comment('Data do evento');
             $table->time('hora_evento')->nullable()->comment('Hora do evento');
+            $table->bigInteger('id_pessoa')->unsigned()->nullable()->comment('Chave estrangeira para pessoa, condutor envolvido no evento');
             $table->decimal('quilometragem', 10, 2)->nullable()->comment('Quilometragem no momento');
             $table->string('prioridade', 20)->comment('Nível de prioridade');
             $table->boolean('afeta_disponibilidade')->default(false)->comment('Se o evento afeta disponibilidade');
@@ -39,6 +40,7 @@ return new class extends Migration
 
             $table->foreign('id_veiculo')->references('id_veiculo')->on('veiculos');
             $table->foreign('id_veiculo_substituto')->references('id_veiculo')->on('veiculos');
+            $table->foreign('id_pessoa')->references('rus_id')->on('pessoas');
             $table->foreign('cadastrado_por')->references('id')->on('users');
             $table->foreign('atualizado_por')->references('id')->on('users');
         });

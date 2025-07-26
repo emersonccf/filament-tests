@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -78,6 +79,15 @@ class Pessoa extends Model
             }
         });
     }
+
+    /**
+     * Get the alocacoes for the veiculo.
+     */
+    public function historicoVeiculos(): HasMany
+    {
+        return $this->hasMany(HistoricoVeiculo::class, 'id_pessoa', 'rus_id');
+    }
+
 
 //    public function setSexoAttribute($value)
 //    {
