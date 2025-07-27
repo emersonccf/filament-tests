@@ -7,6 +7,7 @@ use App\Filament\Sevop\Resources\MarcaResource\RelationManagers;
 use App\Models\Marca;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Pages\Actions\ViewAction;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -98,14 +99,15 @@ class MarcaResource extends Resource
                     ])
                     ->collapsible()
                     ->collapsed()
-                    ->visible(fn (string $operation): bool => $operation === 'edit'),
+                    ->visible(fn (string $operation): bool => $operation === 'edit' or $operation === 'view'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->paginationPageOptions([5, 10])
+            ->paginationPageOptions([5, 10, 20, 50, 100, 'all'])
+            ->defaultPaginationPageOption(5)
             ->defaultSort('nome_marca', 'asc')
             ->columns([
                 Tables\Columns\TextColumn::make('nome_marca')
@@ -161,7 +163,7 @@ class MarcaResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                //Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -181,6 +183,7 @@ class MarcaResource extends Resource
     {
         return [
             'index' => Pages\ListMarcas::route('/'),
+            'view' => Pages\ViewMarca::route('/{record}'),
             'create' => Pages\CreateMarca::route('/create'),
             'edit' => Pages\EditMarca::route('/{record}/edit'),
         ];

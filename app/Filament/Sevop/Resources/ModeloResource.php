@@ -195,7 +195,8 @@ class ModeloResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->paginationPageOptions([5, 10])
+            ->paginationPageOptions([5, 10, 20, 50, 100, 'all'])
+            ->defaultPaginationPageOption(5)
             ->defaultSort('nome_modelo', 'asc')
             ->columns([
                 Tables\Columns\TextColumn::make('marca.nome_marca')
@@ -340,9 +341,9 @@ class ModeloResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                //Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                //Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

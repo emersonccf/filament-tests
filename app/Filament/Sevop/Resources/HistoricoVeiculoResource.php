@@ -304,15 +304,16 @@ class HistoricoVeiculoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->paginationPageOptions([5, 10])
+            ->paginationPageOptions([5, 10, 20, 50, 100, 'all'])
+            ->defaultPaginationPageOption(5)
             ->defaultSort('data_evento', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('veiculo.placa_modelo_direcionamento')
                     ->label('Veículo')
 //                    ->searchable(['veiculo.placa', 'veiculo.prefixo_veiculo'])
 //                    ->sortable()
-                    ->weight('bold')
-                    ->wrap(),
+//                    ->wrap()
+                    ->weight('bold'),
 
                 Tables\Columns\TextColumn::make('veiculo.placa')
                     ->label('Placa')
@@ -626,7 +627,7 @@ class HistoricoVeiculoResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                //Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -646,6 +647,7 @@ class HistoricoVeiculoResource extends Resource
     {
         return [
             'index' => Pages\ListHistoricoVeiculos::route('/'),
+            'view' => Pages\ViewHistoricoVeiculo::route('/{record}'),
             'create' => Pages\CreateHistoricoVeiculo::route('/create'),
             'edit' => Pages\EditHistoricoVeiculo::route('/{record}/edit'),
         ];

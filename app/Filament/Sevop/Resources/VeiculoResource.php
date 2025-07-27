@@ -362,8 +362,9 @@ class VeiculoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->paginationPageOptions([5, 10])
-            ->defaultSort('placa', 'asc')
+            ->paginationPageOptions([5, 10, 20, 50, 100, 'all'])
+            ->defaultPaginationPageOption(5)
+            ->defaultSort('prefixo_veiculo', 'asc')
             ->columns([
                 Tables\Columns\TextColumn::make('veiculo_em_dias_com_revisao')
                     ->label('Revisão OK?')
@@ -656,7 +657,7 @@ class VeiculoResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                //Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -676,6 +677,7 @@ class VeiculoResource extends Resource
     {
         return [
             'index' => Pages\ListVeiculos::route('/'),
+            'view' => Pages\ViewVeiculo::route('/{record}'),
             'create' => Pages\CreateVeiculo::route('/create'),
             'edit' => Pages\EditVeiculo::route('/{record}/edit'),
         ];

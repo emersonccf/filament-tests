@@ -478,10 +478,10 @@ class HistoricoVeiculosRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->label('Visualizar')
-                    ->modalWidth('6xl')
-                    ->slideOver(),
+//                Tables\Actions\ViewAction::make()
+//                    ->label('Visualizar')
+//                    ->modalWidth('6xl')
+//                    ->slideOver(),
 
                 Tables\Actions\EditAction::make()
                     ->label('Acompanhar')
@@ -495,11 +495,11 @@ class HistoricoVeiculosRelationManager extends RelationManager
                     })
                     ->successNotificationTitle('Acompanhamento atualizado com sucesso!'),
 
-                Tables\Actions\DeleteAction::make()
-                    ->requiresConfirmation()
-                    ->modalHeading('Excluir Evento')
-                    ->modalDescription('Tem certeza que deseja excluir este evento? Esta ação não pode ser desfeita.')
-                    ->successNotificationTitle('Evento excluído com sucesso!'),
+//                Tables\Actions\DeleteAction::make()
+//                    ->requiresConfirmation()
+//                    ->modalHeading('Excluir Evento')
+//                    ->modalDescription('Tem certeza que deseja excluir este evento? Esta ação não pode ser desfeita.')
+//                    ->successNotificationTitle('Evento excluído com sucesso!'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -511,7 +511,7 @@ class HistoricoVeiculosRelationManager extends RelationManager
             ->emptyStateDescription('Este veículo ainda não possui eventos registrados em seu histórico.')
             ->emptyStateIcon('heroicon-o-clipboard-document-list')
             ->striped()
-            ->paginated([5, 10, 25])
+            ->paginationPageOptions([5, 10, 20, 50, 100, 'all'])
             ->defaultPaginationPageOption(5);
     }
 
