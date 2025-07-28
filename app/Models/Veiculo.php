@@ -87,7 +87,13 @@ class Veiculo extends Model
     {
         return $this->hasMany(HistoricoVeiculo::class, 'id_veiculo', 'id_veiculo');
     }
-
+    /**
+     * Get the BDV main records for the vehicle.
+     */
+    public function bdvMainRecords(): HasMany
+    {
+        return $this->hasMany(BdvMain::class, 'id_veiculo', 'id_veiculo');
+    }
     /**
      * Get the user that registered the veiculo.
      */
@@ -103,7 +109,6 @@ class Veiculo extends Model
     {
         return $this->belongsTo(User::class, 'atualizado_por', 'id');
     }
-
     /**
      * Get the formatted placa, modelo, and direcionamento for the veiculo.
      *
@@ -117,7 +122,6 @@ class Veiculo extends Model
 
         return "{$this->placa} / {$modeloNome} / {$this->direcionamento->value}";
     }
-
     /**
      * Retorna true se tudo ok com a revisão
      *
@@ -132,12 +136,13 @@ class Veiculo extends Model
 
         return $this->quilometragem <= $this->km_proxima_revisao;
     }
-
     /**
-     * Get the BDV main records for the vehicle.
+     * Retorna a quantidade de rodas de um determinado modelo de veículo
+     *
+     * @return null|int
      */
-    public function bdvMainRecords(): HasMany
+    public function getNumeroRodasAttribute(): ?int
     {
-        return $this->hasMany(BdvMain::class, 'id_veiculo', 'id_veiculo');
+        return $this->modelo?->numero_rodas;
     }
 }

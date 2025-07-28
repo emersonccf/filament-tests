@@ -83,4 +83,18 @@ class BdvRegistroMotorista extends Model
     {
         return $this->hasMany(BdvItemStatus::class, 'id_registro_motorista', 'id_registro_motorista');
     }
+    /**
+     * Get the user who created the BDV main record.
+     */
+    public function userCreatedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'cadastrado_por', 'id');
+    }
+    /**
+     * Get the user who updated the BDV main record.
+     */
+    public function userUpdatedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'atualizado_por');
+    }
 }

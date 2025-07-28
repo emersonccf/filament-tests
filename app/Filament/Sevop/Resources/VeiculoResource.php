@@ -677,8 +677,8 @@ class VeiculoResource extends Resource
     {
         return [
             'index' => Pages\ListVeiculos::route('/'),
-            'view' => Pages\ViewVeiculo::route('/{record}'),
             'create' => Pages\CreateVeiculo::route('/create'),
+            'view' => Pages\ViewVeiculo::route('/{record}'),
             'edit' => Pages\EditVeiculo::route('/{record}/edit'),
         ];
     }

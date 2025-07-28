@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('km_saida', 10)->comment('Quilometragem do veículo na saída');
             $table->string('nivel_combustivel_saida', 10)->default(NivelCombustivelEnum::VAZIO->value)->comment('Nível de combustível na saída');
             $table->text('observacoes_saida')->nullable()->comment('Observações do motorista ou encarregado na saída');
-            $table->unsignedBigInteger('id_encarregado_saida')->comment('Pessoa encarregada que conferiu a saída do veículo');
+            $table->unsignedBigInteger('id_encarregado_saida')->nullable()->comment('Pessoa encarregada que conferiu a saída do veículo');
 
             // Informações de Chegada (podem ser nulas se o veículo ainda não retornou)
             $table->dateTime('momento_chegada')->nullable()->comment('Data e hora da chegada do veículo com este motorista');

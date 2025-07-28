@@ -647,8 +647,8 @@ class HistoricoVeiculoResource extends Resource
     {
         return [
             'index' => Pages\ListHistoricoVeiculos::route('/'),
-            'view' => Pages\ViewHistoricoVeiculo::route('/{record}'),
             'create' => Pages\CreateHistoricoVeiculo::route('/create'),
+            'view' => Pages\ViewHistoricoVeiculo::route('/{record}'),
             'edit' => Pages\EditHistoricoVeiculo::route('/{record}/edit'),
         ];
     }

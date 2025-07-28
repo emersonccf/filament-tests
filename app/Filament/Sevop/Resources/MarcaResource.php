@@ -183,8 +183,8 @@ class MarcaResource extends Resource
     {
         return [
             'index' => Pages\ListMarcas::route('/'),
-            'view' => Pages\ViewMarca::route('/{record}'),
             'create' => Pages\CreateMarca::route('/create'),
+            'view' => Pages\ViewMarca::route('/{record}'),
             'edit' => Pages\EditMarca::route('/{record}/edit'),
         ];
     }
