@@ -11,21 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('alocacao_veiculos', function (Blueprint $table) {
-            $table->increments('id_alocacao'); // Chave primária
-            $table->integer('id_veiculo')->unsigned()->comment('Chave estrangeira para veículo');
-            $table->integer('id_unidade')->unsigned()->comment('Chave estrangeira para unidade');
-            $table->date('data_inicio')->comment('Data de início da alocação');
-            $table->date('data_fim')->nullable()->comment('Data de fim da alocação');
-            $table->text('observacoes')->nullable()->comment('Observações sobre a alocação');
+        Schema::create('bdv_main', function (Blueprint $table) {
+            $table->id('id_bdv'); // Laravel 11 prefere 'id()' para auto-incremento primário, mas renomeamos para id_bdv
+            $table->unsignedInteger('id_veiculo')->comment('Chave estrangeira para o veículo ao qual o BDV se refere');
+            $table->date('data_referencia')->comment('Data principal do BDV (dia em que o veículo foi utilizado)');
+            $table->text('observacoes_gerais')->nullable()->comment('Observações gerais para este BDV');
+
+
             $table->bigInteger('cadastrado_por')->unsigned()->comment('Usuário que cadastrou');
             $table->timestamps();
             $table->bigInteger('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
 
+            // Chaves estrangeiras
             $table->foreign('id_veiculo')->references('id_veiculo')->on('veiculos')->onDelete('restrict');
-            $table->foreign('id_unidade')->references('id_unidade')->on('unidades')->onDelete('restrict');
             $table->foreign('cadastrado_por')->references('id')->on('users')->onDelete('restrict');
             $table->foreign('atualizado_por')->references('id')->on('users')->onDelete('restrict');
+
+
+            // Garante um BDV único por veículo por data
+            $table->unique(['id_veiculo', 'data_referencia']);
         });
     }
 
@@ -34,7 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('alocacao_veiculos');
+        Schema::dropIfExists('bdv_main');
     }
 };
-

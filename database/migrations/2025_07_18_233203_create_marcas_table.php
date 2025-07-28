@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamps();
             $table->bigInteger('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
 
-            $table->foreign('cadastrado_por')->references('id')->on('users');
-            $table->foreign('atualizado_por')->references('id')->on('users');
+            $table->foreign('cadastrado_por')->references('id')->on('users')->onDelete('restrict');
+            $table->foreign('atualizado_por')->references('id')->on('users')->onDelete('restrict');
         });
     }
 

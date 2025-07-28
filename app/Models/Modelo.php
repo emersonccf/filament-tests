@@ -71,5 +71,21 @@ class Modelo extends Model
         // Certifica-se de que a relação 'marca' está carregada antes de acessá-la
         return ($this->relationLoaded('marca') && $this->marca) ? "{$this->marca->nome_marca} / {$this->nome_modelo}" : $this->nome_modelo;
     }
+
+    /**
+     * Check if the model represents a 2-wheeled vehicle.
+     */
+    public function isTwoWheeled(): bool
+    {
+        return $this->numero_rodas === 2;
+    }
+
+    /**
+     * Check if the model represents a 4-wheeled vehicle.
+     */
+    public function isFourWheeled(): bool
+    {
+        return $this->numero_rodas === 4;
+    }
 }
 

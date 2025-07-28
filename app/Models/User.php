@@ -7,6 +7,7 @@ use App\Models\Concerns\HasProfilePhoto;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -135,6 +136,22 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function getProfilePhotoUrlAttribute() : string
     {
         return ($this->profile_photo_path)? full_url($this->profile_photo_path) : $this->defaultProfilePhotoUrl();
+    }
+
+    /**
+     * Get the BDV main records created by the user.
+     */
+    public function bdvMainCriadoPor(): HasMany
+    {
+        return $this->hasMany(BdvMain::class, 'cadastrado_por', 'id');
+    }
+
+    /**
+     * Get the BDV main records atualizado por the user.
+     */
+    public function bdvMainAtualizadoPor(): HasMany
+    {
+        return $this->hasMany(BdvMain::class, 'atualizado_por', 'id');
     }
 
     public function canAccessPanel(Panel $panel): bool

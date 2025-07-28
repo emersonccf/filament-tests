@@ -45,9 +45,9 @@ return new class extends Migration
             $table->timestamps(); // Substitui data_cadastro e data_atualizacao
             $table->bigInteger('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
 
-            $table->foreign('id_modelo')->references('id_modelo')->on('modelos');
-            $table->foreign('cadastrado_por')->references('id')->on('users');
-            $table->foreign('atualizado_por')->references('id')->on('users');
+            $table->foreign('id_modelo')->references('id_modelo')->on('modelos')->onDelete('restrict');
+            $table->foreign('cadastrado_por')->references('id')->on('users')->onDelete('restrict');
+            $table->foreign('atualizado_por')->references('id')->on('users')->onDelete('restrict');
         });
     }
 

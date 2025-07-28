@@ -89,33 +89,27 @@ class Pessoa extends Model
     }
 
 
-//    public function setSexoAttribute($value)
-//    {
-//        $this->attributes['sexo'] = $value instanceof SexoEnum ? $value : SexoEnum::from($value);
-//    }
-//
-//    public function getSexoAttribute($value): SexoEnum
-//    {
-//        return SexoEnum::from($value);
-//    }
-//
-//    public function setTipoSanguineoAttribute($value)
-//    {
-//        $this->attributes['tipo_sanguineo'] = $value instanceof TipoSanguineoEnum ? $value : TipoSanguineoEnum::from($value);
-//    }
-//
-//    public function getTipoSanguineoAttribute($value): TipoSanguineoEnum
-//    {
-//        return TipoSanguineoEnum::from($value);
-//    }
-//
-//    public function setEstadoCivilAttribute($value)
-//    {
-//        $this->attributes['estado_civil'] = $value instanceof EstadoCivilEnum ? $value : EstadoCivilEnum::from($value);
-//    }
-//
-//    public function getEstadoCivilAttribute($value): EstadoCivilEnum
-//    {
-//        return EstadoCivilEnum::from($value);
-//    }
+    /**
+     * Get the BDV registration records where this person is the driver.
+     */
+    public function bdvRegistrosComoCondutor(): HasMany
+    {
+        return $this->hasMany(BdvRegistroMotorista::class, 'id_condutor', 'rus_id');
+    }
+
+    /**
+     * Get the BDV registration records where this person is the departure supervisor.
+     */
+    public function bdvRegistrosComoEncarregadoSaida(): HasMany
+    {
+        return $this->hasMany(BdvRegistroMotorista::class, 'id_encarregado_saida', 'rus_id');
+    }
+
+    /**
+     * Get the BDV registration records where this person is the arrival supervisor.
+     */
+    public function bdvRegistrosComoEncarregadoChegada(): HasMany
+    {
+        return $this->hasMany(BdvRegistroMotorista::class, 'id_encarregado_chegada', 'rus_id');
+    }
 }

@@ -38,11 +38,11 @@ return new class extends Migration
             $table->timestamps();
             $table->bigInteger('atualizado_por')->unsigned()->nullable()->comment('Usuário que fez última alteração');
 
-            $table->foreign('id_veiculo')->references('id_veiculo')->on('veiculos');
-            $table->foreign('id_veiculo_substituto')->references('id_veiculo')->on('veiculos');
-            $table->foreign('id_pessoa')->references('rus_id')->on('pessoas');
-            $table->foreign('cadastrado_por')->references('id')->on('users');
-            $table->foreign('atualizado_por')->references('id')->on('users');
+            $table->foreign('id_veiculo')->references('id_veiculo')->on('veiculos')->onDelete('restrict');
+            $table->foreign('id_veiculo_substituto')->references('id_veiculo')->on('veiculos')->onDelete('restrict');
+            $table->foreign('id_pessoa')->references('rus_id')->on('pessoas')->onDelete('restrict');
+            $table->foreign('cadastrado_por')->references('id')->on('users')->onDelete('restrict');
+            $table->foreign('atualizado_por')->references('id')->on('users')->onDelete('restrict');
         });
     }
 

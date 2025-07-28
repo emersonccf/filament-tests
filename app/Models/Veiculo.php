@@ -132,4 +132,12 @@ class Veiculo extends Model
 
         return $this->quilometragem <= $this->km_proxima_revisao;
     }
+
+    /**
+     * Get the BDV main records for the vehicle.
+     */
+    public function bdvMainRecords(): HasMany
+    {
+        return $this->hasMany(BdvMain::class, 'id_veiculo', 'id_veiculo');
+    }
 }
