@@ -30,6 +30,8 @@ class AlocacaoVeiculoResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-arrows-right-left';
     protected static ?string $navigationGroup = 'Controle de Frota';
+    protected static ?string $label = 'Alocação Veículo';
+    protected static ?string $pluralLabel = 'Alocação Veículos';
     protected static ?int $navigationSort = 50;
 
     public static function form(Form $form): Form

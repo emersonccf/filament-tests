@@ -17,12 +17,12 @@ return new class extends Migration
             $table->id('id_registro_motorista');
             $table->unsignedBigInteger('id_bdv')->comment('Chave estrangeira para o BDV principal');
             $table->unsignedBigInteger('id_condutor')->comment('Chave estrangeira para o condutor do veículo neste turno (Pessoa)');
-            $table->string('tipo_turno', 20)->default(TipoTurnoEnum::MATUTINO->value)->comment('Turno de atuação do motorista (Matutino, Vespertino, Noturno, Diurno)');
+            $table->string('tipo_turno', 20)->comment('Turno de atuação do motorista (Matutino, Vespertino, Noturno, Diurno)');
 
             // Informações de Saída
             $table->dateTime('momento_saida')->comment('Data e hora da saída do veículo com este motorista');
             $table->decimal('km_saida', 10)->comment('Quilometragem do veículo na saída');
-            $table->string('nivel_combustivel_saida', 10)->default(NivelCombustivelEnum::VAZIO->value)->comment('Nível de combustível na saída');
+            $table->string('nivel_combustivel_saida', 10)->comment('Nível de combustível na saída');
             $table->text('observacoes_saida')->nullable()->comment('Observações do motorista ou encarregado na saída');
             $table->unsignedBigInteger('id_encarregado_saida')->nullable()->comment('Pessoa encarregada que conferiu a saída do veículo');
 

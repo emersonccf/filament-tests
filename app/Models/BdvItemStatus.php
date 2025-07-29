@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class BdvItemStatus extends Model
 {
     use HasFactory;
-
     protected $table = 'bdv_item_status';
     protected $primaryKey = 'id_item_status';
 
@@ -105,7 +104,16 @@ class BdvItemStatus extends Model
         'radio_am_fm' => 'boolean',
         'estofamento' => 'boolean',
     ];
-
+    // Constante no modelo BdvItemStatus para todos os campos booleanos
+    public const BOOLEAN_FIELDS = [
+        'crlv', 'lacre_placa', 'oleo_freio', 'oleo_motor', 'pneus_estado', 'retrovisor_direito_esquerdo',
+        'buzina', 'luzes_farol_alto_baixo_estacionamento', 'luzes_pisca_re_freios', 'chaparia_pintura',
+        'giroflex', 'sirene', 'velocimetro', 'bancos_estado', 'bateria_agua', 'paralamas_dianteiro_traseiro',
+        'descarga_completa', 'etiqueta_revisao', 'tampas_laterais', 'protetor_perna', 'fechadura_chave',
+        'carenagem_tanque', 'carenagem_farol', 'tanque_estrutura', 'caixa_lado_esq_lado_dir', 'punhos_manete',
+        'macaco', 'chave_roda', 'triangulo', 'estepe', 'extintor', 'agua_radiador', 'calotas', 'retrovisor_interno',
+        'macanetas_fechaduras', 'limpadores', 'luzes_internas', 'cinto_seguranca', 'radio_am_fm', 'estofamento',
+    ];
     /**
      * Get the driver registration record that owns this item status.
      */

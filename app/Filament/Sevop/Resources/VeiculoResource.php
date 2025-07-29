@@ -35,6 +35,8 @@ class VeiculoResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
     protected static ?string $navigationGroup = 'Controle de Frota';
+    protected static ?string $label = 'Veículo';
+    protected static ?string $pluralLabel = 'Veículos';
     protected static ?int $navigationSort = 30;
 
     public static function form(Form $form): Form

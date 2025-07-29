@@ -35,6 +35,8 @@ class HistoricoVeiculoResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static ?string $navigationGroup = 'Controle de Frota';
+    protected static ?string $label = 'Histórico Veículo';
+    protected static ?string $pluralLabel = 'Histórico Veículos';
     protected static ?int $navigationSort = 60;
 
     public static function form(Form $form): Form

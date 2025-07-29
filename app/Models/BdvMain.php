@@ -37,7 +37,7 @@ class BdvMain extends Model
     /**
      * Get the driver registration records for the BDV main record.
      */
-    public function registrosMotoristas(): HasMany
+    public function registrosMotorista(): HasMany
     {
         return $this->hasMany(BdvRegistroMotorista::class, 'id_bdv', 'id_bdv');
     }
