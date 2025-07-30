@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Ramsey\Uuid\Type\Decimal;
 
 class BdvRegistroMotorista extends Model
 {
@@ -37,12 +38,31 @@ class BdvRegistroMotorista extends Model
     protected $casts = [
         'tipo_turno' => TipoTurnoEnum::class,
         'momento_saida' => 'datetime',
-        'km_saida' => 'decimal:2',
+        'km_chegada' => 'decimal:2',
         'nivel_combustivel_saida' => NivelCombustivelEnum::class,
         'momento_chegada' => 'datetime',
         'km_chegada' => 'decimal:2',
         'nivel_combustivel_chegada' => NivelCombustivelEnum::class,
     ];
+
+    protected $appends = [
+        'quilometragem_rodada',
+    ];
+
+    /**
+     * Retorna a quilometragem rodada pelo veículo ou nulo
+     *
+     * @return null|float
+     */
+    public function getQuilometragemRodadaAttribute(): ?float
+    {
+        if($this->km_saida === null or $this->km_chegada === null)
+            return null;
+
+        return $this->km_chegada - $this->km_saida;
+    }
+
+
 
     /**
      * Get the main BDV record that owns this registration.

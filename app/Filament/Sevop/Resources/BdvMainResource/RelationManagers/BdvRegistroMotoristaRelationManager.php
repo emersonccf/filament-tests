@@ -7,17 +7,13 @@ use App\Enums\TipoRegistroStatusEnum;
 use App\Enums\TipoTurnoEnum;
 use App\Models\BdvItemStatus;
 use App\Models\Pessoa;
-use App\Models\Veiculo; // Necessário para obter numero_rodas do veículo pai
 use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\TimePicker;
-use Filament\Forms\Components\DataTimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -27,9 +23,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\BdvRegistroMotorista;
-use Filament\Forms\Components\DateTimePicker; // Corrigido de DataTimePicker
-
-
+use Filament\Forms\Components\DateTimePicker;
 
 class BdvRegistroMotoristaRelationManager extends RelationManager
 {
@@ -40,12 +34,9 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        // Obtém o número de rodas do veículo pai para a lógica de visibilidade
-        $numeroRodasVeiculo = $this->ownerRecord->veiculo->numero_rodas ?? 0;
-
         return $form
             ->schema([
-                // Seção para o Registro de Saída (para criação de novo turno ou visualização/edição)
+                // Seção para o Registro de Saída
                 Section::make('Informações de Saída do Turno')
                     ->description('Detalhes do condutor e do estado do veículo na saída.')
                     ->schema([
@@ -54,25 +45,28 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
                                 Select::make('id_condutor')
                                     ->label('Condutor')
                                     ->relationship('condutor', 'nome', fn(Builder $query) => $query->where('ativo', true))
-                                    ->getOptionLabelFromRecordUsing(fn(Pessoa $record) => "{$record->nome}") // TODO: pode retirar
+                                    ->getOptionLabelFromRecordUsing(fn(Pessoa $record) => "{$record->nome}")
                                     ->required()
                                     ->searchable()
                                     ->preload()
                                     ->columnSpan(1)
-                                    ->disabled(fn(string $operation) => $operation === 'edit'), // Não pode mudar condutor ao editar
+                                    ->disabled(fn(string $operation) => $operation === 'edit'),
+
                                 Select::make('tipo_turno')
                                     ->label('Tipo de Turno')
                                     ->options(TipoTurnoEnum::class)
                                     ->required()
                                     ->native(false)
                                     ->columnSpan(1)
-                                    ->disabled(fn(string $operation) => $operation === 'edit'), // Não pode mudar tipo de turno ao editar
-                                Forms\Components\DateTimePicker::make('momento_saida')
+                                    ->disabled(fn(string $operation) => $operation === 'edit'),
+
+                                DateTimePicker::make('momento_saida')
                                     ->label('Data e Hora da Saída')
                                     ->required()
                                     ->displayFormat('d/m/Y H:i')
                                     ->columnSpan(1)
-                                    ->disabled(fn(string $operation) => $operation === 'edit'), // Não pode mudar momento de saída ao editar
+                                    ->disabled(fn(string $operation) => $operation === 'edit'),
+
                                 TextInput::make('km_saida')
                                     ->label('Quilometragem na Saída')
                                     ->numeric()
@@ -81,85 +75,84 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
                                     ->required()
                                     ->placeholder('Ex: 12345.67')
                                     ->columnSpan(1)
-                                    ->disabled(fn(string $operation) => $operation === 'edit'), // Não pode mudar KM de saída ao editar
+                                    ->disabled(fn(string $operation) => $operation === 'edit'),
+
                                 Select::make('nivel_combustivel_saida')
                                     ->label('Nível de Combustível na Saída')
                                     ->options(NivelCombustivelEnum::class)
                                     ->required()
                                     ->native(false)
                                     ->columnSpan(1)
-                                    ->disabled(fn(string $operation) => $operation === 'edit'), // Não pode mudar nível de combustível ao editar
+                                    ->disabled(fn(string $operation) => $operation === 'edit'),
+
                                 Select::make('id_encarregado_saida')
                                     ->label('Encarregado na Saída')
                                     ->relationship('encarregadoSaida', 'nome', fn(Builder $query) => $query->where('ativo', true))
-                                    ->getOptionLabelFromRecordUsing(fn(Pessoa $record) => "{$record->nome}") // TODO: pode retirar
-                                    ->required()
+                                    ->getOptionLabelFromRecordUsing(fn(Pessoa $record) => "{$record->nome}")
+//                                    ->required()
                                     ->searchable()
                                     ->preload()
                                     ->columnSpan(1)
-                                    ->disabled(fn(string $operation) => $operation === 'edit'), // Não pode mudar encarregado de saída ao editar
+                                    ->disabled(fn(string $operation) => $operation === 'edit'),
                             ]),
+
                         Textarea::make('observacoes_saida')
                             ->label('Observações do Condutor na Saída')
                             ->maxLength(65535)
                             ->rows(2)
                             ->placeholder('Condições do veículo, observações do condutor, etc.')
                             ->columnSpanFull()
-                            ->disabled(fn(string $operation) => $operation === 'edit'), // Não pode mudar observações de saída ao editar
+                            ->disabled(fn(string $operation) => $operation === 'edit'),
                     ])
                     ->collapsible()
-                    ->collapsed(fn(string $operation) => $operation === 'edit'), // Colapsa na edição para focar na chegada
+                    ->collapsed(fn(string $operation) => $operation === 'edit'),
 
-                // Seção de Itens de Verificação na Saída (apenas visualização na edição, editável na criação)
+                // Seção de Itens de Verificação na Saída
                 Section::make('Verificação de Itens do Veículo (Saída)')
                     ->description('Condição dos itens do veículo registrada na saída.')
-                    ->schema(static::getItemStatusFields('saida', $numeroRodasVeiculo)) // Reutiliza a função de campos
+                    ->schema($this->getItemStatusFields('saida'))
                     ->collapsible()
                     ->collapsed(fn(string $operation) => $operation === 'edit')
-                    ->disabled(fn(string $operation) => $operation === 'edit'), // Desabilita para edição, apenas leitura
+                    ->disabled(fn(string $operation) => $operation === 'edit'),
 
-                // Seção para o Registro de Chegada (visível apenas na edição)
+                // Seção para o Registro de Chegada
                 Section::make('Informações de Chegada do Turno')
                     ->description('Preencha os detalhes quando o condutor retornar.')
-                    ->visible(fn(string $operation) => $operation === 'edit')
+                    ->visible(fn(string $operation) => $operation === 'edit' || $operation === 'view') // <-- MUDANÇA AQUI
                     ->schema([
                         Placeholder::make('status_chegada')
                             ->content(fn($record) => $record->momento_chegada ? 'Turno Finalizado' : 'Aguardando Chegada'),
+
                         Grid::make(3)
                             ->schema([
-                                Forms\Components\DateTimePicker::make('momento_chegada')
+                                DateTimePicker::make('momento_chegada')
                                     ->label('Data e Hora da Chegada')
-                                    ->required()
                                     ->displayFormat('d/m/Y H:i')
-                                    ->afterStateUpdated(function ($state, Forms\Set $set) {
-                                        // Quando a data/hora da chegada é preenchida, remove a obrigatoriedade
-                                        // da quilometragem de chegada. (Ou pode fazer outras validações)
-                                        //TODO: Avaliar...
-                                    })
                                     ->columnSpan(1),
+
                                 TextInput::make('km_chegada')
                                     ->label('Quilometragem na Chegada')
                                     ->numeric()
-                                    ->step(10.00)
+                                    ->step(0.01)
                                     ->suffix(' Km')
-                                    ->required(fn(Forms\Get $get) => $get('momento_chegada') !== null) // Se tem hora de chegada, KM é obrigatória
                                     ->placeholder('Ex: 12450.99')
                                     ->columnSpan(1),
+
                                 Select::make('nivel_combustivel_chegada')
                                     ->label('Nível de Combustível na Chegada')
                                     ->options(NivelCombustivelEnum::class)
-                                    ->required(fn(Forms\Get $get) => $get('momento_chegada') !== null)
                                     ->native(false)
                                     ->columnSpan(1),
+
                                 Select::make('id_encarregado_chegada')
                                     ->label('Encarregado na Chegada')
-                                    ->relationship('encarregadoChegada', 'nome', fn(Builder $query) => $query->where('ativo', true)) //TODO: pode ajustar a condição
-                                    ->getOptionLabelFromRecordUsing(fn(Pessoa $record) => "{$record->nome}") //TODO: pode retirar
-                                    ->required(fn(Forms\Get $get) => $get('momento_chegada') !== null)
+                                    ->relationship('encarregadoChegada', 'nome', fn(Builder $query) => $query->where('ativo', true))
+                                    ->getOptionLabelFromRecordUsing(fn(Pessoa $record) => "{$record->nome}")
                                     ->searchable()
                                     ->preload()
                                     ->columnSpan(2),
                             ]),
+
                         Textarea::make('observacoes_chegada')
                             ->label('Observações do Condutor na Chegada')
                             ->maxLength(65535)
@@ -167,18 +160,20 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
                             ->placeholder('Condições do veículo, observações do condutor, etc.')
                             ->columnSpanFull(),
                     ])
-                    ->collapsible(),
+                    ->collapsible()
+                    ->collapsed(fn(string $operation, Forms\Get $get) => $operation === 'view' && $get('momento_chegada') === null), // <-- MUDANÇA AQUI
 
-                // Seção de Itens de Verificação na Chegada (visível apenas na edição)
+                // Seção de Itens de Verificação na Chegada
                 Section::make('Verificação de Itens do Veículo (Chegada)')
                     ->description('Marque a condição de cada item do veículo na chegada.')
-                    ->visible(fn(string $operation) => $operation === 'edit')
-                    ->schema(static::getItemStatusFields('chegada', $numeroRodasVeiculo)) // Reutiliza a função de campos
-                    ->collapsible(),
+                    ->visible(fn(string $operation) => $operation === 'edit' || $operation === 'view') // <-- MUDANÇA AQUI
+                    ->schema($this->getItemStatusFields('chegada'))
+                    ->collapsible()
+                    ->collapsed(fn(string $operation, Forms\Get $get) => $operation === 'view' && $get('momento_chegada') === null), // <-- MUDANÇA AQUI
             ]);
-
     }
 
+    // Resto do código da table() permanece igual...
     public function table(Table $table): Table
     {
         return $table
@@ -217,8 +212,21 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
                     ->numeric(0)
                     ->suffix(' Km')
                     ->placeholder('N/A'),
-                Tables\Columns\TextColumn::make('status_turno') // Coluna virtual para status do turno
-                ->label('Status')
+                Tables\Columns\TextColumn::make('quilometragem_rodada')
+                    ->label('KM Rodada')
+                    ->numeric(0)
+                    ->suffix(' Km')
+                    ->placeholder('N/A')
+                    ->state(function ($record): ?float {
+                        // Calcula a diferença apenas se ambos os valores existirem
+                        if ($record->km_saida !== null && $record->km_chegada !== null) {
+                            // Garante que o cálculo seja preciso, arredondando para duas casas decimais
+                            return round($record->km_chegada - $record->km_saida, 2);
+                        }
+                        return null; // Retorna nulo se não puder calcular
+                    }),
+                Tables\Columns\TextColumn::make('status_turno')
+                    ->label('Status')
                     ->badge()
                     ->state(function ($record): string {
                         return $record->momento_chegada ? 'Finalizado' : 'Em Andamento';
@@ -247,95 +255,29 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
                     ->label('Adicionar Novo Turno')
                     ->modalWidth('7xl')
                     ->slideOver()
-                    ->mutateFormDataUsing(function (array $data): array {
-                        $data['id_bdv'] = $this->ownerRecord->id_bdv; // Atribui o ID do BDV pai TODO: interessante, me deu uma idéia para o modal de visualização
-                        $data['cadastrado_por'] = Auth::id();
-                        $data['atualizado_por'] = Auth::id();
-
-                        $itemStatusSaidaData = $data['saida_status']; // Dados dos toggles de saída
-
-                        // Inicia uma transação para garantir atomicidade
-                        DB::beginTransaction();
-                        try {
-                            // Cria o registro de motorista (BdvRegistroMotorista)
-                            // Passe apenas os campos que pertencem a BdvRegistroMotorista para create().
-                            // Os campos 'saida_status' não fazem parte do fillable de BdvRegistroMotorista.
-                            // Podemos criar um array filtrado ou usar o array $data diretamente e o fillable do model cuida do resto.
-                            $registroMotorista = $this->getRelationship()->create($data); // O fillable do model BdvRegistroMotorista deve filtrar os campos.
-
-                            // Cria o BdvItemStatus para Saída
-                            $itemStatusSaidaData['id_registro_motorista'] = $registroMotorista->id_registro_motorista;
-                            $itemStatusSaidaData['tipo_registro'] = TipoRegistroStatusEnum::SAIDA;
-                            $itemStatusSaidaData['cadastrado_por'] = Auth::id();
-                            $itemStatusSaidaData['atualizado_por'] = Auth::id();
-                            BdvItemStatus::create($itemStatusSaidaData);
-
-                            DB::commit();
-                            return $registroMotorista->toArray(); // Retorna os dados atualizados para o Filament
-                        } catch (\Exception $e) {
-                            DB::rollBack();
-                            throw $e;
-                        }
+                    ->using(function (array $data): BdvRegistroMotorista {
+                        // Este método substitui completamente o processo de criação do Filament
+                        return $this->createRegistroMotorista($data);
                     })
                     ->successNotificationTitle('Turno registrado com sucesso!'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->modalWidth('7xl'),
+                Tables\Actions\ViewAction::make() // Esta é a linha a ser modificada
+                ->modalWidth('7xl')
+                    ->fillForm(function ($record) { // Adicione esta linha
+                        return $this->fillEditForm($record); // Adicione esta linha
+                    }), // Adicione esta linha
                 Tables\Actions\EditAction::make()
-                    ->label('Finalizar Turno / Editar') // Renomeia a ação para indicar a finalização
+                    ->label('Finalizar Turno / Editar')
                     ->icon('heroicon-o-clipboard-document-check')
                     ->modalWidth('7xl')
                     ->slideOver()
-                    ->mutateFormDataUsing(function (array $data): array {
-                        $data['atualizado_por'] = Auth::id();
-
-                        // Verifica se os campos de chegada foram preenchidos (indicando finalização)
-                        if (isset($data['momento_chegada']) && $data['momento_chegada'] !== null) {
-                            $itemStatusChegadaData = $data['chegada_status'] ?? []; // Dados dos toggles de chegada
-                            // unset($data['chegada_status']); // <<< REMOVA ESTA LINHA!
-
-                            // Obtém o registro de motorista atual (que está sendo editado)
-                            $registroMotorista = $this->getMountedTableActionRecord();
-
-                            // Inicia uma transação para garantir atomicidade
-                            DB::beginTransaction();
-                            try {
-                                // 1. Atualiza o registro de motorista (BdvRegistroMotorista)
-                                // Passe apenas os campos que pertencem a BdvRegistroMotorista para update().
-                                // Os campos 'chegada_status' não fazem parte do fillable de BdvRegistroMotorista.
-                                $registroMotorista->update($data); // O fillable do model BdvRegistroMotorista deve filtrar os campos.
-
-                                // 2. Verifica se já existe um registro de chegada para este turno/motorista
-                                $existingChegadaStatus = BdvItemStatus::where('id_registro_motorista', $registroMotorista->id_registro_motorista)
-                                    ->where('tipo_registro', TipoRegistroStatusEnum::CHEGADA)
-                                    ->first();
-
-                                $itemStatusChegadaData['id_registro_motorista'] = $registroMotorista->id_registro_motorista;
-                                $itemStatusChegadaData['tipo_registro'] = TipoRegistroStatusEnum::CHEGADA;
-                                $itemStatusChegadaData['cadastrado_por'] = $existingChegadaStatus ? $existingChegadaStatus->cadastrado_por : Auth::id();
-                                $itemStatusChegadaData['atualizado_por'] = Auth::id();
-
-                                if ($existingChegadaStatus) {
-                                    $existingChegadaStatus->update($itemStatusChegadaData);
-                                } else {
-                                    BdvItemStatus::create($itemStatusChegadaData);
-                                }
-
-                                DB::commit();
-                                return $registroMotorista->toArray(); // Retorna os dados atualizados para o Filament
-                            } catch (\Exception $e) {
-                                DB::rollBack();
-                                throw $e;
-                            }
-                        }
-                        // Se não tem momento_chegada, apenas atualiza o registro de motorista (outros campos)
-                        // (os campos de BdvRegistroMotorista são atualizados pelo registroMotorista->update($data) acima)
-                        return $data; // Retorna os dados originais para o Filament
+                    ->fillForm(function ($record) {
+                        return $this->fillEditForm($record);
                     })
-                    ->fillForm(function ($record, Forms\Form $form) {
-                        // Preenche o formulário com os atributos do registro.
-                        // O afterStateHydrated nos Toggles cuidará de carregar os dados aninhados.
-                        return $form->fill($record->toArray());
+                    ->using(function ($record, array $data): BdvRegistroMotorista {
+                        // Este método substitui completamente o processo de edição do Filament
+                        return $this->updateRegistroMotorista($record, $data);
                     })
                     ->successNotificationTitle(fn ($record) => $record->momento_chegada ? 'Turno finalizado com sucesso!' : 'Registro atualizado com sucesso!'),
                 Tables\Actions\DeleteAction::make(),
@@ -349,106 +291,66 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
             ->emptyStateDescription('Adicione o primeiro turno para este Boletim Diário de Veículo.');
     }
 
-    // Altere a função getItemStatusFields
-    protected static function getItemStatusFields(string $prefix, int $numeroRodasVeiculo): array
+    /**
+     * Passo 2: Método não-estático para gerar campos de status
+     */
+    protected function getItemStatusFields(string $prefix): array
     {
-        // Esta função agora precisa de um $record, mas como é um método estático,
-        // não temos acesso direto ao $record do formulário aqui.
-        // A melhor forma é passar o $record para esta função, ou
-        // usar um Fieldset que encapsule a lógica de "where" para os campos.
+        $numeroRodasVeiculo = $this->ownerRecord->veiculo->modelo->numero_rodas ?? 0;
 
-        // Uma forma de fazer é passar o $record para essa função,
-        // mas aí precisaria de um contexto de Livewire (Forms\Get)
-        // que não está disponível diretamente em métodos estáticos.
-
-        // A alternativa é deixar os toggles com os nomes completos
-        // (saida_status.campo, chegada_status.campo) e o Filament
-        // fará o preenchimento se você tiver as relações no modelo BdvRegistroMotorista.
-
-        // Vamos revisar a estrutura. Os campos já têm o prefixo correto,
-        // então o Filament tentará preenchê-los automaticamente se
-        // a relação existir no modelo e os dados estiverem no formato array.
-        // O problema é que BdvItemStatus é um modelo separado.
-
-        // Solução: Adicionar métodos `afterStateHydrated` e `beforeSave`
-        // aos toggles para mapear explicitamente os valores.
-
-        // No entanto, para a view, o jeito mais simples é usar `afterStateHydrated`
-        // em cada toggle para buscar o valor correto do modelo BdvItemStatus.
-
-        $getBooleanToggle = function (string $name, string $label, string $prefix) {
+        $getBooleanToggle = function (string $name, string $label) use ($prefix) {
             return Toggle::make("{$prefix}_status.{$name}")
                 ->label($label)
-                ->default(true) // Valor padrão
-                ->live() // Para reatividade
-                ->afterStateHydrated(function (Forms\Get $get, Forms\Set $set, ?BdvRegistroMotorista $record) use ($name, $prefix) {
-                    // Este código será executado quando o formulário for preenchido (view ou edit)
-                    if ($record) {
-                        $tipoRegistro = ($prefix === 'saida') ? TipoRegistroStatusEnum::SAIDA : TipoRegistroStatusEnum::CHEGADA;
-                        $itemStatus = $record->itemStatus->firstWhere('tipo_registro', $tipoRegistro->value);
-                        if ($itemStatus && isset($itemStatus->{$name})) {
-                            $set("{$prefix}_status.{$name}", (bool) $itemStatus->{$name});
-                        } else {
-                            // Se não encontrou o item ou o valor, use o default
-                            $set("{$prefix}_status.{$name}", true);
-                        }
-                    }
-                })
-                ->dehydrateStateUsing(function ($state) {
-                    // Este código será executado quando o formulário for salvo (edit ou create)
-                    return (bool) $state;
-                })
-                ->disabled(fn (string $operation) => $operation === 'edit' && $prefix === 'saida' || $operation === 'view'); // Desabilitar na edição de saída e na visualização
+                ->default(true);
         };
 
         $commonFields = [
-            $getBooleanToggle('crlv', 'CRLV', $prefix),
-            $getBooleanToggle('lacre_placa', 'Lacre Placa', $prefix),
-            $getBooleanToggle('oleo_freio', 'Óleo Freio', $prefix),
-            $getBooleanToggle('oleo_motor', 'Óleo Motor', $prefix),
-            $getBooleanToggle('pneus_estado', 'Pneus Estado', $prefix),
-            $getBooleanToggle('retrovisor_direito_esquerdo', 'Retrovisores D/E', $prefix),
-            $getBooleanToggle('buzina', 'Buzina', $prefix),
-            $getBooleanToggle('luzes_farol_alto_baixo_estacionamento', 'Luzes Farol (A/B/Estac.)', $prefix),
-            $getBooleanToggle('luzes_pisca_re_freios', 'Luzes Pisca/Freios(Ré se 4 rodas)', $prefix),
-            $getBooleanToggle('chaparia_pintura', 'Chaparia/Pintura', $prefix),
-            $getBooleanToggle('giroflex', 'Giroflex', $prefix),
-            $getBooleanToggle('sirene', 'Sirene', $prefix),
+            $getBooleanToggle('crlv', 'CRLV'),
+            $getBooleanToggle('lacre_placa', 'Lacre Placa'),
+            $getBooleanToggle('oleo_freio', 'Óleo Freio'),
+            $getBooleanToggle('oleo_motor', 'Óleo Motor'),
+            $getBooleanToggle('pneus_estado', 'Pneus Estado'),
+            $getBooleanToggle('retrovisor_direito_esquerdo', 'Retrovisores D/E'),
+            $getBooleanToggle('buzina', 'Buzina'),
+            $getBooleanToggle('luzes_farol_alto_baixo_estacionamento', 'Luzes Farol (A/B/Estac.)'),
+            $getBooleanToggle('luzes_pisca_re_freios', 'Luzes Pisca/Freios(Ré se 4 rodas)'),
+            $getBooleanToggle('chaparia_pintura', 'Chaparia/Pintura'),
+            $getBooleanToggle('giroflex', 'Giroflex'),
+            $getBooleanToggle('sirene', 'Sirene'),
         ];
 
-        // Repita a lógica para $twoWheelFields e $fourWheelFields
         $twoWheelFields = [
-            $getBooleanToggle('velocimetro', 'Velocímetro', $prefix),
-            $getBooleanToggle('bancos_estado', 'Bancos Estado', $prefix),
-            $getBooleanToggle('bateria_agua', 'Bateria/Água', $prefix),
-            $getBooleanToggle('paralamas_dianteiro_traseiro', 'Paralamas D/T', $prefix),
-            $getBooleanToggle('descarga_completa', 'Descarga Completa', $prefix),
-            $getBooleanToggle('etiqueta_revisao', 'Etiqueta Revisão', $prefix),
-            $getBooleanToggle('tampas_laterais', 'Tampas Laterais', $prefix),
-            $getBooleanToggle('protetor_perna', 'Protetor Perna', $prefix),
-            $getBooleanToggle('fechadura_chave', 'Fechadura/Chave', $prefix),
-            $getBooleanToggle('carenagem_tanque', 'Carenagem Tanque', $prefix),
-            $getBooleanToggle('carenagem_farol', 'Carenagem Farol', $prefix),
-            $getBooleanToggle('tanque_estrutura', 'Tanque Estrutura', $prefix),
-            $getBooleanToggle('caixa_lado_esq_lado_dir', 'Caixa Lado E/D', $prefix),
-            $getBooleanToggle('punhos_manete', 'Punhos/Manete', $prefix),
+            $getBooleanToggle('velocimetro', 'Velocímetro'),
+            $getBooleanToggle('bancos_estado', 'Bancos Estado'),
+            $getBooleanToggle('bateria_agua', 'Bateria/Água'),
+            $getBooleanToggle('paralamas_dianteiro_traseiro', 'Paralamas D/T'),
+            $getBooleanToggle('descarga_completa', 'Descarga Completa'),
+            $getBooleanToggle('etiqueta_revisao', 'Etiqueta Revisão'),
+            $getBooleanToggle('tampas_laterais', 'Tampas Laterais'),
+            $getBooleanToggle('protetor_perna', 'Protetor Perna'),
+            $getBooleanToggle('fechadura_chave', 'Fechadura/Chave'),
+            $getBooleanToggle('carenagem_tanque', 'Carenagem Tanque'),
+            $getBooleanToggle('carenagem_farol', 'Carenagem Farol'),
+            $getBooleanToggle('tanque_estrutura', 'Tanque Estrutura'),
+            $getBooleanToggle('caixa_lado_esq_lado_dir', 'Caixa Lado E/D'),
+            $getBooleanToggle('punhos_manete', 'Punhos/Manete'),
         ];
 
         $fourWheelFields = [
-            $getBooleanToggle('macaco', 'Macaco', $prefix),
-            $getBooleanToggle('chave_roda', 'Chave de Roda', $prefix),
-            $getBooleanToggle('triangulo', 'Triângulo', $prefix),
-            $getBooleanToggle('estepe', 'Estepe', $prefix),
-            $getBooleanToggle('extintor', 'Extintor', $prefix),
-            $getBooleanToggle('agua_radiador', 'Água Radiador', $prefix),
-            $getBooleanToggle('calotas', 'Calotas', $prefix),
-            $getBooleanToggle('retrovisor_interno', 'Retrovisor Interno', $prefix),
-            $getBooleanToggle('macanetas_fechaduras', 'Maçanetas/Fechaduras', $prefix),
-            $getBooleanToggle('limpadores', 'Limpadores', $prefix),
-            $getBooleanToggle('luzes_internas', 'Luzes Internas', $prefix),
-            $getBooleanToggle('cinto_seguranca', 'Cinto de Segurança', $prefix),
-            $getBooleanToggle('radio_am_fm', 'Rádio AM/FM', $prefix),
-            $getBooleanToggle('estofamento', 'Estofamento', $prefix),
+            $getBooleanToggle('macaco', 'Macaco'),
+            $getBooleanToggle('chave_roda', 'Chave de Roda'),
+            $getBooleanToggle('triangulo', 'Triângulo'),
+            $getBooleanToggle('estepe', 'Estepe'),
+            $getBooleanToggle('extintor', 'Extintor'),
+            $getBooleanToggle('agua_radiador', 'Água Radiador'),
+            $getBooleanToggle('calotas', 'Calotas'),
+            $getBooleanToggle('retrovisor_interno', 'Retrovisor Interno'),
+            $getBooleanToggle('macanetas_fechaduras', 'Maçanetas/Fechaduras'),
+            $getBooleanToggle('limpadores', 'Limpadores'),
+            $getBooleanToggle('luzes_internas', 'Luzes Internas'),
+            $getBooleanToggle('cinto_seguranca', 'Cinto de Segurança'),
+            $getBooleanToggle('radio_am_fm', 'Rádio AM/FM'),
+            $getBooleanToggle('estofamento', 'Estofamento'),
         ];
 
         $schema = [
@@ -466,4 +368,201 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
 
         return $schema;
     }
+
+    /**
+     * Passo 3: Método para preencher formulário de edição
+     */
+    protected function fillEditForm($record): array
+    {
+        $data = $record->toArray();
+
+        // 1. Carregar dados de status de SAÍDA (se existirem)
+        $saidaStatus = $record->itemStatus()
+            ->where('tipo_registro', TipoRegistroStatusEnum::SAIDA)
+            ->first();
+
+        if ($saidaStatus) {
+            foreach (BdvItemStatus::BOOLEAN_FIELDS as $field) {
+                $data['saida_status'][$field] = (bool) $saidaStatus->{$field};
+            }
+        } else {
+            // Fallback: Se não houver status de SAÍDA (o que seria incomum para um registro existente),
+            // inicializa com true para evitar erros e garantir que os campos existam.
+            foreach (BdvItemStatus::BOOLEAN_FIELDS as $field) {
+                $data['saida_status'][$field] = true;
+            }
+        }
+
+        // 2. Carregar dados de status de CHEGADA
+        $chegadaStatus = $record->itemStatus()
+            ->where('tipo_registro', TipoRegistroStatusEnum::CHEGADA)
+            ->first();
+
+        if ($chegadaStatus) {
+            // Caso A: Já existe um registro de chegada.
+            // Carrega os valores salvos do status de chegada.
+            foreach (BdvItemStatus::BOOLEAN_FIELDS as $field) {
+                $data['chegada_status'][$field] = (bool) $chegadaStatus->{$field};
+            }
+        } else {
+            // Caso B: Não existe registro de chegada (turno sendo finalizado pela primeira vez).
+            // Preenche os campos de chegada com os valores de status de SAÍDA como padrão.
+            // Isso garante que os toggles de chegada reflitam o estado de saída,
+            // facilitando a finalização do turno.
+            if ($saidaStatus) { // Verifica se temos dados de saída para usar como base
+                foreach (BdvItemStatus::BOOLEAN_FIELDS as $field) {
+                    $data['chegada_status'][$field] = (bool) $saidaStatus->{$field};
+                }
+            } else {
+                // Fallback: Se nem status de saída for encontrado, inicializa tudo como verdadeiro.
+                foreach (BdvItemStatus::BOOLEAN_FIELDS as $field) {
+                    $data['chegada_status'][$field] = true;
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Passo 5: Método para processar dados de edição
+     */
+    protected function processEditData(array $data): array
+    {
+        $data['atualizado_por'] = Auth::id();
+
+        $itemStatusChegadaData = $data['chegada_status'] ?? [];
+        unset($data['chegada_status']);
+        unset($data['saida_status']); // Remove dados de saída que não devem ser editados
+
+        $registroMotorista = $this->getMountedTableActionRecord();
+
+        if (isset($data['momento_chegada']) && $data['momento_chegada'] !== null) {
+            DB::beginTransaction();
+            try {
+                $registroMotorista->update($data);
+
+                // Processar status de chegada
+                $existingChegadaStatus = BdvItemStatus::where('id_registro_motorista', $registroMotorista->id_registro_motorista)
+                    ->where('tipo_registro', TipoRegistroStatusEnum::CHEGADA)
+                    ->first();
+
+                $itemStatusChegadaData['id_registro_motorista'] = $registroMotorista->id_registro_motorista;
+                $itemStatusChegadaData['tipo_registro'] = TipoRegistroStatusEnum::CHEGADA;
+                $itemStatusChegadaData['cadastrado_por'] = $existingChegadaStatus ? $existingChegadaStatus->cadastrado_por : Auth::id();
+                $itemStatusChegadaData['atualizado_por'] = Auth::id();
+
+                if ($existingChegadaStatus) {
+                    $existingChegadaStatus->update($itemStatusChegadaData);
+                } else {
+                    BdvItemStatus::create($itemStatusChegadaData);
+                }
+
+                DB::commit();
+                return $registroMotorista->toArray();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                throw $e;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Método dedicado para criar registro de motorista com validação de duplicatas
+     */
+    protected function createRegistroMotorista(array $data): BdvRegistroMotorista
+    {
+        // Preparar dados básicos
+        $data['id_bdv'] = $this->ownerRecord->id_bdv;
+        $data['cadastrado_por'] = Auth::id();
+        $data['atualizado_por'] = Auth::id();
+
+        // Extrair dados de status de saída
+        $itemStatusSaidaData = $data['saida_status'] ?? [];
+        unset($data['saida_status']);
+
+        // Verificar se já existe um registro com a mesma combinação
+        $existingRecord = BdvRegistroMotorista::where('id_bdv', $data['id_bdv'])
+            ->where('id_condutor', $data['id_condutor'])
+            ->where('tipo_turno', $data['tipo_turno'])
+            ->first();
+
+        if ($existingRecord) {
+            throw new \Exception(
+                "Já existe um registro para este condutor no turno {$data['tipo_turno']->getLabel()} neste BDV. " .
+                "Cada condutor pode ter apenas um turno de cada tipo por BDV."
+            );
+        }
+
+        DB::beginTransaction();
+        try {
+            // Criar o registro de motorista
+            $registroMotorista = BdvRegistroMotorista::create($data);
+
+            // Criar BdvItemStatus para Saída
+            if (!empty($itemStatusSaidaData)) {
+                $itemStatusSaidaData['id_registro_motorista'] = $registroMotorista->id_registro_motorista;
+                $itemStatusSaidaData['tipo_registro'] = TipoRegistroStatusEnum::SAIDA;
+                $itemStatusSaidaData['cadastrado_por'] = Auth::id();
+                $itemStatusSaidaData['atualizado_por'] = Auth::id();
+                BdvItemStatus::create($itemStatusSaidaData);
+            }
+
+            DB::commit();
+            return $registroMotorista;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
+
+    }
+
+    /**
+     * Método dedicado para atualizar registro de motorista
+     */
+    protected function updateRegistroMotorista(BdvRegistroMotorista $record, array $data): BdvRegistroMotorista
+    {
+        $data['atualizado_por'] = Auth::id();
+
+        // Extrair dados de status de chegada
+        $itemStatusChegadaData = $data['chegada_status'] ?? [];
+        unset($data['chegada_status']);
+        unset($data['saida_status']); // Remove dados de saída que não devem ser editados
+
+        DB::beginTransaction();
+        try {
+            // Atualizar o registro de motorista
+            $record->update($data);
+
+            // Processar status de chegada se fornecido
+            if (!empty($itemStatusChegadaData) && isset($data['momento_chegada']) && $data['momento_chegada'] !== null) {
+                $existingChegadaStatus = BdvItemStatus::where('id_registro_motorista', $record->id_registro_motorista)
+                    ->where('tipo_registro', TipoRegistroStatusEnum::CHEGADA)
+                    ->first();
+
+                $itemStatusChegadaData['id_registro_motorista'] = $record->id_registro_motorista;
+                $itemStatusChegadaData['tipo_registro'] = TipoRegistroStatusEnum::CHEGADA;
+                $itemStatusChegadaData['cadastrado_por'] = $existingChegadaStatus ? $existingChegadaStatus->cadastrado_por : Auth::id();
+                $itemStatusChegadaData['atualizado_por'] = Auth::id();
+
+                if ($existingChegadaStatus) {
+                    $existingChegadaStatus->update($itemStatusChegadaData);
+                } else {
+                    BdvItemStatus::create($itemStatusChegadaData);
+                }
+            }
+
+            DB::commit();
+            return $record->fresh(); // Retorna o registro atualizado
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
 }
