@@ -256,23 +256,6 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
 
                         // Inicia uma transação para garantir atomicidade
                         DB::beginTransaction();
-//                        try {
-//                            // Cria o registro de motorista
-//                            $registroMotorista = $this->getRelationship()->create($data);
-//
-//                            // Cria o BdvItemStatus para Saída
-//                            $itemStatusSaidaData['id_registro_motorista'] = $registroMotorista->id_registro_motorista;
-//                            $itemStatusSaidaData['tipo_registro'] = TipoRegistroStatusEnum::SAIDA;
-//                            $itemStatusSaidaData['cadastrado_por'] = Auth::id();
-//                            $itemStatusSaidaData['atualizado_por'] = Auth::id();
-//                            BdvItemStatus::create($itemStatusSaidaData);
-//
-//                            DB::commit();
-//                            return $registroMotorista->toArray();
-//                        } catch (\Exception $e) {
-//                            DB::rollBack();
-//                            throw $e;
-//                        }
                         try {
                             // Cria o registro de motorista (BdvRegistroMotorista)
                             // Passe apenas os campos que pertencem a BdvRegistroMotorista para create().
@@ -303,50 +286,6 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
                     ->icon('heroicon-o-clipboard-document-check')
                     ->modalWidth('7xl')
                     ->slideOver()
-//                    ->mutateFormDataUsing(function (array $data): array {
-//                        $data['atualizado_por'] = Auth::id();
-//
-//                        // Verifica se os campos de chegada foram preenchidos (indicando finalização)
-//                        if (isset($data['momento_chegada']) && $data['momento_chegada'] !== null) {
-//                            $itemStatusChegadaData = $data['chegada_status']; // Dados dos toggles de chegada
-//                            unset($data['chegada_status']); // Remove do array principal
-//
-//                            // Obtém o registro de motorista atual (que está sendo editado)
-//                            $registroMotorista = $this->getMountedTableActionRecord();
-//
-//                            // Inicia uma transação para garantir atomicidade
-//                            DB::beginTransaction();
-//                            try {
-//                                // 1. Atualiza o registro de motorista com os dados de chegada
-//                                $registroMotorista->update($data);
-//
-//                                // 2. Verifica se já existe um registro de chegada para este turno/motorista
-//                                // Caso exista, atualiza. Caso contrário, cria.
-//                                $existingChegadaStatus = BdvItemStatus::where('id_registro_motorista', $registroMotorista->id_registro_motorista)
-//                                    ->where('tipo_registro', TipoRegistroStatusEnum::CHEGADA)
-//                                    ->first();
-//
-//                                $itemStatusChegadaData['id_registro_motorista'] = $registroMotorista->id_registro_motorista;
-//                                $itemStatusChegadaData['tipo_registro'] = TipoRegistroStatusEnum::CHEGADA;
-//                                $itemStatusChegadaData['cadastrado_por'] = $existingChegadaStatus ? $existingChegadaStatus->cadastrado_por : Auth::id();
-//                                $itemStatusChegadaData['atualizado_por'] = Auth::id();
-//
-//                                if ($existingChegadaStatus) {
-//                                    $existingChegadaStatus->update($itemStatusChegadaData);
-//                                } else {
-//                                    BdvItemStatus::create($itemStatusChegadaData);
-//                                }
-//
-//                                DB::commit();
-//                                return $registroMotorista->toArray(); // Retorna os dados atualizados para o Filament
-//                            } catch (\Exception $e) {
-//                                DB::rollBack();
-//                                throw $e;
-//                            }
-//                        }
-//                        // Se não tem momento_chegada, apenas atualiza o registro de motorista (outros campos)
-//                        return $data;
-//                    })
                     ->mutateFormDataUsing(function (array $data): array {
                         $data['atualizado_por'] = Auth::id();
 
@@ -398,30 +337,6 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
                         // O afterStateHydrated nos Toggles cuidará de carregar os dados aninhados.
                         return $form->fill($record->toArray());
                     })
-//                    ->fillForm(function ($record, Forms\Form $form) {
-//                        // Preenche os campos do formulário para edição
-//                        $formData = $record->toArray();
-//
-//                        // Preenche os campos de BdvItemStatus (saída e chegada)
-//                        $saidaStatus = $record->itemStatuses->firstWhere('tipo_registro', TipoRegistroStatusEnum::SAIDA);
-//                        if ($saidaStatus) {
-//                            foreach ($saidaStatus->getAttributes() as $key => $value) {
-//                                if (in_array($key, BdvItemStatus::BOOLEAN_FIELDS)) { // Supondo que você tenha uma constante para os campos booleanos no Model
-//                                    $formData["saida_status.{$key}"] = $value;
-//                                }
-//                            }
-//                        }
-//
-//                        $chegadaStatus = $record->itemStatuses->firstWhere('tipo_registro', TipoRegistroStatusEnum::CHEGADA);
-//                        if ($chegadaStatus) {
-//                            foreach ($chegadaStatus->getAttributes() as $key => $value) {
-//                                if (in_array($key, BdvItemStatus::BOOLEAN_FIELDS)) {
-//                                    $formData["chegada_status.{$key}"] = $value;
-//                                }
-//                            }
-//                        }
-//                        return $form->fill($formData);
-//                    })
                     ->successNotificationTitle(fn ($record) => $record->momento_chegada ? 'Turno finalizado com sucesso!' : 'Registro atualizado com sucesso!'),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -551,10 +466,4 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
 
         return $schema;
     }
-
-    // ... (restante da classe, incluindo mutateFormDataUsing e fillForm nas actions) ...
-    // É importante que o record que você está passando para fillForm() tenha a relação itemStatuses já carregada.
-    // Certifique-se de que seu modelo BdvRegistroMotorista tenha a relação itemStatuses:
-    // public function itemStatuses(): HasMany { return $this->hasMany(BdvItemStatus::class, 'id_registro_motorista'); }
-
 }

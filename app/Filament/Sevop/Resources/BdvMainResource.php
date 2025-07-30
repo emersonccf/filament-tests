@@ -64,7 +64,6 @@ class BdvMainResource extends Resource
                                     // Define a label customizada para a opção selecionada e nos resultados da busca
                                     ->getOptionLabelFromRecordUsing(fn (Veiculo $record) => "{$record->modelo->nome_modelo} - {$record->placa} - {$record->prefixo_veiculo}")
                                     ->required()
-                                    ->live(onBlur: true)
                                     ->searchable()
                                     ->preload() // Carrega as primeiras opções para melhorar a experiência
                                     ->live() // Essencial para o carregamento dinâmico do 'numero_rodas_veiculo'
@@ -83,7 +82,7 @@ class BdvMainResource extends Resource
                                 DatePicker::make('data_referencia')
                                     ->label('Data do BDV')
                                     ->required()
-                                    ->live(onBlur: true)
+                                    ->live()
                                     ->default(now())
                                     ->displayFormat('d/m/Y')
                                     ->columnSpan(1),
@@ -132,20 +131,20 @@ class BdvMainResource extends Resource
                                     ->getOptionLabelUsing(fn ($value): ?string => ($pessoa = Pessoa::find($value)) ? "{$pessoa->nome}": null)
 //                                    ->getOptionLabelUsing(fn ($value): ?string => ($pessoa = Pessoa::find($value)) ? "{$pessoa->nome} (CPF: {$pessoa->cpf})" : null)
                                     ->required()
-                                    ->live(onBlur: true)
+                                    ->live()
                                     ->columnSpan(1),
                                 Select::make('bdv_registro_motorista.tipo_turno') // DEFINE O TURNO DA SAÍDA DO BDV: Matutino, Vespertino, Diurno, Noturno
                                     ->label('Turno de Ativação do Veículo')
                                     ->options(TipoTurnoEnum::class)
                                     ->required()
-                                    ->live(onBlur: true)
+                                    ->live()
                                     ->searchable()
                                     ->native(false)
                                     ->columnSpan(1),
                                 Forms\Components\DateTimePicker::make('bdv_registro_motorista.momento_saida')
                                     ->label('Data e Hora da Saída')
                                     ->required()
-                                    ->live(onBlur: true)
+                                    ->live()
                                     ->default(now())
                                     ->displayFormat('d/m/Y H:i:s')
                                     ->columnSpan(1),
@@ -153,7 +152,7 @@ class BdvMainResource extends Resource
                                     ->label('Nível de Combustível na Saída')
                                     ->options(NivelCombustivelEnum::class)
                                     ->required()
-                                    ->live(onBlur: true)
+                                    ->live()
                                     ->native(false)
                                     ->columnSpan(1),
                                 TextInput::make('bdv_registro_motorista.km_saida')
@@ -162,7 +161,7 @@ class BdvMainResource extends Resource
                                     ->step(1.00)
                                     ->suffix(' Km')
                                     ->required()
-                                    ->live(onBlur: true)
+                                    ->live()
                                     ->placeholder('Ex: 12345.67')
                                     ->columnSpan(1),
                                 Select::make('bdv_registro_motorista.id_encarregado_saida')
@@ -276,7 +275,7 @@ class BdvMainResource extends Resource
                     ->label('SEQ. BDV')
                     ->sortable()
                     ->numeric()
-                    ->formatStateUsing(fn (string $state): string => str_pad($state, 5, '0', STR_PAD_LEFT))
+                    ->formatStateUsing(fn (string $state): string => 'BDV-' . str_pad($state, 5, '0', STR_PAD_LEFT))
                     ->size('xl') // Define um tamanho de fonte extra grande
                     ->color('success') // Define a cor do texto para verde (cor de sucesso)
                     ->weight('bold')

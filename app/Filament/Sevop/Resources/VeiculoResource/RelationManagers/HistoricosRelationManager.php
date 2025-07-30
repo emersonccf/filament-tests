@@ -6,6 +6,7 @@ use App\Enums\DirecionamentoVeiculo;
 use App\Enums\PrioridadeHistorico;
 use App\Enums\StatusEventoHistorico;
 use App\Enums\TipoEventoHistorico;
+use App\Models\HistoricoVeiculo;
 use App\Models\Veiculo;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -292,15 +293,6 @@ class HistoricoVeiculosRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('tipo_evento')
                     ->label('Tipo')
-//                    ->color(fn (string $state): string => match ($state) {
-//                        'ACIDENTE' => 'danger',
-//                        'MANUTENCAO' => 'warning',
-//                        'REVISAO' => 'info',
-//                        'ABASTECIMENTO' => 'success',
-//                        'MULTA' => 'danger',
-//                        'SINISTRO' => 'danger',
-//                        default => 'gray',
-//                    })
                     ->badge(),
 
                 Tables\Columns\TextColumn::make('data_evento')

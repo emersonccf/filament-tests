@@ -251,7 +251,7 @@ class VeiculoResource extends Resource
 //                                    ->label('Revisão Pendente?')
 //                                    ->default(false)
 //                                    ->helperText('Marque se há revisão pendente')
-//                                    ->columnSpan(1),
+//                                    ->columnSpan(1), //TODO: verificar se esse camo deve ser removido também da base dados
                             ]),
                     ])
                     ->collapsible(),
@@ -404,14 +404,6 @@ class VeiculoResource extends Resource
                 Tables\Columns\TextColumn::make('direcionamento')
                     ->label('Direcionamento')
                     ->searchable()
-//                    ->color(fn (string $state): string => match ($state) {
-//                        'NORMAL' => 'gray',
-//                        'FULL_TIME' => 'success',
-//                        'SUPERVISAO' => 'warning',
-//                        'GART' => 'danger',
-//                        'ESCOLTA' => 'info',
-//                        default => 'secondary',
-//                    })
                     ->badge(),
 
                 Tables\Columns\TextColumn::make('local_ativacao')
@@ -424,15 +416,6 @@ class VeiculoResource extends Resource
                     ->label('Combustível')
                     ->searchable()
                     ->badge()
-//                    ->color(fn (string $state): string => match ($state) {
-//                        'GASOLINA' => 'warning',
-//                        'ETANOL' => 'success',
-//                        'DIESEL' => 'danger',
-//                        'FLEX' => 'info',
-//                        'GNV' => 'primary',
-//                        'ELETRICO' => 'success',
-//                        default => 'gray',
-//                    })
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('status')
