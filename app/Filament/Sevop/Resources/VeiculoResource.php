@@ -234,7 +234,7 @@ class VeiculoResource extends Resource
                                     ->required()
                                     ->numeric()
                                     ->default(0.00)
-                                    ->step(100.00)
+                                    ->step(1.00)
                                     ->suffix('Km')
                                     ->columnSpan(1),
 
@@ -243,7 +243,7 @@ class VeiculoResource extends Resource
                                     ->required()
                                     ->numeric()
                                     ->default(10000.00)
-                                    ->step(1000)
+                                    ->step(1.00)
                                     ->suffix('Km')
                                     ->columnSpan(1),
 

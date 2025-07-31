@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Filament\Pages\Auth\EmailVerification;
+use App\Models\BdvRegistroMotorista;
+use App\Observers\BdvRegistroMotoristaObserver;
 use App\Services\QuoteService;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -60,5 +62,6 @@ class AppServiceProvider extends ServiceProvider
         Unidade::observe(UnidadeObserver::class); // Registre o Observer Unidade
         AlocacaoVeiculo::observe(AlocacaoVeiculoObserver::class); //  Registre o Observer Alocação
         HistoricoVeiculo::observe(HistoricoVeiculoObserver::class);
+        BdvRegistroMotorista::observe(BdvRegistroMotoristaObserver::class);
     }
 }
