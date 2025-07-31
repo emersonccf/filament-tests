@@ -48,6 +48,43 @@ class BdvMainResource extends Resource
                     ->schema([
                         Grid::make(3)
                             ->schema([
+                                Placeholder::make('id_bdv')
+                                    ->label('ID BDV')
+                                    ->content(function (?BdvMain $record): \Illuminate\Contracts\Support\Htmlable {
+                                        if ($record && $record->exists && $record->id_bdv) {
+                                            $idFormatado = 'BDV-' . str_pad($record->id_bdv, 5, '0', STR_PAD_LEFT);
+
+                                            return new \Illuminate\Support\HtmlString(
+                                                '<div class="flex items-center">
+                                                            <span class="text-primary-600 dark:text-primary-400 text-xl font-bold font-mono tracking-wider">
+                                                                ' . htmlspecialchars($idFormatado) . '
+                                                            </span>
+                                                        </div>'
+                                                                                    );
+                                                                                }
+
+                                                                                return new \Illuminate\Support\HtmlString(
+                                                                                    '<div class="flex items-center">
+                                                        <span class="text-gray-500 dark:text-gray-400 text-base italic">
+                                                            Será gerado após salvar
+                                                        </span>
+                                                    </div>'
+                                        );
+                                    })
+                                    ->columnSpan(1),
+                                // Placeholder para exibir o número de rodas do veículo selecionado
+                                Placeholder::make('numero_rodas_display')
+                                    ->label('Tipo de Veículo (Rodas)')
+                                    ->content(function (Forms\Get $get) {
+                                        $numeroRodas = $get('numero_rodas_veiculo');
+                                        if ($numeroRodas === 2) {
+                                            return '2 Rodas (Moto)';
+                                        } elseif ($numeroRodas === 4) {
+                                            return '4 Rodas (SUV, Sedan, Van, etc.)';
+                                        }
+                                        return 'Selecione um veículo';
+                                    })
+                                    ->columnSpan(1),
                                 Select::make('id_veiculo')
                                     ->label('Veículo')
                                     ->relationship(
@@ -85,27 +122,24 @@ class BdvMainResource extends Resource
                                     ->live()
                                     ->default(now())
                                     ->displayFormat('d/m/Y')
-                                    ->columnSpan(1),
-                                // Placeholder para exibir o número de rodas do veículo selecionado
-                                Placeholder::make('numero_rodas_display')
-                                    ->label('Tipo de Veículo (Rodas)')
-                                    ->content(function (Forms\Get $get) {
-                                        $numeroRodas = $get('numero_rodas_veiculo');
-                                        if ($numeroRodas === 2) {
-                                            return '2 Rodas (Moto)';
-                                        } elseif ($numeroRodas === 4) {
-                                            return '4 Rodas (SUV, Sedan, Van, etc.)';
+                                    ->afterStateUpdated(function ($state, Forms\Set $set, Forms\Get $get) {
+                                        if ($state) {
+                                            // Converte para Carbon e formata corretamente
+                                            $novaDataSaida = \Carbon\Carbon::parse($state)->startOfDay();
+
+                                            // Usa o formato que o DateTimePicker espera
+                                            $set('bdv_registro_motorista.momento_saida', $novaDataSaida->format('Y-m-d\TH:i:s'));
                                         }
-                                        return 'Selecione um veículo';
                                     })
                                     ->columnSpan(1),
+                                Textarea::make('observacoes_gerais') //TODO: Pode ser retirado do formulário e da tabela
+                                    ->label('Observações Gerais do BDV')
+                                    ->maxLength(65535)
+                                    ->rows(1)
+                                    ->placeholder('Informações relevantes sobre o BDV, como anotações sobre o dia, etc.')
+                                    ->columnSpan(2),
+        //                            ->columnSpanFull(),
                             ]),
-                        Textarea::make('observacoes_gerais') //TODO: Pode ser retirado do formulário e da tabela
-                            ->label('Observações Gerais do BDV')
-                            ->maxLength(65535)
-                            ->rows(2)
-                            ->placeholder('Informações relevantes sobre o BDV, como anotações sobre o dia, etc.')
-                            ->columnSpanFull(),
                     ])
                     ->collapsible(),
 
@@ -147,6 +181,13 @@ class BdvMainResource extends Resource
                                     ->live()
                                     ->default(now())
                                     ->displayFormat('d/m/Y H:i:s')
+                                    ->afterStateUpdated(function ($state, Forms\Set $set, Forms\Get $get) {
+                                        if ($state) {
+                                            // Converte para Carbon e extrai apenas a data
+                                            $novaDataReferencia = \Carbon\Carbon::parse($state)->toDateString();
+                                            $set('data_referencia', $novaDataReferencia);
+                                        }
+                                    })
                                     ->columnSpan(1),
                                 Select::make('bdv_registro_motorista.nivel_combustivel_saida')
                                     ->label('Nível de Combustível na Saída')
@@ -295,10 +336,22 @@ class BdvMainResource extends Resource
                     ->label('Data do BDV')
                     ->date('d/m/Y')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('registrosMotorista.count')
+                Tables\Columns\TextColumn::make('turnos_count')
                     ->label('Nº Turnos')
-                    ->counts('registrosMotorista')
-                    ->alignCenter(),
+                    ->getStateUsing(function (BdvMain $record): int {
+                        return $record->registrosMotorista()->count();
+                    })
+                    ->alignCenter()
+                    ->badge()
+                    ->color(fn (int $state): string => match (true) {
+                        $state === 0 => 'gray',
+                        $state === 1 => 'success',
+                        $state <= 3 => 'warning',
+                        default => 'danger'
+                    })
+                    ->formatStateUsing(fn (int $state): string =>
+                        $state . ' turno' . ($state !== 1 ? 's' : '')
+                    ),
                 Tables\Columns\TextColumn::make('userCreatedBy.name')
                     ->label('Cadastrado Por')
                     ->sortable()

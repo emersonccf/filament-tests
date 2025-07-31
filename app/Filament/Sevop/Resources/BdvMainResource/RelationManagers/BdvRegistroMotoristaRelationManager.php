@@ -20,6 +20,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\BdvRegistroMotorista;
@@ -178,7 +179,7 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
     {
         return $table
             ->modifyQueryUsing(fn (Builder $query) => $query->with(['itemStatus']))
-            ->recordTitleAttribute('id_condutor')
+            ->recordTitleAttribute('titulo_bdv') // Título personalizado para Modais do BDV
             ->defaultSort('momento_saida', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('tipo_turno')
@@ -197,20 +198,50 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('momento_saida')
                     ->label('Saída')
                     ->dateTime('d/m/Y H:i')
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('momento_chegada')
                     ->label('Chegada')
                     ->dateTime('d/m/Y H:i')
+                    ->placeholder('Aguardando...')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('horas_em_atuacao')
+                    ->label('Hrs em Atuação')
+                    ->formatStateUsing(function (?float $state): string {
+                        if ($state === null) {
+                            return 'N/A';
+                        }
+
+                        return number_format($state, 1) . 'h';
+                    })
                     ->sortable()
-                    ->placeholder('Aguardando...'),
+                    ->alignCenter()
+                    ->color(fn (?float $state): string => match (true) {
+                        $state === null => 'gray',
+                        $state >= 24 => 'danger',
+                        $state >= 12 => 'warning',
+                        $state >= 8 => 'success',
+                        default => 'primary'
+                    })
+                    ->tooltip(function ($record): ?string {
+                        if ($record->momento_saida && $record->momento_chegada) {
+                            $saida = Carbon::parse($record->momento_saida)->format('d/m/Y H:i');
+                            $chegada = Carbon::parse($record->momento_chegada)->format('d/m/Y H:i');
+                            return "Saída: {$saida}\nChegada: {$chegada}";
+                        }
+                        return 'Momentos não informados';
+                    }),
                 Tables\Columns\TextColumn::make('km_saida')
                     ->label('KM Saída')
                     ->numeric(0)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->suffix(' Km'),
                 Tables\Columns\TextColumn::make('km_chegada')
                     ->label('KM Chegada')
                     ->numeric(0)
                     ->suffix(' Km')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->placeholder('N/A'),
                 Tables\Columns\TextColumn::make('quilometragem_rodada')
                     ->label('KM Rodada')
@@ -224,6 +255,14 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
                             return round($record->km_chegada - $record->km_saida, 2);
                         }
                         return null; // Retorna nulo se não puder calcular
+                    })
+                    ->tooltip(function ($record): ?string {
+                        if ($record->km_saida && $record->km_chegada) {
+                            $saida = $record->km_saida;
+                            $chegada = $record->km_chegada;
+                            return "Saída: {$saida}\nChegada: {$chegada}";
+                        }
+                        return 'Km´s não informados';
                     }),
                 Tables\Columns\TextColumn::make('status_turno')
                     ->label('Status')
@@ -280,7 +319,7 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
                         return $this->updateRegistroMotorista($record, $data);
                     })
                     ->successNotificationTitle(fn ($record) => $record->momento_chegada ? 'Turno finalizado com sucesso!' : 'Registro atualizado com sucesso!'),
-                Tables\Actions\DeleteAction::make(),
+//                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

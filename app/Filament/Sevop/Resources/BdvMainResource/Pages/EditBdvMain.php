@@ -34,9 +34,6 @@ class EditBdvMain extends EditRecord
         // Garanta que o record principal (BdvMain) carregue as relações necessárias
         $record = $this->getRecord()->loadMissing('veiculo.modelo'); // <<< ADICIONE/AJUSTE ESTA LINHA
 
-//        // $this->getRecord() retorna o modelo BdvMain que está sendo editado
-//        $record = $this->getRecord();
-
         // 1. Popular 'numero_rodas_veiculo' para visibilidade condicional e placeholder
         $data['numero_rodas_veiculo'] = $record->veiculo->modelo->numero_rodas ?? 0;
 
@@ -161,73 +158,4 @@ class EditBdvMain extends EditRecord
             throw $e; // Mantido para que o servidor logue um 500 se for um erro crítico.
         }
     }
-
-//    protected function afterSave(): void
-//    {
-//        // 1. Obter os dados completos do formulário, incluindo os campos aninhados
-//        $formData = $this->form->getState();
-//
-//        // 2. Iniciar uma transação de banco de dados para garantir que tudo seja salvo ou nada seja salvo
-//        DB::beginTransaction();
-//
-//        try {
-//            // Obter o registro BdvMain que acabou de ser salvo (o principal)
-//            $bdvMain = $this->getRecord();
-//
-//            // 3. Processar BdvRegistroMotorista
-//            // Assumimos que o formulário está editando o primeiro registro de motorista associado a este BDV
-//            $registroMotorista = $bdvMain->registrosMotorista()->first();
-//
-//            if ($registroMotorista) {
-//                $registroMotoristaData = $formData['bdv_registro_motorista'];
-//
-//            // Converter momento_saida de string para objeto Carbon antes de salvar
-//            // Agora, parse a string usando o formato Ano-Mês-Dia com hífens
-//            $momentoSaidaCarbon = Carbon::createFromFormat('Y-m-d H:i:s', $registroMotoristaData['momento_saida']);
-//
-//                $registroMotorista->update([
-//                    'id_condutor' => $registroMotoristaData['id_condutor'],
-//                    'tipo_turno' => $registroMotoristaData['tipo_turno'],
-//                    'momento_saida' => $momentoSaidaCarbon,
-//                    'km_saida' => $registroMotoristaData['km_saida'],
-//                    'nivel_combustivel_saida' => $registroMotoristaData['nivel_combustivel_saida'],
-//                    'observacoes_saida' => $registroMotoristaData['observacoes_saida'] ?? null,
-//                    'id_encarregado_saida' => $registroMotoristaData['id_encarregado_saida'] ?? null,
-//                    'atualizado_por' => Auth::id(), // Registrar quem fez a última atualização
-//                ]);
-//
-//                // 4. Processar BdvItemStatus (Saída)
-//                $itemStatusSaida = $registroMotorista->itemStatus()
-//                    ->where('tipo_registro', TipoRegistroStatusEnum::SAIDA)
-//                    ->first();
-//
-//                $itemStatusSaidaData = $formData['bdv_item_status_saida'];
-//
-//                if ($itemStatusSaida) {
-//                    // Se já existe, atualiza
-//                    $itemStatusSaida->update(array_merge($itemStatusSaidaData, [
-//                        'atualizado_por' => Auth::id(),
-//                    ]));
-//                } else {
-//                    // Se não existe (o que seria incomum para edição), cria um novo
-//                    BdvItemStatus::create(array_merge($itemStatusSaidaData, [
-//                        'id_registro_motorista' => $registroMotorista->id_registro_motorista,
-//                        'tipo_registro' => TipoRegistroStatusEnum::SAIDA,
-//                        'cadastrado_por' => Auth::id(), // Usuário que cadastrou (na primeira vez)
-//                        'atualizado_por' => Auth::id(),
-//                    ]));
-//                }
-//            }
-//
-//            // Confirma todas as alterações no banco de dados
-//            DB::commit();
-//
-//        } catch (\Exception $e) {
-//            // Em caso de erro, reverte todas as alterações feitas nesta transação
-//            DB::rollBack();
-//            // Lança a exceção novamente para que o Filament possa lidar com ela
-//            // e mostrar uma notificação de erro ao usuário, se desejar.
-//            throw $e;
-//        }
-//    }
 }

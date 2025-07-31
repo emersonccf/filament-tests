@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Type\Decimal;
 
 class BdvRegistroMotorista extends Model
@@ -47,6 +49,7 @@ class BdvRegistroMotorista extends Model
 
     protected $appends = [
         'quilometragem_rodada',
+        'titulo_bdv',
     ];
 
     /**
@@ -61,9 +64,55 @@ class BdvRegistroMotorista extends Model
 
         return $this->km_chegada - $this->km_saida;
     }
+    /**
+     * Retorna o título para o BDV -- Título personalizado para Modais do BDV
+     *
+     * @return string
+     */
+    public function getTituloBdvAttribute(): string
+    {
+        $bdv = str_pad($this->bdvMain->id_bdv, 5, '0', STR_PAD_LEFT);
+        return "- BDV-{$bdv} - {$this->condutor->nome} - {$this->bdvMain->veiculo->placa} - {$this->bdvMain->veiculo->prefixo_veiculo}";
+    }
+    /**
+     * Calcula as horas em atuação (diferença entre momento_chegada e momento_saida)
+     *
+     * @return float|null Retorna as horas em formato decimal ou null se inválido
+     */
+    public function getHorasEmAtuacaoAttribute(): ?float
+    {
+        // Verifica se ambos os campos estão preenchidos
+        if ($this->momento_saida === null || $this->momento_chegada === null) {
+            return null;
+        }
 
+        try {
+            // Converte para objetos Carbon
+            $momentoSaida = Carbon::parse($this->momento_saida);
+            $momentoChegada = Carbon::parse($this->momento_chegada);
 
+            // Validação: momento_chegada deve ser posterior ao momento_saida
+            if ($momentoChegada->lessThanOrEqualTo($momentoSaida)) {
+                return null;
+            }
 
+            // Calcula a diferença em horas com precisão decimal
+            $diferencaEmMinutos = $momentoChegada->diffInMinutes($momentoSaida);
+
+            // Converte para horas e arredonda para 2 casas decimais
+            return abs(round($diferencaEmMinutos / 60, 2));
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao calcular horas em atuação', [
+                'id_registro' => $this->id ?? 'novo',
+                'momento_saida' => $this->momento_saida,
+                'momento_chegada' => $this->momento_chegada,
+                'error' => $e->getMessage()
+            ]);
+
+            return null;
+        }
+    }
     /**
      * Get the main BDV record that owns this registration.
      */
