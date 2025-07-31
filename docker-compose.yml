@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+    # Serviço Nginx (Servidor Web)
+    nginx:
+        build:
+            context: .docker/nginx # Constrói a imagem Nginx a partir deste diretório
+            dockerfile: Dockerfile
+        restart: unless-stopped # 🔑 Reinicia automaticamente
+        ports:
+            - "9090:80" # ⚠️ CORRIGIDO: Nginx geralmente usa porta 80 internamente
+        volumes:
+            - .:/var/www/html # Monta o diretório atual do projeto no contêiner
+        depends_on:
+            - php # Nginx depende do PHP para iniciar
+        container_name: laravel-syscad-nginx
+        networks:
+            - app-network
+
+    # Serviço PHP-FPM (Processador PHP)
+    php:
+        build:
+            context: .docker/php # Constrói a imagem PHP a partir deste diretório
+            dockerfile: Dockerfile
+        restart: unless-stopped # 🔑 Reinicia automaticamente
+        volumes:
+            - .:/var/www/html # Monta o diretório atual do projeto no contêiner PHP
+        ports:
+            - "9000:9000" # Para depuração (opcional)
+        environment:
+            # Variáveis de ambiente para o Laravel
+            DB_CONNECTION: mysql
+            DB_HOST: mariadb # O nome do serviço do banco de dados no docker-compose
+            DB_PORT: 3306 # ⚠️ CORRIGIDO: MariaDB usa porta 3306 internamente
+            DB_DATABASE: laravel # ⚠️ CORRIGIDO: Consistente com MYSQL_DATABASE
+            DB_USERNAME: laravel # ⚠️ CORRIGIDO: Consistente com MYSQL_USER
+            DB_PASSWORD: password # ⚠️ CORRIGIDO: Consistente com MYSQL_PASSWORD
+            DB_CHARSET: utf8mb4 # ⚠️ MELHORADO: utf8mb4 é mais completo
+            DB_COLLATION: utf8mb4_unicode_ci # ⚠️ MELHORADO: Collation correspondente
+            APP_ENV: production
+            APP_DEBUG: false
+            APP_URL: http://localhost:9090 # ⚠️ CORRIGIDO: URL mais genérica
+        depends_on:
+            - mariadb # ✅ ADICIONADO: PHP depende do banco
+        container_name: laravel-syscad-php
+        networks:
+            - app-network
+
+    # Serviço MariaDB (Banco de Dados)
+    mariadb:
+        image: mariadb:10.11 # ⚠️ ATUALIZADO: Versão mais recente e estável
+        restart: unless-stopped # 🔑 Reinicia automaticamente
+        ports:
+            - "3309:3306" # ⚠️ CORRIGIDO: MariaDB usa 3306 internamente
+        environment:
+            MYSQL_ROOT_PASSWORD: root_password # Senha root do MariaDB
+            MYSQL_DATABASE: laravel # Nome do banco de dados a ser criado
+            MYSQL_USER: laravel # Usuário do banco de dados
+            MYSQL_PASSWORD: password # Senha do usuário do banco de dados
+            MYSQL_CHARSET: utf8mb4 # ✅ ADICIONADO: Charset padrão
+            MYSQL_COLLATION: utf8mb4_unicode_ci # ✅ ADICIONADO: Collation padrão
+        volumes:
+            # Persistência dos dados: os dados do banco serão armazenados neste volume
+            - dbdata:/var/lib/mysql
+            # ✅ ADICIONADO: Configuração personalizada do MariaDB (opcional)
+            - ./.docker/mariadb/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+        healthcheck: # ✅ ADICIONADO: Verificação de saúde do banco
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+            timeout: 20s
+            retries: 10
+            interval: 30s
+            start_period: 40s
+        container_name: laravel-syscad-mariadb
+        networks:
+            - app-network
+
+# ✅ ADICIONADO: Rede personalizada para melhor isolamento
+networks:
+    app-network:
+        driver: bridge
+
+# Volumes para persistir dados (banco de dados, por exemplo)
+volumes:
+    dbdata:
+        driver: local
