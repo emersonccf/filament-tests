@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Administrador',
             'cpf' => '69010146006',
             'email' => 'admin@admin.com',
-            'password' => bcrypt('123'),
+            'password' => bcrypt('Admin@123'),
             'email_verified_at' => now(),
             'created_at' => now(),
             'updated_at' => now(),
@@ -35,16 +35,42 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'name' => 'Usuário Teste Adm',
-            'cpf' => '15432366002',
-            'email' => 'usuario@teste.com',
-            'password' => bcrypt('123'),
+            'name' => 'Sonia Carvalho dos Santos',
+            'cpf' => '31804594504',
+            'email' => 'soniacs@teste.com',
+            'password' => bcrypt('S@nia123'),
             'email_verified_at' => now(),
             'created_at' => now(),
             'updated_at' => now(),
-            'is_admin' => true,
+            'is_admin' => false,
             'is_active' => true,
-            'belongs_sector' => true,
+            'belongs_sector' => false,
+        ]);
+
+        User::factory()->create([
+            'name' => 'Kauane Mariano Gonzaga da Silva',
+            'cpf' => '08407881503',
+            'email' => 'kauanemgs@teste.com',
+            'password' => bcrypt('K@uane123'),
+            'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+            'is_admin' => false,
+            'is_active' => true,
+            'belongs_sector' => false,
+        ]);
+
+        User::factory()->create([
+            'name' => 'Usuário de Teste',
+            'cpf' => '15432366002',
+            'email' => 'usuario@teste.com',
+            'password' => bcrypt('Usu@rio123'),
+            'email_verified_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+            'is_admin' => false,
+            'is_active' => true,
+            'belongs_sector' => false,
         ]);
 
         $this->call([PessoasSeeder::class]);
