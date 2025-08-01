@@ -41,6 +41,7 @@ class SevopPanelProvider extends PanelProvider
             ->path('sevop') // Rota URL para este painel (ex: /sevop)
             ->login() // Usa o login padrão do Filament ou um customizado se for o caso
             ->profile(EditProfile::class) // Permite que o usuário acesse e edite seu perfil
+            ->spa() //página única
             ->colors([
                 'primary' => Color::Orange, // Escolha uma cor primária diferente para distinguir visualmente
             ])
