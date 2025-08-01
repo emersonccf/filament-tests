@@ -80,6 +80,6 @@ class DatabaseSeeder extends Seeder
         $this->call([UnidadesSeeder::class]);
         $this->call([AlocacaoVeiculosUnidadesSeeder::class]);
         // Agora, crie os históricos de veículos
-        HistoricoVeiculo::factory(1000)->create(); // Cria 1000 registros de histórico de veículos
+//        HistoricoVeiculo::factory(1000)->create(); // Cria 1000 registros de histórico de veículos
     }
 }

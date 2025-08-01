@@ -215,6 +215,7 @@ class BdvRegistroMotoristaRelationManager extends RelationManager
 
                         return number_format($state, 1) . 'h';
                     })
+                    ->placeholder('N/A')
                     ->sortable()
                     ->alignCenter()
                     ->color(fn (?float $state): string => match (true) {
