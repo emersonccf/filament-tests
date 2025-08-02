@@ -3,9 +3,9 @@
 return [
     'copyright' => [
         'show_year' => true,
-        'prefixo' => '',
+        'prefixo' => '', // Desenvolvido Por:
         'author' => 'Emerson C Ferreira',
-        'text' => '',
+        'text' => '', // Todos os direitos reservados.
     ],
 
     'layout' => [

@@ -11,14 +11,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
+use OwenIt\Auditing\Contracts\Auditable;
 use App\Enums\SexoEnum;
 use App\Enums\EstadoCivilEnum;
 use App\Enums\TipoSanguineoEnum;
 
 
-class Pessoa extends Model
+class Pessoa extends Model implements Auditable
 {
-    use HasFactory, Notifiable, HasRoles, SoftDeletes, HasUuids;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes, HasUuids, \OwenIt\Auditing\Auditable;
 
     protected $dates = ['deleted_at'];
 

@@ -8,10 +8,12 @@ use App\Enums\StatusEventoHistorico; // Importar o Enum
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Permission\Traits\HasRoles;
 
-class HistoricoVeiculo extends Model
+class HistoricoVeiculo extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, \OwenIt\Auditing\Auditable, HasRoles;
 
     protected $primaryKey = 'id_historico';
     protected $table = 'historico_veiculos';

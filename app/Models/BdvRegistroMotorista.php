@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
-use Ramsey\Uuid\Type\Decimal;
+use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Permission\Traits\HasRoles;
 
-class BdvRegistroMotorista extends Model
+class BdvRegistroMotorista extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory,  \OwenIt\Auditing\Auditable, HasRoles;
 
     protected $table = 'bdv_registro_motorista';
     protected $primaryKey = 'id_registro_motorista';
